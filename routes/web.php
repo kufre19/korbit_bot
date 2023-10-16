@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BotController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::get("set-webhook",function(){
+
+    $bot_id_url = env("TG_TOKEN_URL");
+    $url = $bot_id_url ."/"."setWebhook?url=".route("bot.webhook");
+    return file_get_contents($url);
+});
+
+
+Route::get("bot/webhook",[BotController::class,"index"])->name("bot.webhook");
