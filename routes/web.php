@@ -34,4 +34,4 @@ Route::get('/', function () {
 //     return true;
 // });
 
-Route::get("bot/webhook",[BotController::class,"index"])->name("bot.webhook");
+Route::any("bot/webhook",[BotController::class,"index"])->name("bot.webhook");
