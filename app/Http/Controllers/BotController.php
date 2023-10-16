@@ -21,7 +21,7 @@ class BotController extends Controller
        
     }
 
-    public function index(Request $request)
+    public function index()
     {
       
         
