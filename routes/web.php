@@ -19,19 +19,19 @@ Route::get('/', function () {
 });
 
 
-Route::get("set-webhook",function(){
+// Route::get("set-webhook",function(){
 
-    $bot_id_url = env("TG_TOKEN_URL");
-    $url = $bot_id_url ."/"."deleteWebhook";
-    file_get_contents($url);
-    return true;
-});
+//     $bot_id_url = env("TG_TOKEN_URL");
+//     $url = $bot_id_url ."/"."deleteWebhook";
+//     file_get_contents($url);
+//     return true;
+// });
 
-Route::get("unset-webhook",function(){
-    $bot_id_url = env("TG_TOKEN_URL");
-    $url = $bot_id_url ."/"."setWebhook?url=".route("bot.webhook");
-    file_get_contents($url);
-    return true;
-});
+// Route::get("unset-webhook",function(){
+//     $bot_id_url = env("TG_TOKEN_URL");
+//     $url = $bot_id_url ."/"."setWebhook?url=".route("bot.webhook");
+//     file_get_contents($url);
+//     return true;
+// });
 
 Route::get("bot/webhook",[BotController::class,"index"])->name("bot.webhook");

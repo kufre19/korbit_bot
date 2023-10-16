@@ -3,24 +3,38 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
+use Telegram\Bot\Laravel\Facades\Telegram;
+
+
+
 
 class BotController extends Controller
 {
-    public function __construct(Request $request)
+    public $bot_name;
+    public function __construct()
     {
+        $this->bot_name = Config::get("telegram.default");
 
        
-          $data = json_encode($request->all());
-            $file = time() .rand(). '_file.json';
-            $destinationPath=public_path()."/upload/";
-            if (!is_dir($destinationPath)) {  mkdir($destinationPath,0777,true);  }
-            File::put($destinationPath.$file,$data);
-            die;
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        
+        $updates = Telegram::getWebhookUpdate();
+
         return response("ok");
+    }
+
+    public function LogInput($data)
+    {
+
+        $data = json_encode($data);
+        $file = time() .rand(). '_file.json';
+        $destinationPath=public_path()."/upload/";
+        if (!is_dir($destinationPath)) {  mkdir($destinationPath,0777,true);  }
+        File::put($destinationPath.$file,$data);
     }
 }
