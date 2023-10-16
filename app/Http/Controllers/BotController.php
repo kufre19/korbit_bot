@@ -27,6 +27,7 @@ class BotController extends Controller
         Log::error("message");
         
         $updates = Telegram::getWebhookUpdate();
+        $this->LogInput($updates);
 
         return response("ok",200);
     }
