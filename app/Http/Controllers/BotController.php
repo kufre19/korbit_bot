@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
 
@@ -22,6 +23,7 @@ class BotController extends Controller
 
     public function index(Request $request)
     {
+        Log::error("message");
         
         $updates = Telegram::getWebhookUpdate();
 
