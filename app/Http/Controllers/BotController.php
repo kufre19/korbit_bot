@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Telegram\Bot\Laravel\Facades\Telegram;
-
+use Telegram\Bot\TelegramApi;
 
 
 
@@ -26,8 +26,12 @@ class BotController extends Controller
       
         
         $updates = Telegram::getWebhookUpdate();
-        $this->LogInput($updates);
-
+        $chat_id = $updates->message->chat->id;
+        $user_message = $updates->message->text;
+        $response = TelegramApi::sendMessage([
+            'chat_id' => $chat_id,
+            'text' => $user_message
+        ]);
         return response("ok",200);
     }
 
