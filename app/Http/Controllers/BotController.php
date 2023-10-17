@@ -26,7 +26,7 @@ class BotController extends Controller
       
         
         $updates = Telegram::getWebhookUpdate();
-        $telegrambot = new TelegramApi(env("TELEGRAM_BOT_TOKEN"));
+        $telegrambot = new TelegramApi();
         $chat_id = $updates->message->chat->id;
         $user_message = $updates->message->text;
         $response =$telegrambot->sendMessage([
