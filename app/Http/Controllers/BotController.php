@@ -17,6 +17,7 @@ class BotController extends Controller
 {
     use IndexTrait,SendMessages;
     public $bot_name;
+    public $telegrambot;
     public function __construct()
     {
         $this->bot_name = Config::get("telegram.default");
@@ -26,8 +27,8 @@ class BotController extends Controller
 
     public function index()
     {
-        $telegrambot = new TelegramApi();
-        $webhookUpdates = $telegrambot->getWebhookUpdate();
+        $this->telegrambot = new TelegramApi();
+        $webhookUpdates = $this->telegrambot->getWebhookUpdate();
         $this->userCommand($webhookUpdates);
         $this->LogInput($webhookUpdates);
         return response("ok",200);
