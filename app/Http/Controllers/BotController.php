@@ -23,19 +23,14 @@ class BotController extends Controller
 
     public function index()
     {
-      
-        
         $telegrambot = new TelegramApi();
         $updates = $telegrambot->getWebhookUpdate();
-        $chat_id = $updates->message->chat->id;
-        $user_message = $updates->message->text;
-        $response =$telegrambot->sendMessage([
-            'chat_id' => $chat_id,
-            'text' => $user_message
-        ]);
+        $this->LogInput($updates);
         return response("ok",200);
     }
 
+
+    // for testing purposes
     public function LogInput($data)
     {
 
