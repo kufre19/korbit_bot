@@ -6,21 +6,16 @@ trait ReplyMarkups {
     public function MainReplyKeyboard()
     {
         $keyboard = [
-            ['7', '8', '9'],
-            ['4', '5', '6'],
-            ['1', '2', '3'],
-            ['1', '2', '3'],
-            ['1', '2', '3'],
-                 ['0']
+            ["Buy Bot Licence","Exchange2Exchange"],
+            ["Deposit","Withdraw Profit"],
+            ["DAI2BUSD Swap","Swap History"],
+            ["Check Balance","About KorbitBot"],
+            ["KorbitBot NFT/Token/Farm"],
+            ['Invite Friends',"Get Trained"]
         ];
 
-        
-        // $reply_markup = $this->telegrambot->replyKeyboardMarkup([
-        //     'keyboard' => $keyboard,
-        //     'resize_keyboard' => true
-        // ]);
 
-        return json_encode(['keyboard'=>$keyboard]);
+        return json_encode(['keyboard'=>$keyboard,'resize_keyboard' => true]);
         
     }
 }
