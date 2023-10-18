@@ -1,7 +1,5 @@
 <?php
 namespace App\Traits;
-// use Telegram\Bot\Laravel\Facades\Telegram;
-
 
 trait ReplyMarkups {
 
@@ -22,7 +20,7 @@ trait ReplyMarkups {
         //     'resize_keyboard' => true
         // ]);
 
-        return $keyboard;
+        return json_encode(['keyboard'=>$keyboard]);
         
     }
 }
