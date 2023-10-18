@@ -6,11 +6,12 @@ trait SendMessages{
 
 
 
-    public function sendMessageToUser($chat_id)
+    public function sendMessageToUser($chat_id,$message,$reply_markup=null)
     {
         $this->telegrambot->sendMessage([
             'chat_id' => $chat_id,
-            'text' => 'Hello World'
+            'text' => $message,
+            'reply_markup'=>$reply_markup
         ]);
     }
 }
