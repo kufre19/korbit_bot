@@ -9,18 +9,15 @@ trait IndexTrait{
     // public $commands ;
     public $user_sent_text;
     public $from_chat_id;
+    public $username;
 
     public function userCommand($command)
     {
         $this->user_sent_text = $command->message->text;
         $this->from_chat_id = $command->message->chat->id;
-        $mainKeyboard = $this->MainReplyKeyboard();
-        $this->sendMessageToUser($this->from_chat_id,"hello world",$mainKeyboard);
-        return true;
+        $this->username = $command->message->chat->username;
 
-        
-
-
+      
         // check if user sent tet is message, command or button
         // cheack first if command exists
         // if it does route to the right Traits(call the method from the trait)
@@ -33,20 +30,21 @@ trait IndexTrait{
                 {
                     if($this->user_sent_text == "/start")
                     {
+                        $mainKeyboard = $this->MainReplyKeyboard();
+                        $startMessage = "Hello Welcome {$this->username}, I'm Korbit arbitrage Bot. You can select any command from the menu provided below";
+                        $this->sendMessageToUser( $this->from_chat_id,$startMessage,$mainKeyboard);
 
                     }
                 }
-            }
-            if($entityType == "reply_button")
-            {
-                // if($this->checkIfCommandExists($this->user_sent_text))
-                // {
-        
-                // }
-            }
-            
+            }            
+        }
+        if($this->checkIfTextIsButton($this->user_sent_text))
+        {
+            // run method/commands for buttons here
         }
         
+
+        return true;
 
     }
 
@@ -55,6 +53,17 @@ trait IndexTrait{
     public function checkIfCommandExists($command)
     {
         $commands = Config::get("botcommands.commands");
+        if(!in_array($command,$commands))
+        {
+            return false;
+
+        }
+        return true;
+    }
+
+    public function checkIfTextIsButton($command)
+    {
+        $commands = Config::get("botcommands.buttons");
         if(!in_array($command,$commands))
         {
             return false;
