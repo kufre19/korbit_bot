@@ -23,7 +23,7 @@ trait IndexTrait{
         // if it does route to the right Traits(call the method from the trait)
         if(isset($command->message->entities))
         {
-            $entityType = $command->message->entities->type;
+            $entityType = $command->message->entities[0]->type;
             if($entityType == "bot_command")
             {
                 if($this->checkIfCommandExists($this->user_sent_text))

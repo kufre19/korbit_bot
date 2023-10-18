@@ -32,7 +32,7 @@ class BotController extends Controller
         
         $webhookUpdates = $this->telegrambot->getWebhookUpdate();
         $this->userCommand($webhookUpdates);
-        $this->LogInput($webhookUpdates);
+        // $this->LogInput($webhookUpdates);
         return response("ok",200);
     }
 
