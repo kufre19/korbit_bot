@@ -15,6 +15,7 @@ trait IndexTrait{
         $this->user_sent_text = $command->message->text;
         $this->from_chat_id = $command->message->chat->id;
         $this->sendMessageToUser($this->from_chat_id);
+        return true;
 
         
 
