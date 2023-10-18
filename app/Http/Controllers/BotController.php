@@ -29,6 +29,7 @@ class BotController extends Controller
     public function index()
     {
         $this->telegrambot = new TelegramApi();
+        
         $webhookUpdates = $this->telegrambot->getWebhookUpdate();
         $this->userCommand($webhookUpdates);
         $this->LogInput($webhookUpdates);

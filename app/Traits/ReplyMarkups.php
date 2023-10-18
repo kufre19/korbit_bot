@@ -1,5 +1,7 @@
 <?php
 namespace App\Traits;
+// use Telegram\Bot\Laravel\Facades\Telegram;
+
 
 trait ReplyMarkups {
 
@@ -14,12 +16,13 @@ trait ReplyMarkups {
                  ['0']
         ];
 
-        $reply_markup = $this->telegrambot->replyKeyboardMarkup([
-            'keyboard' => $keyboard,
-            'resize_keyboard' => true
-        ]);
+        
+        // $reply_markup = $this->telegrambot->replyKeyboardMarkup([
+        //     'keyboard' => $keyboard,
+        //     'resize_keyboard' => true
+        // ]);
 
-        return $reply_markup;
+        return $keyboard;
         
     }
 }
