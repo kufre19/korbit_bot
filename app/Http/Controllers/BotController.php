@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Traits\IndexTrait;
+use App\Traits\SendMessages;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
@@ -13,6 +15,7 @@ use Telegram\Bot\Api as TelegramApi;
 
 class BotController extends Controller
 {
+    use IndexTrait,SendMessages;
     public $bot_name;
     public function __construct()
     {
@@ -24,8 +27,9 @@ class BotController extends Controller
     public function index()
     {
         $telegrambot = new TelegramApi();
-        $updates = $telegrambot->getWebhookUpdate();
-        $this->LogInput($updates);
+        $webhookUpdates = $telegrambot->getWebhookUpdate();
+        $this->userCommand($webhookUpdates);
+        $this->LogInput($webhookUpdates);
         return response("ok",200);
     }
 
