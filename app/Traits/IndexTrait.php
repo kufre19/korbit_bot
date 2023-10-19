@@ -30,9 +30,10 @@ trait IndexTrait{
                 {
                     if($this->user_sent_text == "/start")
                     {
-                        $mainKeyboard = $this->MainReplyKeyboard();
+                        $mainKeyboard = $this->startMainReplyKeyboard();
                         $startMessage = "Hello Welcome {$this->username}, I'm Korbit arbitrage Bot. You can select any command from the menu provided below";
                         $this->sendMessageToUser( $this->from_chat_id,$startMessage,$mainKeyboard);
+                        return true;
 
                     }
                 }
@@ -41,6 +42,8 @@ trait IndexTrait{
         if($this->checkIfTextIsButton($this->user_sent_text))
         {
             // run method/commands for buttons here
+            $this->runButtonCommand($this->user_sent_text);
+            return true;
         }
         
 

@@ -3,12 +3,11 @@ namespace App\Traits;
 
 trait ReplyMarkups {
 
-    public function MainReplyKeyboard()
+    public function startMainReplyKeyboard()
     {
         $keyboard = [
-            ["💳Buy Bot Licence","💱Exchange2Exchange"],
+            ["💳Buy Bot Licence"],
             ["🏦Deposit","💰Withdraw Profit"],
-            ["💱DAI2BUSD Swap","📋Swap History"],
             ["💵Check Balance","📜About KorbitBot"],
             ["🖼️KorbitBot NFT/Token/Farm"],
             ['📢Invite Friends',"🧑‍🎓Get Trained"]
