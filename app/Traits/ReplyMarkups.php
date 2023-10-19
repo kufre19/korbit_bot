@@ -14,7 +14,6 @@ trait ReplyMarkups {
             ['📢Invite Friends',"🧑‍🎓Get Trained"]
         ];
 
-
         return json_encode(['keyboard'=>$keyboard,'resize_keyboard' => true]);
         
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Traits\ButtonCommands;
 use App\Traits\IndexTrait;
 use App\Traits\ReplyMarkups;
 use App\Traits\SendMessages;
@@ -16,7 +17,7 @@ use Telegram\Bot\Api as TelegramApi;
 
 class BotController extends Controller
 {
-    use IndexTrait,SendMessages,ReplyMarkups;
+    use IndexTrait,SendMessages,ReplyMarkups,ButtonCommands;
     public $bot_name;
     public $telegrambot;
     public function __construct()
