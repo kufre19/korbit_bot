@@ -30,5 +30,24 @@ return [
     
     BLOCKCHAINS
     ETHEREUM | BNB | polygon | Optimism | GNOSIS | AVALANCHE | ARBITRUM | FAMTOM | Klatyn | Aurora | 
+    MSG,
+    "get_trained" => <<<MSG
+    Gain access to a million-dollar opportunity and receive personalized one-on-one training from the experts at Korbit Bot Arbitrage.
+   
+    Our one-on-one training is a great way to learn what has been hidden for years by the crypto gurus. 
+    
+    For our clients, we have a private chat available during their use of the service where experienced arbitrageurs are available to assist and share interesting earning strategies.
+    We have been actively engaged in the world of arbitrage since 2015, accumulating substantial experience and witnessing countless instances of successful ventures. This extensive background has motivated us to develop a comprehensive training course tailored to equip you with the necessary skills and strategies. We are thrilled to offer this valuable course at a modest price, ensuring accessibility for aspiring arbitrage enthusiasts like yourself
+    
+    Gaining access to our one-on-one training is a great way to skyrocket your finance and probably say bye to holding volatile cryptocurrencies on long-term. 
+    
+    - Fee: $300
+    
+    - How to pay:
+    
+    Step 1: Copy the wallet address below and pay with any exchange or wallet.
+    
+    Step 2: After payment, check your email address for further instructions.
+
     MSG
 ];
