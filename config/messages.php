@@ -26,23 +26,19 @@ return [
     comprehensive overview of the market, all conveniently accessible in one place. This streamlined approach saves you time 
     and effort, allowing you to make informed trading decisions efficiently.
     
-        WHAT SETS OUR BOT APART?
+     WHAT SETS OUR BOT APART?
     1️⃣ Multi-Exchange Analysis: Our bot monitors multiple exchanges, ensuring you never miss out on profitable price disparities.
     
-    2️⃣ Real-Time Notifications: Receive instant alerts when potential arbitrage opportunities arise, allowing you to act quickly
-       and secure your profits.
-
-    3️⃣ User-Friendly Interface: Our bot is designed with simplicity in mind, making it easy for both beginners and experienced 
-       traders to navigate and utilize its powerful features.
+    2️⃣ Real-Time Notifications: Receive instant alerts when potential arbitrage opportunities arise, allowing you to act quickly and secure your profits.
     
-    4️⃣ Speed and Efficiency: Our bot is built with cutting-edge technology, allowing it to swiftly analyze vast amounts of data 
-       and identify arbitrage opportunities in real-time. You'll be one step ahead of the competition, maximizing your chances 
-       of securing profitable trades.
+    3️⃣ User-Friendly Interface: Our bot is designed with simplicity in mind, making it easy for both beginners and experienced traders to navigate and utilize its powerful features.
     
-    5️⃣ Extensive Coin Coverage: Our bot covers a wide range of cryptocurrencies, so you can explore arbitrage opportunities 
-       across various digital assets. From Bitcoin to altcoins, we've got you covered.
+    4️⃣ Speed and Efficiency: Our bot is built with cutting-edge technology, allowing it to swiftly analyze vast amounts of data and identify arbitrage opportunities in real-time. You'll be one step ahead of the competition, maximizing your chances of securing profitable trades.
+    
+    5️⃣ Extensive Coin Coverage: Our bot covers a wide range of cryptocurrencies, so you can explore arbitrage opportunities across various digital assets. From Bitcoin to altcoins, we've got you covered.
     
     6️⃣ Continuous Improvements: We believe in constant innovation and regularly update our bot with new features and enhancements. As the cryptocurrency market evolves, our bot evolves with it, keeping you at the forefront of the industry.
+    
     7️⃣ Dedicated Support Team: We have a team of knowledgeable support staff available to assist you with any questions or concerns you may have. From technical inquiries to trading strategies, we're here to support you every step of the way.
     
     EXCHANGES SUPPORTED BY THE BOT
@@ -51,7 +47,7 @@ return [
     BLOCKCHAINS
     ETHEREUM | BNB | polygon | Optimism | GNOSIS | AVALANCHE | ARBITRUM | FAMTOM | Klatyn | Aurora |
     MSG,
-
+    
     "get_trained" => <<<MSG
     Gain access to a million-dollar opportunity and receive personalized one-on-one training from the experts at Korbit Bot Arbitrage.
    
