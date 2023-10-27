@@ -21,7 +21,7 @@ trait ReplyMarkups {
         $keyboard = [
             ["💳Buy Bot Licence","💱Exchange2Exchange"],
             ["🏦Deposit","💰Withdraw Profit"],
-            ["💱Crypto Swap","📋Swap History"],
+            ["💱Swap Crypto","📋Swap History"],
             ["💵Check Balance","📜About KorbitBot"],
             ["🖼️KorbitBot NFT/Token/Farm"],
             ['📢Invite Friends',"🧑‍🎓Get Trained"]

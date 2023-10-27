@@ -10,6 +10,8 @@ trait IndexTrait{
     public $user_sent_text;
     public $from_chat_id;
     public $username;
+    public $tg_user_id;
+
 
     public function userCommand($command)
     {

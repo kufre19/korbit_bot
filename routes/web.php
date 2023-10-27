@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BotController;
+use App\Http\Controllers\WebController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -36,6 +37,9 @@ Route::get('/', function () {
 // });
 
 Route::any("bot/webhook",[BotController::class,"index"])->name("bot.webhook");
+
+Route::get('license/payment/webhook',[WebController::class,"confirm_payment"]);
+
 
 Route::get('/clear-cache', function() {
     $exitCode = Artisan::call('cache:clear');
