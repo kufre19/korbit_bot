@@ -31,11 +31,11 @@ class LicenseService
         $user_session_data = $user_session->getUserSessionData();
         $step = $user_session_data['step'];
         $answers_from_session = $user_session_data['answered_questions'];
+        $answers_from_session["email"] = $user_response;
 
         if ($step == "store email") {
             // update the list of answers in the session
-            array_push($answers_from_session, $user_response);
-            $user_session->add_value_to_session("answered_questions", $answers_from_session);
+            $user_session->add_value_to_session("answered_questions", );
 
             // update the user email
             UserService::updateUserEmail($user_id,$user_response);

@@ -22,7 +22,7 @@ trait IndexTrait
         $this->username = $command->message->chat->username;
 
             // check if user session is set first
-            $this->continueSessionAction($this->user_session, $this->telegrambot);
+            $this->continueSessionAction($this->user_session, $command);
 
 
         // check if user sent tet is message, command or button
