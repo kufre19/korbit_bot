@@ -123,14 +123,14 @@ class SessionService
     {
 
         if (isset($this->user_session_data['active_command'])) {
-            if ($this->user_session_data['active_command'] == "no") {
+            if ($this->user_session_data['active_command'] == "yes") {
                 $this->change_route_name($name, $steps);
             }
         } else {
             $session_data = [
                 "step_name" => $name,
                 "answered_questions" => [],
-                "active_command" => "no",
+                "active_command" => "yes",
                 "form_counter" => 0,
                 "step" => $steps
 
