@@ -16,8 +16,15 @@ class UserService{
 
     public static function registeredNewUser($user_id,)
     {
-        User::create([
-            "tg_id"=>$user_id
-        ]);
+        $user = User::where("tg_id",$user_id)->first();
+        if(!$user)
+        {
+            User::create([
+                "tg_id"=>$user_id
+            ]);
+        }
+        return true;
+        
+
     }
 }
