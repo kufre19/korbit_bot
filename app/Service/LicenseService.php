@@ -22,8 +22,9 @@ class LicenseService{
 
 
 
-    public function continueBotSession($user_id,$user_session)
+    public function continueBotSession($user_id,$user_session,$user_response="")
     {
-        
+        echo "run continuation for license";
+        return true;
     }
 }

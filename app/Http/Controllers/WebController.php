@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Service\TestService;
 use Telegram\Bot\Api as TelegramApi;
 
+use App\Service;
+
 
 class WebController extends Controller
 {

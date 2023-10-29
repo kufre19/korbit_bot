@@ -3,8 +3,10 @@
 namespace App\Service;
 
 use App\Models\Session;
+use App\Service;
 
-class SessionService {
+class SessionService
+{
     public $tg_user_id;
     public $user_session_data;
     public $user_session_status;
@@ -27,7 +29,6 @@ class SessionService {
         $model->timeout = time() + 3600;
         $model->active_status = "yes";
         $model->save();
-
     }
 
     public function update_session($data = null)
@@ -45,7 +46,7 @@ class SessionService {
                 'session_data' => $data,
                 'timeout' => time() + 3600
             ]);
-            
+
         $this->fetch_user_session();
     }
 
@@ -93,41 +94,39 @@ class SessionService {
     public function startSessionCommand()
     {
         $session_data = [
-            "step_name"=>"",
+            "step_name" => "",
             "answered_questions" => [],
-            "active_command"=>"yes",
+            "active_command" => "yes",
             "current_step" => "",
-            "form_counter"=>0,
+            "form_counter" => 0,
             "steps" => ""
-           
+
         ];
 
 
         $this->update_session($session_data);
-        
     }
 
     public function set_session_route($name, $steps)
     {
-        
+
         if (isset($this->user_session_data['active_command'])) {
-            if ($this->user_session_data['active_command'] == "yes" ) {
-                $this->change_route_name($name,$steps);
+            if ($this->user_session_data['active_command'] == "yes") {
+                $this->change_route_name($name, $steps);
             }
-        }else{
+        } else {
             $session_data = [
-                "step_name"=>$name,
+                "step_name" => $name,
                 "answered_questions" => [],
-                "active_command"=>"yes",
+                "active_command" => "yes",
                 "current_step" => "",
-                "form_counter"=>0,
+                "form_counter" => 0,
                 "steps" => $steps
-               
+
             ];
-    
+
             return $this->update_session($session_data);
         }
-        
     }
 
     public function change_route_name($route_name, $steps)
@@ -147,6 +146,26 @@ class SessionService {
         return $this->user_session_data;
     }
 
+    public function run_action_session($user_response = "")
+    {
+        $this->fetch_user_session(); // Ensures the current session data is fetched
+        $action_name = $this->user_session_data['step_name'];
 
 
+
+        // Append namespace if not already present
+        $full_class_name = (strpos($action_name, '\\') === false) ? "App\\Service\\" . $action_name : $action_name;
+
+        if (class_exists($full_class_name)) {
+            echo "checked" . $full_class_name;
+            $call_Action = new $full_class_name();
+            if (method_exists($call_Action, 'continueBotSession')) {
+                $call_Action->continueBotSession($this->tg_user_id, $this, $user_response);
+            } else {
+                // Handle the case where the method doesn't exist
+            }
+        } else {
+            // Handle the case where the class doesn't exist
+        }
+    }
 }

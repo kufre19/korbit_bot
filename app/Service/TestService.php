@@ -8,7 +8,6 @@ class TestService
 {
     public function test()
     {
-        $mdoe = new SessionService();
-        return $mdoe->test();
+        return "call on fire";
     }
 }
