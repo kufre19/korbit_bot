@@ -41,9 +41,26 @@ class BotController extends Controller
         $this->user_session = new SessionService($webhookUpdates->message->chat->id);
         $this->user_session_data = $this->user_session->getUserSessionData();
         
+        // check if user session is set first
+        $this->continueSessionAction($this->user_session);
+        // run a user command
         $this->userCommand($webhookUpdates);
         // $this->LogInput($webhookUpdates);
         return response("ok",200);
+    }
+
+    public function continueSessionAction($user_session)
+    {
+        $user_session_data = $user_session->getUserSessionData();
+        
+        if(isset($user_session_data['active_command']))
+        {
+            if($user_session_data['active_command'] == "yes")
+            {
+                echo "Session command ".$user_session_data['step_name'];
+
+            }
+        }
     }
 
 

@@ -31,7 +31,7 @@ trait ButtonCommands{
             if(!$licenseService->checkUserLicense($this->from_chat_id))
             {
                 // set a session action for licensing before sending question for email
-                $licenseService->startBotLicenseSession($this->from_chat_id);                
+                $this->user_session->set_session_route("checkUserLicense","store email");
                 $message = "Please enter your valid email address below to let us confirm your payment and send follow up information:";
                 $this->sendMessageToUser($this->from_chat_id,$message);
             }

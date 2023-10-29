@@ -20,20 +20,10 @@ class LicenseService{
         }
     }
 
-    public function startBotLicenseSession($user_id)
-    {
-        $sessionService = new SessionService($user_id);
-        $steps = [
-            "question"=>"Enter Your Email:",
-            "store_anser"=>["as"=>"user_email","question"=>"Enter Your Email:"],
-            "register_user"
 
-        ];
-    }
 
     public function continueBotSession($user_id,$user_session)
     {
-        
         
     }
 }
