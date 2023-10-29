@@ -4,7 +4,7 @@ namespace App\Service;
 
 use App\Models\User;
 use App\Traits\SendMessages;
-use App\Traits\UserService;
+use App\Service\UserService;
 use Telegram\Bot\Api as TelegramApi;
 
 class LicenseService
@@ -39,7 +39,7 @@ class LicenseService
 
             // update the user email
             UserService::updateUserEmail($user_id,$user_response);
-            
+
             // initialize teh TG bot sdk
             $telegrambot = new TelegramApi();
             // Send message to user

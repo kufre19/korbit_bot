@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Service\UserService;
 use Illuminate\Support\Facades\Config;
 
 trait IndexTrait
