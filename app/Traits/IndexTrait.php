@@ -20,6 +20,9 @@ trait IndexTrait
         $this->from_chat_id = $command->message->chat->id;
         $this->username = $command->message->chat->username;
 
+            // check if user session is set first
+            $this->continueSessionAction($this->user_session, $this->telegrambot);
+
 
         // check if user sent tet is message, command or button
         // cheack first if command exists
@@ -71,5 +74,17 @@ trait IndexTrait
             return false;
         }
         return true;
+    }
+
+    public function continueSessionAction($user_session, $webhookUpdates)
+    {
+        $user_session_data = $user_session->getUserSessionData();
+        
+        if(isset($user_session_data['active_command']) && $user_session_data['active_command'] == "yes")
+        {
+            // Assuming the user's response is in the text field of the message
+            $user_response = $webhookUpdates->message->text ?? ''; 
+            $user_session->run_action_session($user_response);
+        }
     }
 }
