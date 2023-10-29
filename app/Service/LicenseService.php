@@ -17,7 +17,7 @@ class LicenseService
     {
         $user = User::where("tg_id", $user_id)->first();
         if ($user) {
-            if ($user->license_status == "pending") {
+            if ($user->license == "pending") {
                 return false;
             }
             return true;
