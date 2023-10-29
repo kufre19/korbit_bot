@@ -91,15 +91,27 @@ class SessionService
         $this->update_session($this->user_session_data);
     }
 
+    public function add_value_to_session($key="",$value="")
+    {
+       if($key == "")
+       {
+        array_push($this->user_session_data,$value);
+        $this->update_session($this->user_session_data);
+       }else {
+        $this->user_session_data[$key] = $value;
+        $this->update_session($this->user_session_data);
+       }
+
+    }
+
     public function startSessionCommand()
     {
         $session_data = [
             "step_name" => "",
             "answered_questions" => [],
             "active_command" => "yes",
-            "current_step" => "",
             "form_counter" => 0,
-            "steps" => ""
+            "step" => ""
 
         ];
 
@@ -119,9 +131,8 @@ class SessionService
                 "step_name" => $name,
                 "answered_questions" => [],
                 "active_command" => "yes",
-                "current_step" => "",
                 "form_counter" => 0,
-                "steps" => $steps
+                "step" => $steps
 
             ];
 
@@ -132,9 +143,7 @@ class SessionService
     public function change_route_name($route_name, $steps)
     {
         $this->user_session_data["step_name"] = $route_name;
-        $this->user_session_data["current_step"] = 0;
-        $this->user_session_data["form_counter"] = 0;
-        $this->user_session_data["steps"] = $steps;
+        $this->user_session_data["step"] = $steps;
 
         $this->update_session($this->user_session_data);
     }
@@ -157,7 +166,6 @@ class SessionService
         $full_class_name = (strpos($action_name, '\\') === false) ? "App\\Service\\" . $action_name : $action_name;
 
         if (class_exists($full_class_name)) {
-            echo "checked" . $full_class_name;
             $call_Action = new $full_class_name();
             if (method_exists($call_Action, 'continueBotSession')) {
                 $call_Action->continueBotSession($this->tg_user_id, $this, $user_response);

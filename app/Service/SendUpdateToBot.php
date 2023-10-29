@@ -14,8 +14,9 @@ class SendUpdateToBot{
 
     public $telegrambot;
 
-    public function __construct($telegramBotInstance)
+    public function __construct($telegramBotInstance="")
     {
+        
         $this->telegrambot = $telegramBotInstance;
     }
 
