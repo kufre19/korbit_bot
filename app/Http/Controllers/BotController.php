@@ -12,14 +12,17 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use Telegram\Bot\Api as TelegramApi;
-
-
+use App\Service\SessionService;
+use App\Traits\HandleSessionSteps;
 
 class BotController extends Controller
 {
-    use IndexTrait,SendMessages,ReplyMarkups,ButtonCommands;
+    use IndexTrait,SendMessages,ReplyMarkups,ButtonCommands,HandleSessionSteps;
     public $bot_name;
     public $telegrambot;
+    public $user_session;
+    public $user_session_data;
+
     public function __construct()
     {
         $this->bot_name = Config::get("telegram.default");
@@ -29,9 +32,15 @@ class BotController extends Controller
 
     public function index()
     {
+     
+
         $this->telegrambot = new TelegramApi();
-        
         $webhookUpdates = $this->telegrambot->getWebhookUpdate();
+
+
+        $this->user_session = new SessionService($webhookUpdates->message->chat->id);
+        $this->user_session_data = $this->user_session->getUserSessionData();
+        
         $this->userCommand($webhookUpdates);
         // $this->LogInput($webhookUpdates);
         return response("ok",200);

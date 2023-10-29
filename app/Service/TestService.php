@@ -2,10 +2,13 @@
 
 namespace App\Service;
 
+use App\Service;
+
 class TestService
 {
     public function test()
     {
-        return "ok";
+        $mdoe = new SessionService();
+        return $mdoe->test();
     }
 }

@@ -2,16 +2,151 @@
 
 namespace App\Service;
 
+use App\Models\Session;
+
 class SessionService {
     public $tg_user_id;
+    public $user_session_data;
+    public $user_session_status;
+
 
     public function __construct($tg_user_id)
     {
         $this->tg_user_id = $tg_user_id;
     }
 
+
+
     public function start_new_session()
     {
+        $data = [];
+        $json = json_encode($data);
+        $model = new Session();
+        $model->user_id = $this->tg_user_id;
+        $model->session_data = $json;
+        $model->timeout = time() + 3600;
+        $model->active_status = "yes";
+        $model->save();
+
+    }
+
+    public function update_session($data = null)
+    {
+        if ($data == null) {
+            $data = [];
+            $data = json_encode($data);
+        } else {
+            $data = json_encode($data);
+        }
+
+        $model = new Session();
+        $model->where('user_id', $this->tg_user_id)
+            ->update([
+                'session_data' => $data,
+                'timeout' => time() + 3600
+            ]);
+            
+        $this->fetch_user_session();
+    }
+
+    public function fetch_user_session()
+    {
+        $model = new Session();
+        if ($this->did_session_expired()) {
+
+            $model = new Session();
+            $fetch = $model->where('user_id', $this->tg_user_id)->first();
+            $this->user_session_data = json_decode($fetch->session_data, true);
+        } else {
+
+            $fetch = $model->where('user_id', $this->tg_user_id)->first();
+            $this->user_session_data = json_decode($fetch->session_data, true);
+        }
+    }
+
+    public function did_session_expired()
+    {
+        $model = new Session();
+        $fetch = $model->select('timeout')->where('user_id', $this->tg_user_id)->first();
+
+        if (!$fetch) {
+            $this->user_session_status = 0;
+            return $this->start_new_session();
+        } elseif ($fetch->timeout < time()) {
+            $this->user_session_status = "no";
+            return true;
+        } else {
+            $this->user_session_status = "yes";
+        }
+    }
+
+    public function add_command_to_session($data = null)
+    {
+        if ($data == null) {
+            $this->user_session_data['active_command'] = array();
+        } else {
+            $this->user_session_data['active_command'] = $data;
+        }
+        $this->update_session($this->user_session_data);
+    }
+
+    public function startSessionCommand()
+    {
+        $session_data = [
+            "step_name"=>"",
+            "answered_questions" => [],
+            "active_command"=>"yes",
+            "current_step" => "",
+            "form_counter"=>0,
+            "steps" => ""
+           
+        ];
+
+
+        $this->update_session($session_data);
         
     }
+
+    public function set_session_route($name, $steps)
+    {
+        
+        if (isset($this->user_session_data['active_command'])) {
+            if ($this->user_session_data['active_command'] == "yes" ) {
+                $this->change_route_name($name,$steps);
+            }
+        }else{
+            $session_data = [
+                "step_name"=>$name,
+                "answered_questions" => [],
+                "active_command"=>"yes",
+                "current_step" => "",
+                "form_counter"=>0,
+                "steps" => $steps
+               
+            ];
+    
+            return $this->update_session($session_data);
+        }
+        
+    }
+
+    public function change_route_name($route_name, $steps)
+    {
+        $this->user_session_data["step_name"] = $route_name;
+        $this->user_session_data["current_step"] = 0;
+        $this->user_session_data["form_counter"] = 0;
+        $this->user_session_data["steps"] = $steps;
+
+        $this->update_session($this->user_session_data);
+    }
+
+    public function getUserSessionData()
+    {
+        $this->fetch_user_session();
+        // $this->startSessionCommand();
+        return $this->user_session_data;
+    }
+
+
+
 }

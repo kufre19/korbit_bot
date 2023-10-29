@@ -40,6 +40,9 @@ Route::any("bot/webhook",[BotController::class,"index"])->name("bot.webhook");
 
 Route::get('license/payment/webhook',[WebController::class,"confirm_payment"]);
 
+Route::get('test',[WebController::class,"test_service"]);
+
+
 
 Route::get('/clear-cache', function() {
     $exitCode = Artisan::call('cache:clear');
