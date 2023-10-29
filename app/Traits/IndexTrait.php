@@ -32,6 +32,7 @@ trait IndexTrait
             if ($entityType == "bot_command") {
                 if ($this->checkIfCommandExists($this->user_sent_text)) {
                     if ($this->user_sent_text == "/start") {
+                        UserService::registeredNewUser($this->from_chat_id);
                         // check if user is registered so you can send the registered/licensed user keyboard or instead the beginner keyboard
                         $mainKeyboard = $this->startMainReplyKeyboard();
                         $startMessage = "Hello Welcome {$this->username}, I'm Korbit arbitrage Bot. You can select any command from the menu provided below";

@@ -13,4 +13,11 @@ class UserService{
             "email"=>$email
         ]);
     }
+
+    public static function registeredNewUser($user_id,)
+    {
+        User::create([
+            "tg_id"=>$user_id
+        ]);
+    }
 }
