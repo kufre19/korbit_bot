@@ -37,7 +37,7 @@ class WebController extends Controller
             $user = User::where("email",$user_email)->first();
             if($user)
             {
-               User::where("tg_id",$user->id)->update([
+               User::where("id",$user->id)->update([
                   "license"=>"active"
                ]);
             }
