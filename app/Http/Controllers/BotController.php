@@ -43,7 +43,7 @@ class BotController extends Controller
     
         // run a user command
         $this->userCommand($webhookUpdates);
-        // $this->LogInput($webhookUpdates);
+        $this->LogInput($webhookUpdates);
         return response("returned from botcontroller index",200);
     }
 

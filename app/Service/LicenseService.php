@@ -39,7 +39,7 @@ class LicenseService
             // update the user email
             UserService::updateUserEmail($user_id,$user_response);
 
-            // initialize teh TG bot sdk
+            // initialize the TG bot sdk
             $telegrambot = new TelegramBotService();
             // Send message to user
             $msg = "You can pay the license fee of $21 to this address 0x1252jfnknjklofhsskbsvkjsbvjk";
