@@ -38,11 +38,13 @@ Route::get('/', function () {
 
 Route::any("bot/webhook",[BotController::class,"index"])->name("bot.webhook");
 
-Route::get('license/payment/webhook',[WebController::class,"confirm_payment"]);
+Route::get('webhook/payment/license',[WebController::class,"license_payment"]);
+Route::get('/webhook/payment/deposit', [WebController::class, 'handleDepositWebhook']);
+
 
 Route::get('test',[WebController::class,"test_service"]);
 
-// http://0.0.0.0:8000/license/payment/webhook?email=whitemaxwell5@gmail.com&payment_status=success
+// http://0.0.0.0:8000/webhook/payment/license?email=whitemaxwell5@gmail.com&payment_status=success
 
 Route::get('/clear-cache', function() {
     $exitCode = Artisan::call('cache:clear');

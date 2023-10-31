@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Service\SendUpdateToBot;
 use Illuminate\Http\Request;
 use App\Service\TestService;
 use Telegram\Bot\Api as TelegramApi;
+use App\Models\Wallet;
+
 
 use App\Service;
-
+use App\Service\TelegramBotService;
 
 class WebController extends Controller
 {
@@ -21,7 +22,7 @@ class WebController extends Controller
         $this->telegrambot = new TelegramApi();
    }
 
-   public function confirm_payment(Request $request)
+   public function license_payment(Request $request)
    {
       /**
        * collect user emaill from webhook data
@@ -42,7 +43,7 @@ class WebController extends Controller
                ]);
             }
            
-            $update_bot = new SendUpdateToBot($this->telegrambot);
+            $update_bot = new TelegramBotService($this->telegrambot);
             $update_bot->updateNewRegisteredUser($user->tg_id);
         }
    }
@@ -52,4 +53,50 @@ class WebController extends Controller
       $test = new TestService();
       return $test->test();
    }
+
+   public function handleDepositWebhook(Request $request)
+    {
+        // Extract information from the webhook payload
+        $userEmail = $request->input('email');
+        $amount = $request->input('amount');
+        $assetType = $request->input('asset_type'); // e.g., 'balance_busd', 'balance_dai', 'balance_usdt'
+
+        // Find the user by email
+        $user = User::where('email', $userEmail)->first();
+
+        if (!$user) {
+            // Handle case where user is not found
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Fetch the user's wallet
+        $wallet = $user->wallet;
+
+        if (!$wallet) {
+            // Handle case where user doesn't have a wallet
+            return response()->json(['error' => 'User wallet not found'], 404);
+        }
+
+        // Update the wallet balance based on the asset type
+        switch ($assetType) {
+            case 'busd':
+                $wallet->balance_busd += $amount;
+                break;
+            case 'dai':
+                $wallet->balance_dai += $amount;
+                break;
+            case 'usdt':
+                $wallet->balance_usdt += $amount;
+                break;
+            default:
+                // Handle invalid asset type
+                return response()->json(['error' => 'Invalid asset type'], 400);
+        }
+
+        // Save the updated wallet
+        $wallet->save();
+
+        // Return a success response
+        return response()->json(['message' => 'Deposit successful'], 200);
+    }
 }
