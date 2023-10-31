@@ -42,7 +42,7 @@ Route::get('license/payment/webhook',[WebController::class,"confirm_payment"]);
 
 Route::get('test',[WebController::class,"test_service"]);
 
-
+// http://0.0.0.0:8000/license/payment/webhook?email=whitemaxwell5@gmail.com&payment_status=success
 
 Route::get('/clear-cache', function() {
     $exitCode = Artisan::call('cache:clear');

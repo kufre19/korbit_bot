@@ -21,8 +21,8 @@ trait IndexTrait
         $this->from_chat_id = $command->message->chat->id;
         $this->username = $command->message->chat->username;
 
-            // check if user session is set first
-            $this->continueSessionAction($this->user_session, $command);
+        // check if user session is set first
+        $this->continueSessionAction($this->user_session, $command);
 
 
         // check if user sent tet is message, command or button

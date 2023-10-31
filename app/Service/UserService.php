@@ -23,6 +23,16 @@ class UserService{
                 "tg_id"=>$user_id
             ]);
         }
+
+        // Check if the user already has a wallet
+        if (!$user->wallet) {
+            // Create a new wallet for the user with 0 balance for each asset
+            $user->wallet()->create([
+                'balance_busd' => 0,
+                'balance_dai' => 0,
+                'balance_usdt' => 0
+            ]);
+        }
         return true;
         
 
