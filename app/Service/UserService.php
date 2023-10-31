@@ -3,6 +3,8 @@
 namespace App\Service;
 
 use App\Models\User;
+use App\Models\Wallet;
+
 
 class UserService{
 
@@ -19,20 +21,19 @@ class UserService{
         $user = User::where("tg_id",$user_id)->first();
         if(!$user)
         {
-            User::create([
+            $user = User::create([
                 "tg_id"=>$user_id
             ]);
-        }
 
-        // Check if the user already has a wallet
-        if (!$user->wallet) {
-            // Create a new wallet for the user with 0 balance for each asset
-            $user->wallet()->create([
+            Wallet::create([
+                'user_id' => $user->id,
                 'balance_busd' => 0,
                 'balance_dai' => 0,
                 'balance_usdt' => 0
             ]);
         }
+
+        
         return true;
         
 
