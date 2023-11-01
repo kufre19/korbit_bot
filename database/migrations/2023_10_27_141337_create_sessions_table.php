@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text("session_data");
             $table->string("timeout")->nullable();
             $table->string("active_status")->nullable();
+            
             $table->timestamps();
         });
     }

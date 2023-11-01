@@ -4,6 +4,9 @@ namespace App\Service;
 
 use App\Models\User;
 use App\Models\Wallet;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+
 
 
 class UserService{
@@ -21,8 +24,10 @@ class UserService{
         $user = User::where("tg_id",$user_id)->first();
         if(!$user)
         {
+            $referralCode = self::generateUniqueReferralCode();
             $user = User::create([
-                "tg_id"=>$user_id
+                "tg_id"=>$user_id,
+                "referral_code" => $referralCode
             ]);
 
             Wallet::create([
@@ -37,5 +42,14 @@ class UserService{
         return true;
         
 
+    }
+
+    private static function generateUniqueReferralCode()
+    {
+        do {
+            $code = Str::random(10); // Generates a random string of 10 characters
+        } while (User::where('referral_code', $code)->exists()); // Ensure the code is unique
+
+        return $code;
     }
 }

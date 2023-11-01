@@ -2,8 +2,10 @@
 
 namespace App\Traits;
 
+use App\Service\ReferralService;
 use App\Service\UserService;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 
 trait IndexTrait
 {
@@ -12,7 +14,7 @@ trait IndexTrait
     public $user_sent_text;
     public $from_chat_id;
     public $username;
-    public $tg_user_id ;
+    public $tg_user_id;
 
 
     public function userCommand($command)
@@ -31,15 +33,21 @@ trait IndexTrait
         if (isset($command->message->entities)) {
             $entityType = $command->message->entities[0]->type;
             if ($entityType == "bot_command") {
-                if ($this->checkIfCommandExists($this->user_sent_text)) {
-                    if ($this->user_sent_text == "/start") {
+                if ($this->checkIfCommandExists($this->user_sent_text) || strpos($this->user_sent_text,"/start") !== false ) {
+                    if (strpos($this->user_sent_text,"/start")  !== false ) {
                         UserService::registeredNewUser($this->from_chat_id);
                         // check if user is registered so you can send the registered/licensed user keyboard or instead the beginner keyboard
+
+                        // Handle referral code if present in the /start command
+                        $this->handleReferralCode($this->user_sent_text);
+
                         $mainKeyboard = $this->startMainReplyKeyboard();
                         $startMessage = "Hello Welcome {$this->username}, I'm Korbit arbitrage Bot. You can select any command from the menu provided below";
                         $this->sendMessageToUser($this->from_chat_id, $startMessage, $mainKeyboard);
                         return true;
                     }
+
+                      
                 }
             }
         }
@@ -55,7 +63,7 @@ trait IndexTrait
 
     /** 
      * this method only checks is the command sent by user exists on our list
-    */
+     */
     public function checkIfCommandExists($command)
     {
         $commands = Config::get("botcommands.commands");
@@ -68,7 +76,7 @@ trait IndexTrait
 
     /** 
      * this method only checks is the button sent by user exists on our list
-    */
+     */
     public function checkIfTextIsButton($command)
     {
         $commands = Config::get("botcommands.buttons");
@@ -81,12 +89,27 @@ trait IndexTrait
     public function continueSessionAction($user_session, $webhookUpdates)
     {
         $user_session_data = $user_session->getUserSessionData();
-        
-        if(isset($user_session_data['active_command']) && $user_session_data['active_command'] == "yes")
-        {
+
+        if (isset($user_session_data['active_command']) && $user_session_data['active_command'] == "yes") {
             // Assuming the user's response is in the text field of the message
-            $user_response = $webhookUpdates->message->text ?? ''; 
+            $user_response = $webhookUpdates->message->text ?? '';
             $user_session->run_action_session($user_response);
+        }
+    }
+
+    protected function handleReferralCode($text)
+    {
+        if (preg_match('/^\/start\s+(\w+)/', $text, $matches)) {
+            $referralCode = $matches[1];
+
+            // Assuming you have an instance of ReferralService here
+            $referralService = new ReferralService();
+            $result =$referralService->processReferralCode($referralCode, $this->from_chat_id);
+
+            if (!$result) {
+                // Handle the scenario where the referral code processing failed
+                // You can send a message to the user or log the error
+            }
         }
     }
 }
