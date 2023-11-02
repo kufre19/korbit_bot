@@ -99,7 +99,7 @@ class SwapService implements ServiceServiceInterface
     private function validateInput($fromAsset, $toAsset, $amount)
     {
         // List of supported assets
-        $supportedAssets = ['BTC', 'ETH', 'XRP', 'LTC', 'DAI', 'BUSD']; // Add more as needed
+        $supportedAssets = ['usdt', 'dai', 'busd']; // Add more as needed
 
         // Check if both assets are supported
         if (!in_array($fromAsset, $supportedAssets) || !in_array($toAsset, $supportedAssets)) {
