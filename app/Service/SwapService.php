@@ -79,7 +79,7 @@ class SwapService implements ServiceServiceInterface
             $wallet->save();
 
             // Log the transaction...
-            $this->logTransaction($userId, $fromAsset, $toAsset, $amount, $receivedAmount);
+            $this->logTransaction($user->id, $fromAsset, $toAsset, $amount, $receivedAmount);
 
             DB::commit();
 
