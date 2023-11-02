@@ -9,24 +9,24 @@ use Illuminate\Support\Str;
 
 
 
-class UserService{
+class UserService
+{
 
 
-    public static function updateUserEmail($user_id,$email)
+    public static function updateUserEmail($user_id, $email)
     {
-       return  User::where('tg_id',$user_id)->update([
-            "email"=>$email
+        return  User::where('tg_id', $user_id)->update([
+            "email" => $email
         ]);
     }
 
     public static function registeredNewUser($user_id,)
     {
-        $user = User::where("tg_id",$user_id)->first();
-        if(!$user)
-        {
+        $user = User::where("tg_id", $user_id)->first();
+        if (!$user) {
             $referralCode = self::generateUniqueReferralCode();
             $user = User::create([
-                "tg_id"=>$user_id,
+                "tg_id" => $user_id,
                 "referral_code" => $referralCode
             ]);
 
@@ -38,10 +38,8 @@ class UserService{
             ]);
         }
 
-        
-        return true;
-        
 
+        return true;
     }
 
     private static function generateUniqueReferralCode()
@@ -51,5 +49,17 @@ class UserService{
         } while (User::where('referral_code', $code)->exists()); // Ensure the code is unique
 
         return $code;
+    }
+
+    /**
+     * Check if a user with the given chat ID already exists in the database.
+     *
+     * @param int $chatId The chat ID of the user.
+     * @return bool True if the user already exists, false otherwise.
+     */
+    public static function isUserAlreadyCreated($chatId)
+    {
+        // Assuming 'chat_id' is the column name in your users table that stores the Telegram chat ID.
+        return User::where('chat_id', $chatId)->exists();
     }
 }

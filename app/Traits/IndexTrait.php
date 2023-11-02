@@ -19,45 +19,54 @@ trait IndexTrait
 
     public function userCommand($command)
     {
-        $this->user_sent_text = $command->message->text;
+        if (isset($command->data)) {
+            $this->user_sent_text =  $command->data ?? '';
+        } else {
+            $this->user_sent_text =  $command->message->text ?? '';
+        }
+        $command->message->text ?? $command->data;
         $this->from_chat_id = $command->message->chat->id;
         $this->username = $command->message->chat->username;
 
-        // check if user session is set first
-        $this->continueSessionAction($this->user_session, $command);
-
-
-        // check if user sent tet is message, command or button
-        // cheack first if command exists
-        // if it does route to the right Traits(call the method from the trait)
-        if (isset($command->message->entities)) {
-            $entityType = $command->message->entities[0]->type;
-            if ($entityType == "bot_command") {
-                if ($this->checkIfCommandExists($this->user_sent_text) || strpos($this->user_sent_text,"/start") !== false ) {
-                    if (strpos($this->user_sent_text,"/start")  !== false ) {
-                        UserService::registeredNewUser($this->from_chat_id);
-                        // check if user is registered so you can send the registered/licensed user keyboard or instead the beginner keyboard
-
-                        // Handle referral code if present in the /start command
-                        $this->handleReferralCode($this->user_sent_text);
-
-                        $mainKeyboard = $this->startMainReplyKeyboard();
-                        $startMessage = "Hello Welcome {$this->username}, I'm Korbit arbitrage Bot. You can select any command from the menu provided below";
-                        $this->sendMessageToUser($this->from_chat_id, $startMessage, $mainKeyboard);
-                        return true;
-                    }
-
-                      
-                }
-            }
-        }
+        // Check if the user sent text is a button.
         if ($this->checkIfTextIsButton($this->user_sent_text)) {
             // run method/commands for buttons here
             $this->runButtonCommand($this->user_sent_text);
             return true;
-        }else{
-            
         }
+
+
+        if (isset($command->message->entities)) {
+            $entityType = $command->message->entities[0]->type;
+            if ($entityType == "bot_command") {
+                if ($this->checkIfCommandExists($this->user_sent_text) || strpos($this->user_sent_text, "/start") !== false) {
+
+                    if (strpos($this->user_sent_text, "/start")  !== false) {
+                        if (!UserService::isUserAlreadyCreated($this->from_chat_id)) {
+                            UserService::registeredNewUser($this->from_chat_id);
+                            // check if user is registered so you can send the registered/licensed user keyboard or instead the beginner keyboard
+
+                            // Handle referral code if present in the /start command
+                            $this->handleReferralCode($this->user_sent_text);
+
+                            $mainKeyboard = $this->startMainReplyKeyboard();
+                            $startMessage = "Hello Welcome {$this->username}, I'm Korbit arbitrage Bot. You can select any command from the menu provided below";
+                            $this->sendMessageToUser($this->from_chat_id, $startMessage, $mainKeyboard);
+                            return true;
+                        } else {
+                            // User already exists, you can send a message or perform any action.
+                            // $message = "You're already registered!";
+                            // $this->sendMessageToUser($this->from_chat_id, $message);
+                            return true;
+                        }
+                    }
+                }
+            }
+        } else {
+            // Continue with the session action if any.
+            $this->continueSessionAction($this->user_session, $command);
+        }
+
 
 
         return true;
@@ -94,7 +103,11 @@ trait IndexTrait
 
         if (isset($user_session_data['active_command']) && $user_session_data['active_command'] == "yes") {
             // Assuming the user's response is in the text field of the message
-            $user_response = $webhookUpdates->message->text ?? '';
+            if (isset($webhookUpdates->data)) {
+                $user_response = $webhookUpdates->data ?? '';
+            } else {
+                $user_response = $webhookUpdates->message->text ?? '';
+            }
             $user_session->run_action_session($user_response);
         }
     }
@@ -106,7 +119,7 @@ trait IndexTrait
 
             // Assuming you have an instance of ReferralService here
             $referralService = new ReferralService();
-            $result =$referralService->processReferralCode($referralCode, $this->from_chat_id);
+            $result = $referralService->processReferralCode($referralCode, $this->from_chat_id);
 
             if (!$result) {
                 // Handle the scenario where the referral code processing failed
