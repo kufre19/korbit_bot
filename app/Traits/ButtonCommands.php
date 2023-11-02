@@ -54,6 +54,13 @@ trait ButtonCommands{
            return true;
 
           
+        }
+        
+        if ($command == "💱Swap Crypto") {
+            $message = "Please select below your swap potion";
+            $inlineKeyboard = $this->InlineSwapOptions();
+            $this->sendMessageToUser($this->from_chat_id, $message,$inlineKeyboard);
+            return true;
         }else{
             $message ="function coming soon";
             $this->sendMessageToUser($this->from_chat_id,$message);

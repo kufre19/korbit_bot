@@ -16,6 +16,7 @@ trait SendMessages{
     }
 
     public function sendMessageToUserDetached($telegrambot,$chat_id,$message,$reply_markup=null){
+        
         $telegrambot->sendMessage([
             'chat_id' => $chat_id,
             'text' => $message,
