@@ -91,17 +91,15 @@ class SessionService
         $this->update_session($this->user_session_data);
     }
 
-    public function add_value_to_session($key="",$value="")
+    public function add_value_to_session($key = "", $value = "")
     {
-       if($key == "")
-       {
-        array_push($this->user_session_data,$value);
-        $this->update_session($this->user_session_data);
-       }else {
-        $this->user_session_data[$key] = $value;
-        $this->update_session($this->user_session_data);
-       }
-
+        if ($key == "") {
+            array_push($this->user_session_data, $value);
+            $this->update_session($this->user_session_data);
+        } else {
+            $this->user_session_data[$key] = $value;
+            $this->update_session($this->user_session_data);
+        }
     }
 
     public function startSessionCommand()
@@ -155,6 +153,21 @@ class SessionService
         return $this->user_session_data;
     }
 
+    // Within the SessionService class...
+
+    public function endSession()
+    {
+        // Set the session status to inactive
+        $this->add_value_to_session('active_status', 'no');
+
+        // Optionally clear the session data
+        $this->add_value_to_session('session_data', []);
+
+        // You might also want to perform other cleanup operations,
+        // such as logging the session end or notifying the user.
+    }
+
+
     public function run_action_session($user_response = "")
     {
         $this->fetch_user_session(); // Ensures the current session data is fetched
@@ -176,6 +189,4 @@ class SessionService
             // Handle the case where the class doesn't exist
         }
     }
-
-
 }
