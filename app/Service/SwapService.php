@@ -124,8 +124,8 @@ class SwapService implements ServiceServiceInterface
     private function getExchangeRate($fromAsset, $toAsset)
     {
         // Assuming you have a table 'currency_rates' with 'currency' and 'rate' columns
-        $rateFrom = CurrencyRate::where('currency', strtoupper($fromAsset))->value('rate');
-        $rateTo = CurrencyRate::where('currency', strtoupper($toAsset))->value('rate');
+        $rateFrom = CurrencyRate::where('currency', strtoupper($fromAsset))->value('price');
+        $rateTo = CurrencyRate::where('currency', strtoupper($toAsset))->value('price');
 
         if (!$rateFrom || !$rateTo) {
             throw new \Exception("Exchange rates for one or both assets could not be retrieved.");
