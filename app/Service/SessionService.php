@@ -120,22 +120,33 @@ class SessionService
     public function set_session_route($name, $steps)
     {
 
-        if (isset($this->user_session_data['active_command'])) {
-            if ($this->user_session_data['active_command'] == "yes") {
-                $this->change_route_name($name, $steps);
-            }
-        } else {
-            $session_data = [
-                "step_name" => $name,
-                "answered_questions" => [],
-                "active_command" => "yes",
-                "form_counter" => 0,
-                "step" => $steps
+        // if (isset($this->user_session_data['active_command'])) {
+        //     if ($this->user_session_data['active_command'] == "yes") {
+        //         $this->change_route_name($name, $steps);
+        //     }
+        // } else {
+        //     $session_data = [
+        //         "step_name" => $name,
+        //         "answered_questions" => [],
+        //         "active_command" => "yes",
+        //         "form_counter" => 0,
+        //         "step" => $steps
 
-            ];
+        //     ];
 
-            return $this->update_session($session_data);
-        }
+        //     return $this->update_session($session_data);
+        // }
+
+        $session_data = [
+            "step_name" => $name,
+            "answered_questions" => [],
+            "active_command" => "yes",
+            "form_counter" => 0,
+            "step" => $steps
+
+        ];
+
+        return $this->update_session($session_data);
     }
 
     public function change_route_name($route_name, $steps)

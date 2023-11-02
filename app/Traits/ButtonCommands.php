@@ -65,6 +65,8 @@ trait ButtonCommands{
         }else{
             $message ="function coming soon";
             $this->sendMessageToUser($this->from_chat_id,$message);
+            return true;
+
         }
         
     }

@@ -24,7 +24,7 @@ trait IndexTrait
         } else {
             $this->user_sent_text =  $command->message->text ?? '';
         }
-        $command->message->text ?? $command->data;
+        // $command->message->text ?? $command->data;
         $this->from_chat_id = $command->message->chat->id;
         $this->username = $command->message->chat->username;
 
@@ -64,6 +64,7 @@ trait IndexTrait
             }
         } else {
             // Continue with the session action if any.
+            Log::error("was here");
             $this->continueSessionAction($this->user_session, $command);
         }
 
