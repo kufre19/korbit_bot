@@ -14,6 +14,12 @@ use App\Traits\SendMessages; // If you have a trait for sending messages
 class SwapService implements ServiceServiceInterface
 {
     use SendMessages; // Use this if you have a trait for sending messages
+    public $telegram_bot;
+
+    public function __construct()
+    {
+        $this->telegram_bot = new TelegramBotService();
+    }
 
     /**
      * Swap cryptocurrencies.
@@ -163,7 +169,7 @@ class SwapService implements ServiceServiceInterface
                 $user_session->update_session($user_session_data);
     
                 // Prompt the user for the amount to swap
-                $this->sendMessageToUser($user_id, "How much {$fromAsset} do you want to swap to {$toAsset}?");
+                $this->telegram_bot->sendMessageToUser($user_id, "How much {$fromAsset} do you want to swap to {$toAsset}?");
     
                
                 break;
@@ -191,7 +197,7 @@ class SwapService implements ServiceServiceInterface
                 . "Do you want to proceed with the swap?";
                 $inlineKeyboard = $this->getInlineKeyboardConfirmCancel();
     
-                $this->sendMessageToUser($user_id, $message, $inlineKeyboard);
+                $this->telegram_bot->sendMessageToUser($user_id, $message, $inlineKeyboard);
     
                 // Update session to wait for user's confirmation
                 $user_session_data['step'] = 'confirm swap';
@@ -214,14 +220,14 @@ class SwapService implements ServiceServiceInterface
                         
                         if ($swapResult['success']) {
                             // If the swap was successful, send a success message to the user
-                            $this->sendMessageToUser($user_id, "Your swap was successful. " . $swapResult['message']);
+                            $this->telegram_bot->sendMessageToUser($user_id, "Your swap was successful. " . $swapResult['message']);
                         } else {
                             // If the swap failed, send an error message to the user
-                            $this->sendMessageToUser($user_id, "There was a problem with your swap: " . $swapResult['message']);
+                            $this->telegram_bot->sendMessageToUser($user_id, "There was a problem with your swap: " . $swapResult['message']);
                         }
                     } else {
                         // If any of the necessary data is missing, inform the user to start over
-                        $this->sendMessageToUser($user_id, "Swap details missing. Please start over.");
+                        $this->telegram_bot->sendMessageToUser($user_id, "Swap details missing. Please start over.");
                     }
                     
                     // After attempting the swap, end the session
@@ -229,7 +235,7 @@ class SwapService implements ServiceServiceInterface
                         
                 } elseif ($user_response === 'cancel') {
                     // User cancelled the swap
-                    $this->sendMessageToUser($user_id, "Swap cancelled.");
+                    $this->telegram_bot->sendMessageToUser($user_id, "Swap cancelled.");
     
                     // End the session
                     $user_session->endSession(); // Replace with the actual method that ends the session
@@ -239,7 +245,7 @@ class SwapService implements ServiceServiceInterface
     
             default:
                 // Handle unknown step
-                $this->sendMessageToUser($user_id, "I'm not sure what you're trying to do. Can you please start over?");
+                $this->telegram_bot->sendMessageToUser($user_id, "I'm not sure what you're trying to do. Can you please start over?");
                 break;
         }
     
