@@ -39,8 +39,8 @@ class BotController extends Controller
         $this->LogInput($webhookUpdates);
 
 
-        $this->user_session = new SessionService($webhookUpdates->message->chat->id);
-        $this->user_session_data = $this->user_session->getUserSessionData();
+        // $this->user_session = new SessionService($webhookUpdates->message->chat->id);
+        // $this->user_session_data = $this->user_session->getUserSessionData();
         
     
         // run a user command
