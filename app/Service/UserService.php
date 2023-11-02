@@ -62,4 +62,21 @@ class UserService
         // Assuming 'chat_id' is the column name in your users table that stores the Telegram chat ID.
         return User::where('tg_id', $chatId)->exists();
     }
+
+    public static function fetchUserByTgID($tg_id)
+    {
+        // Use the User model to query the database for a user with the given Telegram ID
+        $user = User::where('tg_id', $tg_id)->first();
+        
+        // Check if a user was found
+        if ($user) {
+            // Return the user object if found
+            return $user;
+        } else {
+            // Return null or handle the case where the user does not exist in the database
+            // You might want to log this incident or throw an exception, depending on your use case
+            return null;
+        }
+    }
+    
 }

@@ -32,6 +32,7 @@ class SwapService implements ServiceServiceInterface
      */
     public function swapCrypto($userId, $fromAsset, $toAsset, $amount)
     {
+        $user = UserService::fetchUserByTgID($userId);
         // Validate input...
         if (!$this->validateInput($fromAsset, $toAsset, $amount)) {
             return [
@@ -41,7 +42,7 @@ class SwapService implements ServiceServiceInterface
         }
 
         // Check if user has enough balance...
-        $wallet = Wallet::where('user_id', $userId)->first();
+        $wallet = Wallet::where('user_id', $user->id)->first();
         $balanceFieldFrom = 'balance_' . strtolower($fromAsset);
         if ($wallet->$balanceFieldFrom < $amount) {
             return [
