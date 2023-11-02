@@ -5,8 +5,9 @@ namespace App\Service;
 use App\Models\User;
 use App\Traits\SendMessages;
 use App\Service\UserService;
+use ServiceInterface;
 
-class LicenseService
+class LicenseService implements ServiceInterface
 {
 
     

@@ -176,4 +176,6 @@ class SessionService
             // Handle the case where the class doesn't exist
         }
     }
+
+
 }

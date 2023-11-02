@@ -57,6 +57,7 @@ trait ButtonCommands{
         }
         
         if ($command == "💱Swap Crypto") {
+            $this->user_session->set_session_route("SwapService","get swap option");
             $message = "Please select below your swap option";
             $inlineKeyboard = $this->InlineSwapOptions();
             $this->sendMessageToUser($this->from_chat_id, $message,$inlineKeyboard);

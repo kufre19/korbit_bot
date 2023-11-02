@@ -55,6 +55,8 @@ trait IndexTrait
             // run method/commands for buttons here
             $this->runButtonCommand($this->user_sent_text);
             return true;
+        }else{
+            
         }
 
 
