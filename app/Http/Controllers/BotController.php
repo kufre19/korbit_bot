@@ -36,7 +36,8 @@ class BotController extends Controller
         $this->telegrambot = new TelegramApi();
         $webhookUpdates = $this->handleCallbackQuery($this->telegrambot->getWebhookUpdate());
 
-        // $this->LogInput($webhookUpdates);
+        $this->LogInput($webhookUpdates);
+        return response("returned from botcontroller index",200);
 
 
         $this->user_session = new SessionService($webhookUpdates->message->chat->id);
@@ -67,7 +68,7 @@ class BotController extends Controller
         {
             return $webhookUpdates;
         }
-        
+
         Log::error($webhookUpdates->callback_query->data);
         return $webhookUpdates->callback_query;
     }
