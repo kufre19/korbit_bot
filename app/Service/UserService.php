@@ -60,6 +60,6 @@ class UserService
     public static function isUserAlreadyCreated($chatId)
     {
         // Assuming 'chat_id' is the column name in your users table that stores the Telegram chat ID.
-        return User::where('chat_id', $chatId)->exists();
+        return User::where('tg_id', $chatId)->exists();
     }
 }
