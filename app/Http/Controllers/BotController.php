@@ -34,17 +34,17 @@ class BotController extends Controller
      
 
         $this->telegrambot = new TelegramApi();
-        $webhookUpdates = $this->telegrambot->getWebhookUpdate();
+        $webhookUpdates = $this->handleCallbackQuery($this->telegrambot->getWebhookUpdate());
 
-        $this->LogInput($webhookUpdates);
+        // $this->LogInput($webhookUpdates);
 
 
-        // $this->user_session = new SessionService($webhookUpdates->message->chat->id);
-        // $this->user_session_data = $this->user_session->getUserSessionData();
+        $this->user_session = new SessionService($webhookUpdates->message->chat->id);
+        $this->user_session_data = $this->user_session->getUserSessionData();
         
     
         // run a user command
-        // $this->userCommand($webhookUpdates);
+        $this->userCommand($webhookUpdates);
         return response("returned from botcontroller index",200);
     }
 
@@ -59,5 +59,16 @@ class BotController extends Controller
         $destinationPath=public_path()."/upload/";
         if (!is_dir($destinationPath)) {  mkdir($destinationPath,0777,true);  }
         File::put($destinationPath.$file,$data);
+    }
+
+    public function handleCallbackQuery($webhookUpdates)
+    {
+        if(!isset($webhookUpdates->callback_query))
+        {
+            Log::error($webhookUpdates->callback_query->data);
+            return $webhookUpdates;
+        }
+
+        return $webhookUpdates->callback_query;
     }
 }
