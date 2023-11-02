@@ -3,11 +3,11 @@
 namespace App\Service;
 
 use App\Models\User;
+use App\Service\ServiceInterface as ServiceServiceInterface;
 use App\Traits\SendMessages;
 use App\Service\UserService;
-use ServiceInterface;
 
-class LicenseService implements ServiceInterface
+class LicenseService implements ServiceServiceInterface
 {
 
     

@@ -7,11 +7,11 @@ use App\Models\CurrencyRate;
 use App\Models\User;
 use App\Models\Wallet;
 use App\Models\TransactionLog;
+use App\Service\ServiceInterface as ServiceServiceInterface;
 use Illuminate\Support\Facades\DB;
-use ServiceInterface;
 use App\Traits\SendMessages; // If you have a trait for sending messages
 
-class SwapService implements ServiceInterface
+class SwapService implements ServiceServiceInterface
 {
     use SendMessages; // Use this if you have a trait for sending messages
 
