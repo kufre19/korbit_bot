@@ -65,10 +65,10 @@ class BotController extends Controller
     {
         if(!isset($webhookUpdates->callback_query))
         {
-            Log::error($webhookUpdates->callback_query->data);
             return $webhookUpdates;
         }
-
+        
+        Log::error($webhookUpdates->callback_query->data);
         return $webhookUpdates->callback_query;
     }
 }
