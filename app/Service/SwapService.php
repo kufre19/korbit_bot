@@ -277,7 +277,7 @@ class SwapService implements ServiceServiceInterface
         $user = UserService::fetchUserByTgID($user_id);
 
         $swapHistories = TransactionLog::where('user_id', $user->id)
-            ->orderBy('created', 'desc')
+            ->orderBy('created_at', 'desc')
             ->limit(10) // Limiting to the last 10 transactions for example
             ->get();
 
