@@ -19,7 +19,6 @@ trait IndexTrait
 
     public function userCommand($command)
     {
-        Log::error("message came in");
 
         if (isset($command->data)) {
             $this->user_sent_text =  $command->data ?? '';
@@ -32,6 +31,8 @@ trait IndexTrait
 
         // Check if the user sent text is a button.
         if ($this->checkIfTextIsButton($this->user_sent_text)) {
+            Log::error("checked for butn command");
+
             // run method/commands for buttons here
             $this->runButtonCommand($this->user_sent_text);
             return true;
@@ -44,6 +45,8 @@ trait IndexTrait
                 if ($this->checkIfCommandExists($this->user_sent_text) || strpos($this->user_sent_text, "/start") !== false) {
 
                     if (strpos($this->user_sent_text, "/start")  !== false) {
+                        Log::error("came for command");
+
                         if (!UserService::isUserAlreadyCreated($this->from_chat_id)) {
                             UserService::registeredNewUser($this->from_chat_id);
                             // check if user is registered so you can send the registered/licensed user keyboard or instead the beginner keyboard
@@ -65,10 +68,12 @@ trait IndexTrait
                 }
             }
         } else {
-            // Continue with the session action if any.
-            Log::error("knew to continue here");
-            $this->continueSessionAction($this->user_session, $command);
+            
         }
+
+        // Continue with the session action if any.
+        Log::error("knew to continue here");
+        $this->continueSessionAction($this->user_session, $command);
 
 
 
