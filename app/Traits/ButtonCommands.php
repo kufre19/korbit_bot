@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Service\LicenseService;
 use App\Service\ReferralService;
 use App\Service\SessionService;
+use App\Service\WalletService;
 use Illuminate\Support\Facades\Config;
 
 trait ButtonCommands{
@@ -61,6 +62,16 @@ trait ButtonCommands{
             $message = "Please select below your swap option";
             $inlineKeyboard = $this->InlineSwapOptions();
             $this->sendMessageToUser($this->from_chat_id, $message,$inlineKeyboard);
+            return true;
+        }
+        
+        if ($command == "💵Check Balance") {
+            // Fetch the user's balance from the wallet
+            $walletService = new WalletService();
+            $balanceInfo = $walletService->getFormattedBalance($this->from_chat_id); // Assuming you have or will create a getFormattedBalance method
+        
+            // Send the balance information to the user
+            $this->sendMessageToUser($this->from_chat_id, $balanceInfo);
             return true;
         }else{
             $message ="function coming soon";
