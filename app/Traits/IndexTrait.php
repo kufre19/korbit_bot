@@ -19,6 +19,8 @@ trait IndexTrait
 
     public function userCommand($command)
     {
+        Log::error("message came in");
+
         if (isset($command->data)) {
             $this->user_sent_text =  $command->data ?? '';
         } else {
@@ -64,7 +66,7 @@ trait IndexTrait
             }
         } else {
             // Continue with the session action if any.
-            Log::error("was here");
+            Log::error("knew to continue here");
             $this->continueSessionAction($this->user_session, $command);
         }
 
@@ -100,6 +102,7 @@ trait IndexTrait
 
     public function continueSessionAction($user_session, $webhookUpdates)
     {
+        Log::error("tried to continue session");
         $user_session_data = $user_session->getUserSessionData();
 
         if (isset($user_session_data['active_command']) && $user_session_data['active_command'] == "yes") {

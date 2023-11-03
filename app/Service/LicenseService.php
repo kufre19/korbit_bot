@@ -29,7 +29,7 @@ class LicenseService implements ServiceServiceInterface
 
     public function continueBotSession($user_id, $user_session, $user_response = "")
     {
-        Log::error("continue work");
+        Log::error("continue lincening");
         $user_session_data = $user_session->getUserSessionData();
         $step = $user_session_data['step'];
         $answers_from_session = $user_session_data['answered_questions'];
