@@ -68,12 +68,11 @@ trait IndexTrait
                 }
             }
         } else {
-            
+            // Continue with the session action if any.
+            Log::error("knew to continue here");
+            $this->continueSessionAction($this->user_session, $command);
         }
 
-        // Continue with the session action if any.
-        Log::error("knew to continue here");
-        $this->continueSessionAction($this->user_session, $command);
 
 
 
