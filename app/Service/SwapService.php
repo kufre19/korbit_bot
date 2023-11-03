@@ -274,7 +274,9 @@ class SwapService implements ServiceServiceInterface
      */
     public function getFormattedSwapHistory($user_id)
     {
-        $swapHistories = TransactionLog::where('user_id', $user_id)
+        $user = UserService::fetchUserByTgID($user_id);
+
+        $swapHistories = TransactionLog::where('user_id', $user->id)
             ->orderBy('date', 'desc')
             ->limit(10) // Limiting to the last 10 transactions for example
             ->get();
