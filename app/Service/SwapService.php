@@ -264,4 +264,34 @@ class SwapService implements ServiceServiceInterface
             ]
         ]);
     }
+
+
+    /**
+     * Get formatted swap history for the user.
+     *
+     * @param int $user_id The ID of the user
+     * @return string
+     */
+    public function getFormattedSwapHistory($user_id)
+    {
+        $swapHistories = TransactionLog::where('user_id', $user_id)
+            ->orderBy('date', 'desc')
+            ->limit(10) // Limiting to the last 10 transactions for example
+            ->get();
+
+        if ($swapHistories->isEmpty()) {
+            return "You have no swap history.";
+        }
+
+        $formattedHistory = "🔄 *Your Recent Swap History:*\n" .
+                            "---------------------------------\n";
+
+        foreach ($swapHistories as $history) {
+            $formattedHistory .= "📅 " . $history->date->format('Y-m-d H:i:s') . ":\n" .
+                                 "💱 " . strtoupper($history->from_currency) . " to " . strtoupper($history->to_currency) . "\n" .
+                                 "💸 Amount: " . number_format($history->amount, 2) . "\n\n";
+        }
+
+        return $formattedHistory;
+    }
 }

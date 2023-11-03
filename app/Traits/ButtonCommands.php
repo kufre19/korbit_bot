@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Service\LicenseService;
 use App\Service\ReferralService;
 use App\Service\SessionService;
+use App\Service\SwapService;
 use App\Service\WalletService;
 use Illuminate\Support\Facades\Config;
 
@@ -72,6 +73,16 @@ trait ButtonCommands{
         
             // Send the balance information to the user
             $this->sendMessageToUser($this->from_chat_id, $balanceInfo);
+            return true;
+        }
+        
+        if ($command == "📋Swap History") {
+            // Fetch the user's swap history
+            $swapService = new SwapService();
+            $swapHistory = $swapService->getFormattedSwapHistory($this->from_chat_id);
+        
+            // Send the swap history to the user
+            $this->sendMessageToUser($this->from_chat_id, $swapHistory);
             return true;
         }else{
             $message ="function coming soon";
