@@ -289,9 +289,10 @@ class SwapService implements ServiceServiceInterface
                             "---------------------------------\n";
 
         foreach ($swapHistories as $history) {
-            $formattedHistory .= "📅 " . $history->date->format('Y-m-d H:i:s') . ":\n" .
-                                 "💱 " . strtoupper($history->from_currency) . " to " . strtoupper($history->to_currency) . "\n" .
-                                 "💸 Amount: " . number_format($history->amount, 2) . "\n\n";
+            $formattedHistory .= "📅 " . $history->created_at->format('Y-m-d H:i:s') . ":\n" .
+                                 "💱 " . strtoupper($history->from_asset) . " to " . strtoupper($history->to_asset) . "\n" .
+                                 "💸 Amount: " . number_format($history->amount, 2) . "\n\n".
+                                 "💸 Amount Received: " . number_format($history->received_amount, 2) . "\n\n";
         }
 
         return $formattedHistory;
