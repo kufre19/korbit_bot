@@ -136,7 +136,7 @@ class SwapService implements ServiceServiceInterface
         // Calculate and return the exchange rate as a float
         // Be careful with direct division as it can lead to floating point precision issues
         // Depending on the use-case, consider using a library for precise mathematical operations
-        return (float) number_format($rateTo / $rateFrom, 2, '.', '');
+        return (float) number_format($rateTo / $rateFrom, 4, '.', '');
     }
     private function logTransaction($userId, $fromAsset, $toAsset, $amount, $receivedAmount)
     {
@@ -291,8 +291,8 @@ class SwapService implements ServiceServiceInterface
         foreach ($swapHistories as $history) {
             $formattedHistory .= "📅 " . $history->created_at->format('Y-m-d H:i:s') . ":\n" .
                                  "💱 " . strtoupper($history->from_asset) . " to " . strtoupper($history->to_asset) . "\n" .
-                                 "💸 Amount: " . number_format($history->amount, 2) . "\n\n".
-                                 "💸 Amount Received: " . number_format($history->received_amount, 2) . "\n\n";
+                                 "💸 Amount: " . number_format($history->amount, 4) . "\n\n".
+                                 "💸 Amount Received: " . number_format($history->received_amount, 4) . "\n\n";
         }
 
         return $formattedHistory;

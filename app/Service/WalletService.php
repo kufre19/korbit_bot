@@ -92,9 +92,9 @@ class WalletService
         // Create a formatted string for the message
         $formattedBalance = "💼 *Your Wallet Balance:*\n" .
                             "-----------------------\n" .
-                            "🪙 *BUSD*: " . number_format($balance['busd'], 2) . "\n" .
-                            "🪙 *DAI*: " . number_format($balance['dai'], 2) . "\n" .
-                            "🪙 *USDT*: " . number_format($balance['usdt'], 2) . "\n";
+                            "🪙 *BUSD*: " . number_format($balance['busd'], 4) . "\n" .
+                            "🪙 *DAI*: " . number_format($balance['dai'], 4) . "\n" .
+                            "🪙 *USDT*: " . number_format($balance['usdt'], 4) . "\n";
 
         return $formattedBalance;
     }

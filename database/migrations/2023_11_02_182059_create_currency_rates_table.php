@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('currency')->unique();
             $table->decimal('price', 6, 4);
+            $table->decimal('old_price', 15, 6)->nullable()->after('price');
             $table->timestamps();
         });
     }
