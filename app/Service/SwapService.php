@@ -236,8 +236,9 @@ class SwapService implements ServiceServiceInterface
                     sleep(25);
 
                      // Create a swap order record in the database
+                     $user = UserService::fetchUserByTgID($user_id);
                      SwapOrder::create([
-                        'user_id' => $user_id,
+                        'user_id' => $user->id,
                         'from_asset' => $fromAsset,
                         'to_asset' => $toAsset,
                         'amount' => $amount,
