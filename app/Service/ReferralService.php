@@ -4,9 +4,11 @@ namespace App\Service;
 
 use App\Models\User;
 use App\Service\TelegramBotService;
+use App\Traits\SendMessages;
 
 class ReferralService
 {
+    use SendMessages;
     private $telegramBot;
 
     public function __construct()
@@ -36,7 +38,7 @@ class ReferralService
     public function sendReferralLink($userId, $botUsername, $referralCode)
     {
         $referralLink = "https://t.me/{$botUsername}?start={$referralCode}";
-        $message = "Here's your unique referral link: {$referralLink}";
+        $message = $this->InviteLinkMessage($referralLink);
 
         // Use the TelegramBotService to send a message to the user
         $this->telegramBot->sendMessage($userId, $message);
