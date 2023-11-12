@@ -55,5 +55,7 @@ return [
         Step 1: Copy the wallet address below and pay with any exchange or wallet.
         Step 2: After payment, check your email address for further instructions.
     
-    MSG
+    MSG,
+
+    
 ];

@@ -55,7 +55,7 @@ trait IndexTrait
                             $this->handleReferralCode($this->user_sent_text);
 
                             $mainKeyboard = $this->startMainReplyKeyboard();
-                            $startMessage = "Hello Welcome {$this->username}, I'm Korbit arbitrage Bot. You can select any command from the menu provided below";
+                            $startMessage = $this->HelloMessage($this->username);
                             $this->sendMessageToUser($this->from_chat_id, $startMessage, $mainKeyboard);
                             return true;
                         } else {
