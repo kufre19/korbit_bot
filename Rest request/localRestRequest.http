@@ -2,9 +2,9 @@ GET http://0.0.0.0:8000/bot/webhook
 Content-Type: application/json
 
 {
-    "update_id": 947056043,
+    "update_id": 947056102,
     "message": {
-        "message_id": 50,
+        "message_id": 184,
         "from": {
             "id": 1324611645,
             "is_bot": false,
@@ -18,7 +18,15 @@ Content-Type: application/json
             "username": "ConstMK",
             "type": "private"
         },
-        "date": 1697625804,
-        "text": "confirm"
+        "date": 1698783713,
+        "text": "/start",
+        "entities": [
+            {
+                "offset": 0,
+                "length": 6,
+                "type": "bot_command"
+            }
+        ]
     }
 }
+

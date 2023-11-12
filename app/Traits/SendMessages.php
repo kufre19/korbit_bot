@@ -68,4 +68,20 @@ trait SendMessages
 
         return $txt;
     }
+
+    public function swapAmountNotice($amount,$fromAsset,$toAsset)
+    {
+
+        $txt = <<<MSG
+        You are about to make an API call to a CEX. Please note,API calls and funds transfers occur solely between CEX/DEX. Korbit only makes the API call and request between wallet A (your wallet) and wallet B (destination exchange).
+        Allow me to send an API request to CEX to purchase $toAsset with $amount $fromAsset.
+        
+        DISCLAIMER:
+        In addition to my functionalities inputted in core code base, is an extra API feature with backlog functionality built into it that allows you to terminate transactions halfway and return to the previous page should you wish to no longer complete the transaction. 
+        
+        Learn about other expensive arbitrage opportunities on Korbit Arbitrage Academy.
+        MSG;
+
+        return $txt;
+    }
 }

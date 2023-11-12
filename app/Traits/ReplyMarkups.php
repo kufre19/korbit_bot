@@ -6,9 +6,9 @@ trait ReplyMarkups {
     public function startMainReplyKeyboard()
     {
         $keyboard = [
-            ["💳Buy Bot Licence","📜About Korbit"],
-            ["🖼️KorbitBot NFT/Token/Farm"],
-            ['📢Invite Friends',"🧑‍🎓Arbitrage Academy"]
+            ["💳Buy Bot Licence"],
+            ["📜About Korbit"],
+            ["🧑‍🎓Arbitrage Academy"]
         ];
 
         return json_encode(['keyboard'=>$keyboard,'resize_keyboard' => true]);
