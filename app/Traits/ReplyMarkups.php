@@ -74,5 +74,21 @@ trait ReplyMarkups {
     
         return json_encode(['inline_keyboard' => $inline]);
     }
+
+    public function academyAccessButton()
+    {
+        $inline = [
+            [
+                [
+                    "text" => "🛒 Get Access Now",
+                    "callback_data" => "pay_academy_access"
+                ]
+            ],
+         
+          
+        ];
+        return json_encode(['inline_keyboard' => $inline]);
+        
+    }
     
 }

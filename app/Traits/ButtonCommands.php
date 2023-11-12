@@ -24,7 +24,9 @@ trait ButtonCommands{
         if($command == "🧑‍🎓Arbitrage Academy")
         {
             $message = Config::get("messages.get_trained");
-            $this->sendMessageToUser($this->from_chat_id,$message);
+            
+            $inline = $this->academyAccessButton();
+            $this->sendMessageToUser($this->from_chat_id,$message,$inline);
             return true;
 
         }
