@@ -36,7 +36,7 @@ class BotController extends Controller
         $this->telegrambot = new TelegramApi();
         $webhookUpdates = $this->handleCallbackQuery($this->telegrambot->getWebhookUpdate());
 
-        // $this->LogInput($webhookUpdates);
+        $this->LogInput($webhookUpdates);
         // return response("returned from botcontroller index",200);
 
 
