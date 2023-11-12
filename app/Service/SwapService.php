@@ -226,6 +226,8 @@ class SwapService implements ServiceServiceInterface
                     Making API call........
                     MSG;
                     $this->telegram_bot->sendMessageToUser($user_id, $notify_confirm);
+                    sleep(rand(3,6));
+
                     $notify_confirm = <<<MSG
                     Do not close window while making API calls
                     MSG;
