@@ -182,6 +182,13 @@ class SwapService implements ServiceServiceInterface
                 $amount = $user_response;
                 $fromAsset = $user_session_data['from_asset'];
                 $toAsset = $user_session_data['to_asset'];
+
+                if($amount < 50)
+                {
+                    $this->telegram_bot->sendMessageToUser($user_id,"The minimum amount for a swap is 50 {$fromAsset}");
+                    break;
+
+                }
     
                 // TODO: Check if the user has the amount available (not implemented here)
                 // For now, we'll assume the user has the amount
