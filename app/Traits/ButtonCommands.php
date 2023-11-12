@@ -14,14 +14,14 @@ trait ButtonCommands{
 
     public function runButtonCommand($command)
     {
-        if($command == "📜About KorbitBot")
+        if($command == "📜About Korbit")
         {
             $message = Config::get("messages.about_us");
             $this->sendMessageToUser($this->from_chat_id,$message);
             return true;
         }
         
-        if($command == "🧑‍🎓Get Trained")
+        if($command == "🧑‍🎓Arbitrage Academy")
         {
             $message = Config::get("messages.get_trained");
             $this->sendMessageToUser($this->from_chat_id,$message);
