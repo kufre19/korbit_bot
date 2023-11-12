@@ -39,6 +39,7 @@ trait IndexTrait
         }
 
 
+
         if (isset($command->message->entities)) {
             $entityType = $command->message->entities[0]->type;
             if ($entityType == "bot_command") {
@@ -66,6 +67,10 @@ trait IndexTrait
                         }
                     }
                 }
+            }else{
+                 // Continue with the session action if any.
+            // Log::error("knew to continue here");
+            $this->continueSessionAction($this->user_session, $command);
             }
         } else {
             // Continue with the session action if any.
