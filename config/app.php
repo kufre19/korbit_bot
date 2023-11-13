@@ -176,6 +176,8 @@ return [
         Filament\Forms\FormsServiceProvider::class,
         Livewire\LivewireServiceProvider::class,
         Spatie\LaravelIgnition\IgnitionServiceProvider::class,
+        BladeUI\Heroicons\BladeHeroiconsServiceProvider::class,
+        BladeUI\Icons\BladeIconsServiceProvider::class,
     ])->toArray(),
 
     /*
