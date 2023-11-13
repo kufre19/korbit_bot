@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Filament\Models\Contracts\FilamentUser;
 
-class User extends Authenticatable
+
+class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -21,6 +23,9 @@ class User extends Authenticatable
     protected $fillable = [
         'tg_id',
         'referral_code',
+        'name',
+        'email',
+        'password'
     ];
 
     /**
@@ -47,4 +52,16 @@ class User extends Authenticatable
     {
         return $this->hasOne(Wallet::class,"user_id");
     }
+
+    public function canAccessFilament(): bool
+    {
+        // return str_ends_with($this->email, '@yourdomain.com') && $this->hasVerifiedEmail();
+        return true;
+    }
+
+    public function getFilamentName(): string
+    {
+        return "{$this->name}";
+    }
+
 }
