@@ -170,6 +170,9 @@ return [
         App\Providers\RouteServiceProvider::class,
         Telegram\Bot\Laravel\TelegramServiceProvider::class,
         Filament\FilamentServiceProvider::class,
+        Filament\Tables\TablesServiceProvider::class,
+        Filament\Notifications\NotificationsServiceProvider::class,
+        Filament\Support\SupportServiceProvider::class,
     ])->toArray(),
 
     /*
