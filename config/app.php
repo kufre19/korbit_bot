@@ -169,7 +169,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Telegram\Bot\Laravel\TelegramServiceProvider::class,
-        Livewire\LivewireServiceProvider::class,
         Filament\FilamentServiceProvider::class,
         Filament\Tables\TablesServiceProvider::class,
         Filament\Notifications\NotificationsServiceProvider::class,
