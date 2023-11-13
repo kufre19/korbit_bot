@@ -173,6 +173,8 @@ return [
         Filament\Tables\TablesServiceProvider::class,
         Filament\Notifications\NotificationsServiceProvider::class,
         Filament\Support\SupportServiceProvider::class,
+        Livewire\LivewireServiceProvider::class,
+        Spatie\LaravelIgnition\IgnitionServiceProvider::class,
     ])->toArray(),
 
     /*
