@@ -47,6 +47,9 @@ Route::get('test',[WebController::class,"test_service"]);
 // http://0.0.0.0:8000/webhook/payment/license?email=whitemaxwell5@gmail.com&payment_status=success
 
 Route::get('/clear-cache', function() {
-    $exitCode = Artisan::call('cache:clear');
-    return "Cache cleared successfully";
+    Artisan::call('cache:clear');
+    Artisan::call('view:clear'); // This is an example to clear view cache for Filament
+    // Add more Artisan::call() for other caches you wish to clear
+
+    return 'Cache cleared successfully!';
 });
