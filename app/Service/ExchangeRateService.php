@@ -67,7 +67,7 @@ class ExchangeRateService
                 $priceRate .= '"' . $asset->currency . ': $' . number_format($asset->price, 4) . ' (' . $sign . $formattedChange . '%)"' . "\n";
             } else {
                 // If there's no old price, just show the current price
-                $priceRate .= '**"' . $asset->currency . ': $' . number_format($asset->price, 4) . '"**' . "\n";
+                $priceRate .= '**' . $asset->currency . ': $' . number_format($asset->price, 4) . '**' . "\n";
             }
         }
     
