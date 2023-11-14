@@ -180,7 +180,6 @@ return [
         BladeUI\Icons\BladeIconsServiceProvider::class,
         Laravel\Sail\SailServiceProvider::class,
         Illuminate\Pagination\PaginationServiceProvider::class,
-        Filament\Http\Livewire\Auth\Login::class,
     ])->toArray(),
 
     /*
