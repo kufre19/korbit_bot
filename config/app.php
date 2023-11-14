@@ -178,8 +178,6 @@ return [
         Spatie\LaravelIgnition\IgnitionServiceProvider::class,
         BladeUI\Heroicons\BladeHeroiconsServiceProvider::class,
         BladeUI\Icons\BladeIconsServiceProvider::class,
-        Laravel\Sail\SailServiceProvider::class,
-        Illuminate\Pagination\PaginationServiceProvider::class,
     ])->toArray(),
 
     /*
