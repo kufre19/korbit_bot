@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\User;
+use App\Service\ExchangeRateService;
 use App\Service\LicenseService;
 use App\Service\ReferralService;
 use App\Service\SessionService;
@@ -107,6 +108,20 @@ trait ButtonCommands
         }
 
         if ($command == "🧮Abritrage-calculator") {
+
+            $this->sendMessageToUser($this->from_chat_id,"Scanning Live....");
+            sleep(2);
+            $this->sendMessageToUser($this->from_chat_id,"Fetching data....");
+            
+            $exchangeService = new ExchangeRateService();
+            
+            $rates = $exchangeService->getAssetPricesRate();
+            sleep(20);
+            $inline = $this->getRateAmount();
+            $this->sendMessageToUser($this->from_chat_id,$rates,$inline);
+
+            $this->user_session->set_session_route("ArbitrageCalculatorService", "get rate amount");
+
         } else {
             $message = "function coming soon";
             $this->sendMessageToUser($this->from_chat_id, $message);

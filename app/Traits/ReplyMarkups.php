@@ -90,5 +90,20 @@ trait ReplyMarkups {
         return json_encode(['inline_keyboard' => $inline]);
         
     }
+    public function getRateAmount()
+    {
+        $inline = [
+            [
+                [
+                    "text" => "Enter an amount",
+                    "callback_data" => "get_amount_for_exchange_rate"
+                ]
+            ],
+         
+          
+        ];
+        return json_encode(['inline_keyboard' => $inline]);
+        
+    }
     
 }
