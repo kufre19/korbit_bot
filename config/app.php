@@ -172,12 +172,8 @@ return [
         Livewire\LivewireServiceProvider::class,
         Filament\FilamentServiceProvider::class,
         Filament\Tables\TablesServiceProvider::class,
-        Filament\Notifications\NotificationsServiceProvider::class,
         Filament\Support\SupportServiceProvider::class,
         Filament\Forms\FormsServiceProvider::class,
-        Spatie\LaravelIgnition\IgnitionServiceProvider::class,
-        BladeUI\Heroicons\BladeHeroiconsServiceProvider::class,
-        BladeUI\Icons\BladeIconsServiceProvider::class,
     ])->toArray(),
 
     /*
