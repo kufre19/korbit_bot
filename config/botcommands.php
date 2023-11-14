@@ -9,6 +9,7 @@ return [
         "💱Swap Crypto","📋Swap History",
         "💵Check Balance","📜About Korbit",
         "🖼️KorbitBot NFT/Token/Farm",
-        '📢Invite Friends',"🧑‍🎓Arbitrage Academy"
+        '📢Invite Friends',"🧑‍🎓 Korbit Arbitrage Academy",
+        "🧮Abritrage-calculator"
         ]
 ];

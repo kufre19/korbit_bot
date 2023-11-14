@@ -33,7 +33,7 @@ trait ButtonCommands{
             return true;
         }
         
-        if($command == "🧑‍🎓Arbitrage Academy")
+        if($command == "🧑‍🎓 Korbit Arbitrage Academy")
         {
             $message = Config::get("messages.get_trained");
             
