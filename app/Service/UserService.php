@@ -28,9 +28,9 @@ class UserService
             $user = User::create([
                 "tg_id" => $user_id,
                 "referral_code" => $referralCode,
-                "name"=>"",
-                "email"=> "",
-                "password" => "",
+                "name"=>null,
+                "email"=> null,
+                "password" => null,
             ]);
 
             Wallet::create([
