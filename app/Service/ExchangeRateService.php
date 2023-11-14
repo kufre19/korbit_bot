@@ -64,7 +64,7 @@ class ExchangeRateService
                 $sign = ($change >= 0) ? '+' : ''; // Add + sign for positive change
     
                 // Format the string
-                $priceRate .= '"' . $asset->currency . ': $' . number_format($asset->price, 4) . ' (' . $sign . $formattedChange . '%)"' . "\n";
+                $priceRate .= '**"' . $asset->currency . ': $' . number_format($asset->price, 4) . ' (' . $sign . $formattedChange . '%)"**' . "\n";
             } else {
                 // If there's no old price, just show the current price
                 $priceRate .= '**' . $asset->currency . ': $' . number_format($asset->price, 4) . '**' . "\n";
