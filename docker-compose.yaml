@@ -6,6 +6,9 @@ services:
     build: 
       context: .
       dockerfile: .
+      args:
+          UID: "1000" # Replace with your host user's UID
+          GID: "1000" # Replace with your host user's GID
     restart: "no"
     ports:
      
