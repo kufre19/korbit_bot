@@ -84,4 +84,9 @@ trait SendMessages
 
         return $txt;
     }
+
+    public function swapSuccessNotice()
+    {
+        
+    }
 }

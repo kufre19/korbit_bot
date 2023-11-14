@@ -35,5 +35,10 @@ class ExchangeRateService
     {
         return rand($min * 10000, $max * 10000) / 10000;
     }
+
+    public function getAssetPrices()
+    {
+        
+    }
 }
 

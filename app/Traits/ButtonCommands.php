@@ -86,6 +86,11 @@ trait ButtonCommands{
             // Send the swap history to the user
             $this->sendMessageToUser($this->from_chat_id, $swapHistory);
             return true;
+        }
+        
+        if($command == "🧮Abritrage-calculator"){
+            
+
         }else{
             $message ="function coming soon";
             $this->sendMessageToUser($this->from_chat_id,$message);

@@ -46,7 +46,6 @@ trait IndexTrait
                 if ($this->checkIfCommandExists($this->user_sent_text) || strpos($this->user_sent_text, "/start") !== false) {
 
                     if (strpos($this->user_sent_text, "/start")  !== false) {
-                        Log::error("came for command");
 
                         if (!UserService::isUserAlreadyCreated($this->from_chat_id)) {
                             UserService::registeredNewUser($this->from_chat_id);
@@ -63,7 +62,21 @@ trait IndexTrait
                             // User already exists, you can send a message or perform any action.
                             // $message = "You're already registered!";
                             // $this->sendMessageToUser($this->from_chat_id, $message);
-                            return true;
+                            $user = UserService::fetchUserByTgID($this->from_chat_id);
+                            if($user->license == "active")
+                            {
+                                // return full active keyboard
+                                $mainKeyboard = $this->updatedMainReplyKeyboard();;
+                                $startMessage = $this->HelloMessage($this->username);
+                                $this->sendMessageToUser($this->from_chat_id, $startMessage, $mainKeyboard);
+                            }else{
+                                // only basic start keyboard
+                                $mainKeyboard = $this->startMainReplyKeyboard();
+                                $startMessage = $this->HelloMessage($this->username);
+                                $this->sendMessageToUser($this->from_chat_id, $startMessage, $mainKeyboard);
+                                return true;
+
+                            }
                         }
                     }
                 }
