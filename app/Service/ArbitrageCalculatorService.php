@@ -18,7 +18,7 @@ class ArbitrageCalculatorService implements ServiceInterface
     public function continueBotSession($user_id, $user_session, $user_response = "")
     {
 
-        Log::error("continue lincening");
+        Log::error("continue arbitrage calculation");
         $user_session_data = $user_session->getUserSessionData();
         $step = $user_session_data['step'];
 
