@@ -11,7 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Filament\Models\Contracts\FilamentUser;
 
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable 
 {
     use HasApiTokens, HasFactory, Notifiable;
 
