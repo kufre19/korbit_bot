@@ -18,7 +18,7 @@ trait ButtonCommands
     {
         $user = UserService::fetchUserByTgID($this->from_chat_id);
         // Check if the user doesn't exist or if their license isn't active
-        if (!$user || $user->license !== "active") {
+        if (!$user ) {
             // Register a new user if they don't exist
             UserService::registeredNewUser($this->from_chat_id);
 
@@ -31,6 +31,11 @@ trait ButtonCommands
             // Send the welcome message to the user with the main keyboard
             $this->sendMessageToUser($this->from_chat_id, $startMessage, $mainKeyboard);
 
+            return true;
+        }
+
+        if($user && $user->license != "active" && $command !="💳Buy Bot Licence")
+        {
             return true;
         }
 
