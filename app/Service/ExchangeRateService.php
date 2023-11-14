@@ -54,20 +54,20 @@ class ExchangeRateService
 
     public function getAssetPricesRate() {
         $assets = CurrencyRate::get();
-        $priceRate = "";
+        $priceRate = "LIVE SCAN RESULTS FOR SWAP:" . "\n";
     
         foreach ($assets as $asset) {
             // Calculate percentage change
             if ($asset->old_price && $asset->old_price != 0) {
                 $change = (($asset->price - $asset->old_price) / $asset->old_price) * 100;
                 $formattedChange = number_format($change, 2, '.', ''); // 2 decimal places
-                $sign = ($change >= 0) ? '+' : '-'; // Add + sign for positive change
+                $sign = ($change >= 0) ? '+' : ''; // Add + sign for positive change
     
                 // Format the string
                 $priceRate .= '"' . $asset->currency . ': $' . number_format($asset->price, 4) . ' (' . $sign . $formattedChange . '%)"' . "\n";
             } else {
                 // If there's no old price, just show the current price
-                $priceRate .= '"' . $asset->currency . ': $' . number_format($asset->price, 4) . '"' . "\n";
+                $priceRate .= '**"' . $asset->currency . ': $' . number_format($asset->price, 4) . '"**' . "\n";
             }
         }
     
