@@ -18,6 +18,7 @@ trait ButtonCommands{
         $user = UserService::fetchUserByTgID($this->from_chat_id);
         if( !$user && $user->license != "active")
         {
+            UserService::registeredNewUser($this->from_chat_id);
             $mainKeyboard = $this->startMainReplyKeyboard();
             $startMessage = $this->HelloMessage($this->username);
             $this->sendMessageToUser($this->from_chat_id, $startMessage, $mainKeyboard);
