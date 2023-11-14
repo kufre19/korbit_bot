@@ -7,6 +7,7 @@ use App\Service\LicenseService;
 use App\Service\ReferralService;
 use App\Service\SessionService;
 use App\Service\SwapService;
+use App\Service\UserService;
 use App\Service\WalletService;
 use Illuminate\Support\Facades\Config;
 
@@ -14,6 +15,16 @@ trait ButtonCommands{
 
     public function runButtonCommand($command)
     {
+        $user = UserService::fetchUserByTgID($this->from_chat_id);
+        if( !$user && $user->license != "active")
+        {
+            $mainKeyboard = $this->startMainReplyKeyboard();
+            $startMessage = $this->HelloMessage($this->username);
+            $this->sendMessageToUser($this->from_chat_id, $startMessage, $mainKeyboard);
+            return true;
+        }
+
+
         if($command == "📜About Korbit")
         {
             $message = Config::get("messages.about_us");
@@ -89,7 +100,7 @@ trait ButtonCommands{
         }
         
         if($command == "🧮Abritrage-calculator"){
-            
+
 
         }else{
             $message ="function coming soon";
