@@ -24,9 +24,26 @@ class ArbitrageCalculatorService implements ServiceInterface
 
         switch ($step) {
             case 'get rate amount':
-                $this->telegram_bot->sendMessageToUser($user_id, "{$user_response}");
+                $this->sendMessageToUser($user_id,"Pleas enter an amount in usd to calculate profit... ");
+                $user_session_data['step'] = 'calculate profit';
+                $user_session->update_session($user_session_data);
                 break;
-            
+            case "calculate profit":
+                $exchangeService = new ExchangeRateService();
+                $assets = $exchangeService->rates;
+                $amount = $user_response;
+
+
+                $profits ="LIVE SCAN RESULTS FOR PROFITS:" . "\n";
+                foreach ($assets as $asset => $rate) {
+                    $value  = $exchangeService->exchangeValuesForDollars($asset,$amount);
+                    $profits .= "**{$asset}: $value **" . "\n" ;
+                }
+                $this->sendMessageToUser($user_id,$profits);
+                $user_session->endSession();
+
+
+                break;
             default:
                 # code...
                 break;

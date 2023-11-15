@@ -8,7 +8,7 @@ use App\Models\CurrencyRate;
 class ExchangeRateService
 {
 
-    private $rates = [
+    public $rates = [
         "DAI"=>["min"=>0.9589,"max"=>0.9702],
         "BUSD"=>["min"=>0.9980,"max"=>1.020],
         "USDT"=>["min"=>0.9999,"max"=>1.001],
@@ -48,6 +48,23 @@ class ExchangeRateService
     private function generateRandomPrice($min, $max)
     {
         return rand($min * 10000, $max * 10000) / 10000;
+    }
+
+
+    public function exchangeValuesForAssets($fromAsset,$toAsset,$amount)
+    {
+        $rateFrom = CurrencyRate::where('currency', strtoupper($fromAsset))->value('price');
+        $rateTo = CurrencyRate::where('currency', strtoupper($toAsset))->value('price');
+        $value = $rateFrom * $amount/ $rateTo;
+
+        return number_format($value,4) ;
+    }
+
+    public function exchangeValuesForDollars($asset,$amount)
+    {
+        $assetPrice = CurrencyRate::where('currency', strtoupper($asset))->value('price');
+        $value = $assetPrice * $amount;
+        return  number_format($value,4) ;
     }
 
     

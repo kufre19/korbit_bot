@@ -95,7 +95,7 @@ trait ReplyMarkups {
         $inline = [
             [
                 [
-                    "text" => "Enter an amount",
+                    "text" => "Enter an amount in USD for rates",
                     "callback_data" => "get_amount_for_exchange_rate"
                 ]
             ],
