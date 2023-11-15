@@ -24,6 +24,9 @@ class ArbitrageCalculatorService implements ServiceInterface
 
         switch ($step) {
             case 'get rate amount':
+                if($user_response != "get_amount_for_exchange_rate"){
+                    break;
+                }
                 $this->sendMessageToUser($user_id,"Pleas enter an amount in usd to calculate profit... ");
                 $user_session_data['step'] = 'calculate profit';
                 $user_session->update_session($user_session_data);
