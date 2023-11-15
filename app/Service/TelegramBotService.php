@@ -59,6 +59,7 @@ class TelegramBotService{
         $this->telegrambot->sendMessage([
             'chat_id' => $chat_id,
             'text' => $message,
+            "parse_mode"=>"html",
             'reply_markup'=>$reply_markup
         ]);
     }
