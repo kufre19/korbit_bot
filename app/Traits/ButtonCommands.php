@@ -112,7 +112,7 @@ trait ButtonCommands
             $this->sendMessageToUser($this->from_chat_id,"Scanning Live....");
             sleep(2);
             $this->sendMessageToUser($this->from_chat_id,"Fetching data....");
-            $this->sendMessageToUser($this->from_chat_id,"Do no close windows when making API request");
+            $this->sendMessageToUser($this->from_chat_id,"Do not close windows when making API request");
 
             
             $exchangeService = new ExchangeRateService();
