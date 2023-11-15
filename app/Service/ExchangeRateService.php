@@ -64,7 +64,7 @@ class ExchangeRateService
     {
         $assetPrice = CurrencyRate::where('currency', strtoupper($asset))->value('price');
         $value = $assetPrice * $amount;
-        return  number_format($value,4) ;
+        return  number_format($value,2) ;
     }
 
     
