@@ -40,7 +40,7 @@ class ArbitrageCalculatorService implements ServiceInterface
                 $profits ="LIVE SCAN RESULTS FOR PROFITS:" . "\n";
                 foreach ($assets as $asset => $rate) {
                     $value  = $exchangeService->exchangeValuesForDollars($asset,$amount);
-                    $profits .= "**{$asset}: $value **" . "\n" ;
+                    $profits .= "<b>{$asset}: $value </b>" . "\n" ;
                 }
                 $this->telegram_bot->sendMessageToUser($user_id,$profits);
                 $user_session->endSession();
