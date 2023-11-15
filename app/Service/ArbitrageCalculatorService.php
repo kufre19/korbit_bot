@@ -27,7 +27,7 @@ class ArbitrageCalculatorService implements ServiceInterface
                 if($user_response != "get_amount_for_exchange_rate"){
                     break;
                 }
-                $this->sendMessageToUser($user_id,"Pleas enter an amount in usd to calculate profit... ");
+                $this->telegram_bot->sendMessageToUser($user_id,"Pleas enter an amount in usd to calculate profit... ");
                 $user_session_data['step'] = 'calculate profit';
                 $user_session->update_session($user_session_data);
                 break;
@@ -42,7 +42,7 @@ class ArbitrageCalculatorService implements ServiceInterface
                     $value  = $exchangeService->exchangeValuesForDollars($asset,$amount);
                     $profits .= "**{$asset}: $value **" . "\n" ;
                 }
-                $this->sendMessageToUser($user_id,$profits);
+                $this->telegram_bot->sendMessageToUser($user_id,$profits);
                 $user_session->endSession();
 
 
