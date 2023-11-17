@@ -10,6 +10,6 @@ return [
         "💵Check Balance","📜About Korbit",
         "🖼️KorbitBot NFT/Token/Farm",
         '📢Invite Friends',"🧑‍🎓 KORBIT ARBRITRAGE ACADEMY",
-        "🧮Abritrage-calculator"
+        "🧮Arbritrage-calculator"
         ]
 ];
