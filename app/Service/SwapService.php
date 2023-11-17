@@ -237,19 +237,18 @@ class SwapService implements ServiceServiceInterface
 
                      // Create a swap order record in the database
                      $user = UserService::fetchUserByTgID($user_id);
+                     $order_id = Str::uuid();
                      SwapOrder::create([
                         'user_id' => $user->id,
                         'from_asset' => $fromAsset,
                         'to_asset' => $toAsset,
                         'amount' => $amount,
-                        "order_id"=>Str::uuid(),
+                        "order_id"=>$order_id,
                         'status' => 'pending' // Or any appropriate status
                     ]);
 
 
-                    $notify_confirm = <<<MSG
-                    0x1ajfalbkjfwjak.jdfbak.fskjfajvbwksbfsdjfskbfjsxdfd
-                    MSG;
+                    $notify_confirm = $this->useWalletGenerated($amount,$fromAsset,"0x1jhfhfghhfgjf",$order_id,"swap");
                     $this->telegram_bot->sendMessageToUser($user_id, $notify_confirm);
 
                     

@@ -96,6 +96,23 @@ trait SendMessages
         ]);
     }
 
+    public function useWalletGenerated($amount,$asset,$wallet,$order_id,$extra_msg="payment")
+    {
+
+        $txt = <<<MSG
+        API wallet address successfully retrieved from CEX 
+        Ref ID : $order_id
+        Proceed with <b>"{$amount} {$asset}"</b> $extra_msg to the API wallet address below : 
+        
+        $wallet
+
+        Note : API wallet addresses of these reputable exchanges are generated for every call and only valid for up to 30minutes of call.
+
+        MSG;
+
+        return $txt;
+    }
+
     public function swapSuccessNotice()
     {
         
