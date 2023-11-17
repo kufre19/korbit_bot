@@ -48,7 +48,7 @@ trait ButtonCommands
             return true;
         }
 
-        if ($command == "🧑‍🎓 Korbit Arbitrage Academy") {
+        if ($command == "🧑‍🎓 KORBIT ARBRITRAGE ACADEMY") {
             $message = Config::get("messages.get_trained");
 
             $inline = $this->academyAccessButton();

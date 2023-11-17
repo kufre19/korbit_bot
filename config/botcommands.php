@@ -4,12 +4,12 @@ return [
 
     "commands"=>["/start"],
     "buttons"=>[
-        "💳Buy Bot Licence","💱Exchange2Exchange Api Binding",
+        "💳Buy Bot Licence","💱Exchange2Exchange API Binding",
         "🏦Deposit","💰Withdraw Profit",
         "💱Swap Crypto","📋Swap History",
         "💵Check Balance","📜About Korbit",
         "🖼️KorbitBot NFT/Token/Farm",
-        '📢Invite Friends',"🧑‍🎓 Korbit Arbitrage Academy",
+        '📢Invite Friends',"🧑‍🎓 KORBIT ARBRITRAGE ACADEMY",
         "🧮Abritrage-calculator"
         ]
 ];

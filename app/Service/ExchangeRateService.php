@@ -71,7 +71,7 @@ class ExchangeRateService
 
     public function getAssetPricesRate() {
         $assets = CurrencyRate::get();
-        $priceRate = "LIVE SCAN RESULTS FOR SWAP:" . "\n";
+        $priceRate = "LIVE SCAN RESULTS FROM SWAP:" . "\n";
     
         foreach ($assets as $asset) {
             // Calculate percentage change

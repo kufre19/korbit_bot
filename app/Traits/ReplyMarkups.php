@@ -8,7 +8,7 @@ trait ReplyMarkups {
         $keyboard = [
             ["💳Buy Bot Licence"],
             ["📜About Korbit"],
-            ["🧑‍🎓 Korbit Arbitrage Academy"]
+            ["🧑‍🎓 KORBIT ARBRITRAGE ACADEMY"]
         ];
 
         return json_encode(['keyboard'=>$keyboard,'resize_keyboard' => true]);
@@ -18,11 +18,11 @@ trait ReplyMarkups {
     public function updatedMainReplyKeyboard()
     {
         $keyboard = [
-            ["💱Exchange2Exchange Api Binding"],
-            ["🧮Abritrage-calculator","📜About Korbit"],
+            ["💱Exchange2Exchange API Binding"],
+            ["🧮Arbritrage-calculator","📜About Korbit"],
             ["💱Swap Crypto","📋Swap History"],
             ["🖼️KorbitBot NFT/Token/Farm"],
-            ['📢Invite Friends',"🧑‍🎓 Korbit Arbitrage Academy"],
+            ['📢Invite Friends',"🧑‍🎓 KORBIT ARBRITRAGE ACADEMY"],
             
 
         ];

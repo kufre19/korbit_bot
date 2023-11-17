@@ -27,7 +27,11 @@ class ArbitrageCalculatorService implements ServiceInterface
                 if($user_response != "get_amount_for_exchange_rate"){
                     break;
                 }
-                $this->telegram_bot->sendMessageToUser($user_id,"Pleas enter an amount in usd to calculate profit... ");
+                $msg = <<<MSG
+                Pleas enter an amount in usd to get the live readings report:
+                NB: price change every instant based on price violatility across spot markets.
+                MSG;
+                $response = $this->telegram_bot->sendMessageToUser($user_id,$msg);
                 $user_session_data['step'] = 'calculate profit';
                 $user_session->update_session($user_session_data);
                 break;
@@ -36,11 +40,17 @@ class ArbitrageCalculatorService implements ServiceInterface
                 $assets = $exchangeService->rates;
                 $amount = $user_response;
 
+                $msg = "Scanning live.....";
+                $response = $this->telegram_bot->sendMessageToUser($user_id,$msg);
+                sleep(15);
+                $this->deletMessages($response,$user_id);
 
-                $profits ="LIVE SCAN RESULTS FOR PROFITS:" . "\n";
+
+
+                $profits ="LIVE SCAN RESULTS FOR ANALYSIS CEXs reports:" . "\n";
                 foreach ($assets as $asset => $rate) {
                     $value  = $exchangeService->exchangeValuesForDollars($asset,$amount);
-                    $profits .= "<b> Profit in {$asset}: $"."$value". "</b>" . "\n" ;
+                    $profits .= "<b> Amount in {$asset}: $"."$value". "</b>" . "\n" ;
                 }
                 $this->telegram_bot->sendMessageToUser($user_id,$profits);
                 $user_session->endSession();
