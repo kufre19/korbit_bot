@@ -113,7 +113,7 @@ trait ButtonCommands
             sleep(2);
             $this->deletMessages($response,$this->from_chat_id);
 
-            $response =$this->sendMessageToUser($this->from_chat_id,"Fetching data....");
+            $response = $this->sendMessageToUser($this->from_chat_id,"Fetching data....");
             sleep(3);
             $this->deletMessages($response,$this->from_chat_id);
 

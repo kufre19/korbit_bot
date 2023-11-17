@@ -90,7 +90,7 @@ trait SendMessages
     public function deletMessages($response,$chat_id)
     {
         $messageId = $response->getMessageId();
-        return $this->telegram->deleteMessage([
+        return $this->telegrambot->deleteMessage([
             'chat_id' => $chat_id,
             'message_id' => $messageId
         ]);
