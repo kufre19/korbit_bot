@@ -109,16 +109,23 @@ trait ButtonCommands
 
         if ($command == "🧮Abritrage-calculator") {
 
-            $this->sendMessageToUser($this->from_chat_id,"Scanning Live....");
+            $response = $this->sendMessageToUser($this->from_chat_id,"Scanning Live....");
             sleep(2);
-            $this->sendMessageToUser($this->from_chat_id,"Fetching data....");
-            $this->sendMessageToUser($this->from_chat_id,"Do not close windows when making API request");
+            $this->deletMessages($response,$this->from_chat_id);
+
+            $response =$this->sendMessageToUser($this->from_chat_id,"Fetching data....");
+            sleep(3);
+            $this->deletMessages($response,$this->from_chat_id);
+
+            $response = $this->sendMessageToUser($this->from_chat_id,"Do not close windows when making API request");
 
             
             $exchangeService = new ExchangeRateService();
             
             $rates = $exchangeService->getAssetPricesRate();
             sleep(20);
+            $this->deletMessages($response,$this->from_chat_id);
+
             $inline = $this->getRateAmount();
             $this->sendMessageToUser($this->from_chat_id,$rates,$inline);
 

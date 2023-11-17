@@ -56,11 +56,20 @@ class TelegramBotService{
 
     public function sendMessage($chat_id, $message,$reply_markup="")
     {
-        $this->telegrambot->sendMessage([
+        return $this->telegrambot->sendMessage([
             'chat_id' => $chat_id,
             'text' => $message,
             "parse_mode"=>"html",
             'reply_markup'=>$reply_markup
+        ]);
+    }
+
+    public function deletMessages($response,$chat_id)
+    {
+        $messageId = $response->getMessageId();
+        return $this->telegrambot->deleteMessage([
+            'chat_id' => $chat_id,
+            'message_id' => $messageId
         ]);
     }
 }

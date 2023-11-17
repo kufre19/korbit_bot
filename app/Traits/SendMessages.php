@@ -10,7 +10,7 @@ trait SendMessages
 
     public function sendMessageToUser($chat_id, $message, $reply_markup = null)
     {
-        $this->telegrambot->sendMessage([
+        return $this->telegrambot->sendMessage([
             'chat_id' => $chat_id,
             'text' => $message,
             "parse_mode"=>"html",
@@ -21,7 +21,7 @@ trait SendMessages
     public function sendMessageToUserDetached($telegrambot, $chat_id, $message, $reply_markup = null)
     {
 
-        $telegrambot->sendMessage([
+        return $telegrambot->sendMessage([
             'chat_id' => $chat_id,
             'text' => $message,
             "parse_mode"=>"html",
@@ -85,6 +85,15 @@ trait SendMessages
         MSG;
 
         return $txt;
+    }
+
+    public function deletMessages($response,$chat_id)
+    {
+        $messageId = $response->getMessageId();
+        return $this->telegram->deleteMessage([
+            'chat_id' => $chat_id,
+            'message_id' => $messageId
+        ]);
     }
 
     public function swapSuccessNotice()
