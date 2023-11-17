@@ -43,7 +43,7 @@ class ArbitrageCalculatorService implements ServiceInterface
                 $msg = "Scanning live.....";
                 $response = $this->telegram_bot->sendMessageToUser($user_id,$msg);
                 sleep(15);
-                $this->deletMessages($response,$user_id);
+                $this->telegram_bot->deletMessages($response,$user_id);
 
 
 
