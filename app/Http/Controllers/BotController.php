@@ -32,7 +32,7 @@ class BotController extends Controller
     public function index()
     {
      
-        // return response("returned from botcontroller index",200);
+        return response("returned from botcontroller index",200);
 
         $this->telegrambot = new TelegramApi();
         $webhookUpdates = $this->handleCallbackQuery($this->telegrambot->getWebhookUpdate());
