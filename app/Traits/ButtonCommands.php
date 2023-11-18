@@ -118,7 +118,7 @@ trait ButtonCommands
             return true;
         }
 
-        if ($command == "🧮Arbritrage-calculator") {
+        if ($command == "🧮Arbitrage-calculator") {
 
             $response = $this->sendMessageToUser($this->from_chat_id,"Scanning Live....");
             sleep(2);

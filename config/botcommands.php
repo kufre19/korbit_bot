@@ -10,7 +10,7 @@ return [
         "💵Check Balance","📜About Korbit",
         "🖼️KorbitBot NFT/Token/Farm",
         '📢Invite Friends',"🧑‍🎓 KORBIT ARBRITRAGE ACADEMY",
-        "🧮Arbritrage-calculator",
+        "🧮Arbitrage-calculator",
         "☎️ Customer Support"
     ],
     "free_pass"=>[

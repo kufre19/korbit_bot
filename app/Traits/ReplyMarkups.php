@@ -20,7 +20,7 @@ trait ReplyMarkups {
     {
         $keyboard = [
             ["💱Exchange2Exchange API Binding"],
-            ["🧮Arbritrage-calculator","📜About Korbit"],
+            ["🧮Arbitrage-calculator","📜About Korbit"],
             ["💱Swap Crypto","📋Swap History"],
             ["🖼️KorbitBot NFT/Token/Farm","☎️ Customer Support"],
             ['📢Invite Friends',"🧑‍🎓 KORBIT ARBRITRAGE ACADEMY"],
