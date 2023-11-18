@@ -71,6 +71,16 @@ trait ButtonCommands
 
             return true;
         }
+        if ($command == "☎️ Customer Support") 
+        {
+            $message = "For any enquiries we are here to support you, contact us at korbitbotai@gmail.com ";
+            $this->sendMessageToUser($this->from_chat_id, $message);
+
+            return true;
+        }
+
+
+
 
         if ($command == "📢Invite Friends") {
             $referalService = new ReferralService();
