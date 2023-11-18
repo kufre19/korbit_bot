@@ -30,7 +30,7 @@ class TelegramBotService{
 
         // creat and send the updated keyboard to user
         $new_keyboard = $this->updatedMainReplyKeyboard();
-        $msg = "Congratulation your license was just activated";
+        $msg = "Congratulation your license has been activated";
         $this->sendMessage($tg_id,$msg,$new_keyboard);
         return response("ok",200);
     }
