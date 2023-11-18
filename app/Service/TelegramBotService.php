@@ -54,7 +54,7 @@ class TelegramBotService{
         }
     }
 
-    public function sendMessage($chat_id, $message,$reply_markup="")
+    public function sendMessage($chat_id, $message,$reply_markup=null)
     {
         return $this->telegrambot->sendMessage([
             'chat_id' => $chat_id,

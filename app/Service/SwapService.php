@@ -200,7 +200,7 @@ class SwapService implements ServiceServiceInterface
                 $exchangeRate = $this->getExchangeRate($fromAsset, $toAsset);
                 $receivedAmount = $amount * $exchangeRate;
     
-                $response = $this->telegram_bot->sendMessageToUser($user_id,"Processing...");
+                $response = $this->telegram_bot->sendMessageToUser($user_id,"🔁 Processing...");
                 sleep(10);
                 $this->telegram_bot->deletMessages($response,$user_id);
                 // Send exchange info with an inline keyboard for confirmation
@@ -223,14 +223,14 @@ class SwapService implements ServiceServiceInterface
 
                 if ($user_response === 'confirm') {
                     $notify_confirm = <<<MSG
-                    Making API call........
+                    📡 Making API call........
                     MSG;
                     $response = $this->telegram_bot->sendMessageToUser($user_id, $notify_confirm);
                     sleep(rand(3,6));
                     $this->telegram_bot->deletMessages($response,$user_id);
 
                     $notify_confirm = <<<MSG
-                    Do not close window while making API calls
+                    🛑 Do not close window while making API calls
                     MSG;
                     $response = $this->telegram_bot->sendMessageToUser($user_id, $notify_confirm);
 

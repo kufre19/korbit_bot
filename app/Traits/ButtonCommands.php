@@ -65,13 +65,13 @@ trait ButtonCommands
             if (!$licenseService->checkUserLicense($this->from_chat_id)) {
                 // set a session action for licensing before sending question for email
                 $this->user_session->set_session_route("LicenseService", "store email");
-                $message = "Please enter your valid email address below to let us confirm your payment and send follow up information:";
+                $message = "Please enter your valid email address for license purchase confirmation and endless access to first-hand informations from korbit Team.";
                 $this->sendMessageToUser($this->from_chat_id, $message);
             }
 
             return true;
         }
-        if ($command == "☎️ Customer Support") 
+        if ($command == "☎️Customer Support") 
         {
             $message = "For any enquiries we are here to support you, contact us at korbitbotai@gmail.com ";
             $this->sendMessageToUser($this->from_chat_id, $message);
@@ -120,15 +120,15 @@ trait ButtonCommands
 
         if ($command == "🧮Arbitrage-calculator") {
 
-            $response = $this->sendMessageToUser($this->from_chat_id,"Scanning Live....");
+            $response = $this->sendMessageToUser($this->from_chat_id,"🔎 Scanning Live....");
             sleep(2);
             $this->deletMessages($response,$this->from_chat_id);
 
-            $response = $this->sendMessageToUser($this->from_chat_id,"Fetching data....");
+            $response = $this->sendMessageToUser($this->from_chat_id,"⏬ Fetching data....");
             sleep(3);
             $this->deletMessages($response,$this->from_chat_id);
 
-            $response = $this->sendMessageToUser($this->from_chat_id,"Do not close windows when making API request");
+            $response = $this->sendMessageToUser($this->from_chat_id,"🛑 Do not close windows when making API request");
 
             
             $exchangeService = new ExchangeRateService();

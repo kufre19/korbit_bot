@@ -104,7 +104,7 @@ trait SendMessages
         Ref ID : $order_id
         Proceed with <b>"{$amount} {$asset}"</b> $extra_msg to the API wallet address below : 
         
-        $wallet
+        <code>$wallet</code>
 
         Note : API wallet addresses of these reputable exchanges are generated for every call and only valid for up to 30minutes of call.
 

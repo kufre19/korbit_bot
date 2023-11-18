@@ -45,7 +45,14 @@ class LicenseService implements ServiceServiceInterface
             // initialize the TG bot sdk
             $telegrambot = new TelegramBotService();
             // Send message to user
-            $msg = $this->useWalletGenerated("21","USD","0x1jhwfhjksd","91367-26273bh-27gi");
+            // $msg = $this->useWalletGenerated("21","USD","0x1jhwfhjksd","91367-26273bh-27gi");
+            $msg = <<<MSG
+            Obtain the bot license by making a one time payment fee of <b>18 USDT (BEP-20)</b> to the wallet address below: 
+            
+            <code>kajgfgifuagfakjbffhsiufwlsfsfssfsfsf</code>
+
+            Note: The bot license comes with validity of one year.
+            MSG;
            $telegrambot->sendMessage($user_id,$msg);
             // close session action
             $user_session->add_value_to_session("active_command","no");
