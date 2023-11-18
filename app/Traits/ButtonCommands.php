@@ -35,7 +35,8 @@ trait ButtonCommands
             return true;
         }
 
-        if($user && $user->license != "active" && $command !="💳Buy Bot Licence")
+        $free_pass_command = Config::get("botcommands.free_pass");
+        if($user && $user->license != "active" && !in_array($command,$free_pass_command))
         {
             return true;
         }
