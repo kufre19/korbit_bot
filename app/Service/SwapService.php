@@ -227,7 +227,7 @@ class SwapService implements ServiceServiceInterface
                     MSG;
                     $response = $this->telegram_bot->sendMessageToUser($user_id, $notify_confirm);
                     sleep(rand(3,6));
-                    $this->deletMessages($response,$user_id);
+                    $this->telegram_bot->deletMessages($response,$user_id);
 
                     $notify_confirm = <<<MSG
                     Do not close window while making API calls
@@ -235,7 +235,7 @@ class SwapService implements ServiceServiceInterface
                     $response = $this->telegram_bot->sendMessageToUser($user_id, $notify_confirm);
 
                     sleep(25);
-                    $this->deletMessages($response,$user_id);
+                    $this->telegram_bot->deletMessages($response,$user_id);
 
 
                      // Create a swap order record in the database
