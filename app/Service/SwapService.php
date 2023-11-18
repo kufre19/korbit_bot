@@ -202,7 +202,7 @@ class SwapService implements ServiceServiceInterface
     
                 $response = $this->telegram_bot->sendMessageToUser($user_id,"Processing...");
                 sleep(10);
-                $this->deletMessages($response,$user_id);
+                $this->telegram_bot->deletMessages($response,$user_id);
                 // Send exchange info with an inline keyboard for confirmation
                 $message = $this->swapAmountNotice($amount,$fromAsset,$toAsset);
                 $inlineKeyboard = $this->getInlineKeyboardConfirmCancel();
