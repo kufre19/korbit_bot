@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\User;
+use App\Service\Exchange2ExchangeService;
 use App\Service\ExchangeRateService;
 use App\Service\LicenseService;
 use App\Service\ReferralService;
@@ -19,7 +20,7 @@ trait ButtonCommands
     {
         $user = UserService::fetchUserByTgID($this->from_chat_id);
         // Check if the user doesn't exist or if their license isn't active
-        if (!$user ) {
+        if (!$user) {
             // Register a new user if they don't exist
             UserService::registeredNewUser($this->from_chat_id);
 
@@ -36,8 +37,7 @@ trait ButtonCommands
         }
 
         $free_pass_command = Config::get("botcommands.free_pass");
-        if($user && $user->license != "active" && !in_array($command,$free_pass_command))
-        {
+        if ($user && $user->license != "active" && !in_array($command, $free_pass_command)) {
             return true;
         }
 
@@ -71,8 +71,7 @@ trait ButtonCommands
 
             return true;
         }
-        if ($command == "☎️Customer Support") 
-        {
+        if ($command == "☎️Customer Support") {
             $message = <<<MSG
             For any enquiries we are here to support you, contact us at korbitbotai@gmail.com.  
             If you're already a customer and require technical assistance, contact support through our website
@@ -123,28 +122,35 @@ trait ButtonCommands
 
         if ($command == "🧮Arbitrage-calculator") {
 
-            $response = $this->sendMessageToUser($this->from_chat_id,"🔎 Scanning Live....");
+            $response = $this->sendMessageToUser($this->from_chat_id, "🔎 Scanning Live....");
             sleep(2);
-            $this->deletMessages($response,$this->from_chat_id);
+            $this->deletMessages($response, $this->from_chat_id);
 
-            $response = $this->sendMessageToUser($this->from_chat_id,"⏬ Fetching data....");
+            $response = $this->sendMessageToUser($this->from_chat_id, "⏬ Fetching data....");
             sleep(3);
-            $this->deletMessages($response,$this->from_chat_id);
+            $this->deletMessages($response, $this->from_chat_id);
 
-            $response = $this->sendMessageToUser($this->from_chat_id,"🛑 Do not close windows when making API request");
+            $response = $this->sendMessageToUser($this->from_chat_id, "🛑 Do not close windows when making API request");
 
-            
+
             $exchangeService = new ExchangeRateService();
-            
+
             $rates = $exchangeService->getAssetPricesRate();
             sleep(20);
-            $this->deletMessages($response,$this->from_chat_id);
+            $this->deletMessages($response, $this->from_chat_id);
 
             $inline = $this->getRateAmount();
-            $this->sendMessageToUser($this->from_chat_id,$rates,$inline);
+            $this->sendMessageToUser($this->from_chat_id, $rates, $inline);
 
             $this->user_session->set_session_route("ArbitrageCalculatorService", "get rate amount");
+        }
 
+        // In your command handling method
+        if ($command == "💱Exchange2Exchange API Binding") {
+            $exchangeService = new Exchange2ExchangeService();
+            $message = $exchangeService->getArbitrageOpportunities();
+            $this->sendMessageToUser($this->from_chat_id, $message);
+            return true;
         } else {
             $message = "function coming soon";
             $this->sendMessageToUser($this->from_chat_id, $message);
