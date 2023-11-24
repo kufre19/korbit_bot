@@ -9,6 +9,6 @@ class SwapOrder extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'order_id', 'user_id', 'from_asset', 'to_asset', 'amount', 'status'
+        'order_id', 'user_id', 'from_asset', 'to_asset', 'amount', 'status','amount_to_receive'
     ];
 }

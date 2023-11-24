@@ -222,6 +222,7 @@ class SwapService implements ServiceServiceInterface
                 // now after user has been sent wallet a swap order should be created for this user (table and model will be needed )
                 $amount = $user_session_data['amount'];
                 $amount_to_receive = $user_session_data['amount_to_receive'];
+                
 
                 $fromAsset = $user_session_data['from_asset'];
                 $toAsset = $user_session_data['to_asset'];
@@ -243,22 +244,23 @@ class SwapService implements ServiceServiceInterface
                     $this->telegram_bot->deletMessages($response,$user_id);
 
 
-                     // Create a swap order record in the database
-                     $user = UserService::fetchUserByTgID($user_id);
-                     $order_id = Str::uuid();
-                     SwapOrder::create([
-                        'user_id' => $user->id,
-                        'from_asset' => $fromAsset,
-                        'to_asset' => $toAsset,
-                        'amount' => $amount,
-                        'amount_to_receive' => $amount_to_receive,
-                        "order_id"=>$order_id,
-                        'status' => 'pending' // Or any appropriate status
+                    // Create a swap order record in the database
+                    $user = UserService::fetchUserByTgID($user_id);
+                    $order_id = Str::uuid();
+                    SwapOrder::create([
+                    'user_id' => $user->id,
+                    'from_asset' => $fromAsset,
+                    'to_asset' => $toAsset,
+                    'amount' => $amount,
+                    'amount_to_receive' => $amount_to_receive,
+                    "order_id"=>$order_id,
+                    'status' => 'pending' // Or any appropriate status
                     ]);
 
 
                     $notify_confirm = $this->useWalletGenerated($amount,$fromAsset,"0x1jhfhfghhfgjf",$order_id,"swap");
                     $this->telegram_bot->sendMessageToUser($user_id, $notify_confirm);
+
 
                     
                     
