@@ -262,7 +262,7 @@ class SwapService implements ServiceServiceInterface
 
                     
                     
-                    // $user_session->endSession(); 
+                    $user_session->endSession(); 
                         
                 } elseif ($user_response === 'cancel') {
                     // User cancelled the swap
