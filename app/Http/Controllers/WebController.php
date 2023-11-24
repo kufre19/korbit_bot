@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SwapOrder;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Service\TestService;
@@ -11,6 +12,7 @@ use App\Models\Wallet;
 
 use App\Service;
 use App\Service\TelegramBotService;
+use App\Service\WalletService;
 
 class WebController extends Controller
 {
@@ -99,4 +101,36 @@ class WebController extends Controller
         // Return a success response
         return response()->json(['message' => 'Deposit successful'], 200);
     }
+
+    public function handleSwapCallback(Request $request) {
+        // Validate and process the callback data
+        // Cryptomus should send information like the order_id and transaction status
+    
+        $orderId = $request->order_id;
+        $status = $request->status; // Example: 'completed', 'pending', etc.
+
+        $order = SwapOrder::where('order_id', $orderId)->first();
+        $user_id = $order->user_id;
+        $user = User::where('id', $user_id)->first();
+
+
+        if(in_array($status,['paid','paid_over']))
+        {
+            // payment received proceed with updating user balance
+            $wallet_service = new WalletService();
+            $order->update([
+                "status"=>"completed"
+            ]);
+            $wallet_service->updateBalance($user_id,$order->to_asset,$order->amount_to_receive);
+
+        }elseif ($status == "cancel") {
+            $order->update([
+                "status"=>"cancelled"
+            ]);
+        }
+        return response()->json(['message' => 'Callback processed successfully']);
+
+    
+    }
+    
 }

@@ -5,16 +5,17 @@ namespace App\Service;
 use App\Traits\SendMessages;
 use Illuminate\Support\Facades\Http;
 
-class Exchange2ExchangeService 
+class Exchange2ExchangeService
 {
     use SendMessages;
     protected $apiKey;
     protected $apiUrl;
+    private $exchanges = ['bitstamp', 'cex', 'exmo', 'hitbtc']; // Add more exchanges as needed
 
     public function __construct()
     {
         $this->apiKey = env('CRYPTO_ARBITRAGE_API_KEY');
-        $this->apiUrl = 'https://rapidapi.com/WRT/api/crypto-arbitrage'; // Replace with actual API URL
+        $this->apiUrl = 'https://rapidapi.com'; // Replace with actual API URL
     }
 
     /**
@@ -25,25 +26,64 @@ class Exchange2ExchangeService
      */
     public function getArbitrageOpportunities()
     {
-        try {
-            $response = Http::withHeaders([
-                'x-rapidapi-key' => $this->apiKey,
-                'x-rapidapi-host' => parse_url($this->apiUrl, PHP_URL_HOST)
-            ])->get($this->apiUrl); // Add necessary query parameters as per API
+        $pairs = ["BTC/USD", "DAI/USDT", "BUSD/DAI"]; // Add more pairs as needed
+        $results = [];
 
-            if ($response->successful()) {
-                return $this->formatArbitrageData($response->json());
-            } else {
-                throw new \Exception("Error fetching data from API.");
+        foreach ($pairs as $pair) {
+            $result = $this->fetchArbitrageDataForPair($pair);
+            if ($result) {
+                $results[] = $result;
             }
-        } catch (\Exception $e) {
-            return "Failed to retrieve arbitrage data: " . $e->getMessage();
+        }
+
+        
+        return $results;
+    }
+
+    private function fetchArbitrageDataForPair($pair)
+    {
+        $curl = curl_init();
+
+        $url = "https://crypto-arbitrage.p.rapidapi.com/crypto-arb";
+        $queryParams = http_build_query([
+            "pair" =>$pair,
+            "consider_fees" => "False",
+            "selected_exchanges" => "exmo cex bitstamp hitbtc"
+        ]);
+
+        curl_setopt_array($curl, [
+            CURLOPT_URL => $url . "?" . $queryParams,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => [
+                "X-RapidAPI-Host: crypto-arbitrage.p.rapidapi.com",
+                "X-RapidAPI-Key: " . $this->apiKey
+            ],
+        ]);
+
+        $response = curl_exec($curl);
+
+
+        $err = curl_error($curl);
+        curl_close($curl);
+
+        if ($err) {
+            return null; // Or handle the error as you see fit
+        } else {
+            $responseData = json_decode($response, true);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                return $this->formatArbitrageData($responseData);
+            } else {
+                return null; // Or handle JSON parsing error
+            }
         }
     }
 
-   
-
-      /**
+    /**
      * Process and format the API response for arbitrage data.
      *
      * @param array $apiResponse The response from the Crypto Arbitrage API.
@@ -88,11 +128,10 @@ class Exchange2ExchangeService
         $message .= "---------------------------------\n";
         $message .= "Potential {$profitOrLoss}: " . number_format($profitPercentage, 2) . "%\n";
 
-        if (!empty($data['warning'])) {
-            $message .= "\n⚠️ Warning: " . $data['warning'];
-        }
+        // if (!empty($data['warning'])) {
+        //     $message .= "\n⚠️ Warning: " . $data['warning'];
+        // }
 
         return $message;
     }
-
 }

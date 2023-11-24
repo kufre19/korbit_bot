@@ -1,0 +1,17 @@
+### Cryptomus Webhook Test
+
+POST http://api.cryptomus.com/v1/test-webhook/payment
+Content-Type: application/json
+merchant: 860166ce-478c-4087-9813-55cfb6c34580
+sign: a466b82fad9415cdbf5f47802b8d376c
+
+{
+    "uuid": "e1830f1b-50fc-432e-80ec-15b58ccac867",
+    "currency": "ETH",
+    "url_callback": "https://iamconst-m.com/korbit_bot/swap/payment/callback",
+    "network": "eth",
+    "status": "paid",
+    "amount": "0.5",
+    "to_currency": "USD",
+    "order_id": "your_order_id_here"
+}

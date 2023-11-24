@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('from_asset');
             $table->string('to_asset');
             $table->decimal('amount', 15, 2);
+            $table->decimal('amount_to_receive', 15, 2);
             $table->string('status'); // e.g., 'pending', 'completed', 'cancelled'
             $table->timestamps();
 

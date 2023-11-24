@@ -199,6 +199,9 @@ class SwapService implements ServiceServiceInterface
                 // Calculate the expected amount to receive after the swap
                 $exchangeRate = $this->getExchangeRate($fromAsset, $toAsset);
                 $receivedAmount = $amount * $exchangeRate;
+
+                // Store the amount to receive in the session
+                $user_session_data['amount_to_receive'] = $receivedAmount;
     
                 $response = $this->telegram_bot->sendMessageToUser($user_id,"🔁 Processing...");
                 sleep(10);
@@ -218,6 +221,8 @@ class SwapService implements ServiceServiceInterface
 
                 // now after user has been sent wallet a swap order should be created for this user (table and model will be needed )
                 $amount = $user_session_data['amount'];
+                $amount_to_receive = $user_session_data['amount_to_receive'];
+
                 $fromAsset = $user_session_data['from_asset'];
                 $toAsset = $user_session_data['to_asset'];
 
@@ -246,6 +251,7 @@ class SwapService implements ServiceServiceInterface
                         'from_asset' => $fromAsset,
                         'to_asset' => $toAsset,
                         'amount' => $amount,
+                        'amount_to_receive' => $amount_to_receive,
                         "order_id"=>$order_id,
                         'status' => 'pending' // Or any appropriate status
                     ]);
