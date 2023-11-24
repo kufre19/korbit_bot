@@ -8,10 +8,10 @@ sign: a466b82fad9415cdbf5f47802b8d376c
 {
     "uuid": "e1830f1b-50fc-432e-80ec-15b58ccac867",
     "currency": "ETH",
-    "url_callback": "https://iamconst-m.com/korbit_bot/swap/payment/callback",
+    "url_callback": "https://iamconst-m.com/korbit_bot/api/swap/payment/callback",
     "network": "eth",
     "status": "paid",
     "amount": "0.5",
     "to_currency": "USD",
-    "order_id": "your_order_id_here"
+    "order_id": "16548d0b-5af6-4969-9969-ea18e636cb5d"
 }
