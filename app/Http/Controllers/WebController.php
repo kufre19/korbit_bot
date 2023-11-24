@@ -56,51 +56,51 @@ class WebController extends Controller
       return $test->test();
    }
 
-   public function handleDepositWebhook(Request $request)
-    {
-        // Extract information from the webhook payload
-        $userEmail = $request->input('email');
-        $amount = $request->input('amount');
-        $assetType = $request->input('asset_type'); // e.g., 'balance_busd', 'balance_dai', 'balance_usdt'
+//    public function handleDepositWebhook(Request $request)
+//     {
+//         // Extract information from the webhook payload
+//         $userEmail = $request->input('email');
+//         $amount = $request->input('amount');
+//         $assetType = $request->input('asset_type'); // e.g., 'balance_busd', 'balance_dai', 'balance_usdt'
 
-        // Find the user by email
-        $user = User::where('email', $userEmail)->first();
+//         // Find the user by email
+//         $user = User::where('email', $userEmail)->first();
 
-        if (!$user) {
-            // Handle case where user is not found
-            return response()->json(['error' => 'User not found'], 404);
-        }
+//         if (!$user) {
+//             // Handle case where user is not found
+//             return response()->json(['error' => 'User not found'], 404);
+//         }
 
-        // Fetch the user's wallet
-        $wallet = $user->wallet;
+//         // Fetch the user's wallet
+//         $wallet = $user->wallet;
 
-        if (!$wallet) {
-            // Handle case where user doesn't have a wallet
-            return response()->json(['error' => 'User wallet not found'], 404);
-        }
+//         if (!$wallet) {
+//             // Handle case where user doesn't have a wallet
+//             return response()->json(['error' => 'User wallet not found'], 404);
+//         }
 
-        // Update the wallet balance based on the asset type
-        switch ($assetType) {
-            case 'busd':
-                $wallet->balance_busd += $amount;
-                break;
-            case 'dai':
-                $wallet->balance_dai += $amount;
-                break;
-            case 'usdt':
-                $wallet->balance_usdt += $amount;
-                break;
-            default:
-                // Handle invalid asset type
-                return response()->json(['error' => 'Invalid asset type'], 400);
-        }
+//         // Update the wallet balance based on the asset type
+//         switch ($assetType) {
+//             case 'busd':
+//                 $wallet->balance_busd += $amount;
+//                 break;
+//             case 'dai':
+//                 $wallet->balance_dai += $amount;
+//                 break;
+//             case 'usdt':
+//                 $wallet->balance_usdt += $amount;
+//                 break;
+//             default:
+//                 // Handle invalid asset type
+//                 return response()->json(['error' => 'Invalid asset type'], 400);
+//         }
 
-        // Save the updated wallet
-        $wallet->save();
+//         // Save the updated wallet
+//         $wallet->save();
 
-        // Return a success response
-        return response()->json(['message' => 'Deposit successful'], 200);
-    }
+//         // Return a success response
+//         return response()->json(['message' => 'Deposit successful'], 200);
+//     }
 
     public function handleSwapCallback(Request $request) {
         // Validate and process the callback data
@@ -109,7 +109,11 @@ class WebController extends Controller
         $orderId = $request->order_id;
         $status = $request->status; // Example: 'completed', 'pending', etc.
 
-        $order = SwapOrder::where('order_id', $orderId)->first();
+        $order = SwapOrder::where('order_id', $orderId)->where("status","pending")->first();
+        if(!$order)
+        {
+            return response()->json(['message' => 'Callback processed successfully']);
+        }
         $user_id = $order->user_id;
         $user = User::where('id', $user_id)->first();
 
