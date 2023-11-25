@@ -14,17 +14,15 @@ class CryptomusService {
     public function createPayment($amount, $currency, $orderId,$callback_url) {
         try {
             $payment_obj = $this->cryptomus::payment(env('CRYPTOMUS_API_KEY'),env('CRYPTOMUS_MERCHANT_UUID'));
+            $currency = strtoupper($currency);
 
             $data = [
-                'amount' => '16',
-                'currency' => 'USD',
-                'network' => 'ETH',
-                'order_id' => "ghjdfyujhwefjwejb77685687qwgyfy",
-                'url_return' => 'https://example.com/return',
-                'url_callback' => 'https://example.com/callback',
+                'amount' => $amount,
+                'currency' => $currency,
+                'order_id' => $orderId,
+                'url_callback' => $callback_url,
                 'is_payment_multiple' => false,
                 'lifetime' => '7200',
-                'to_currency' => 'ETH'
             ];
             
             $response = $payment_obj->create($data);

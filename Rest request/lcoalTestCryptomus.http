@@ -5,9 +5,9 @@ merchant: 3a008604-cf0d-4946-958f-da1fa1b50de1
 sign: b5e4a23baf3ac4b0be89e792c73c4e0b
 
 {
-    "order_id": "a50441b3-48be-49e8-9a16-9d65d77fc79a",
-    "currency": "ETH",
-    "url_callback": "https://iamconst-m.com/korbit_bot/api/swap/payment/callback",
-    "network": "eth",
-    "status": "paid"
+    "order_id":"a50441b3-48be-49e8-9a16-9d65d77fc79a",
+    "currency":"ETH",
+    "url_callback":"https://iamconst-m.com/korbit_bot/api/swap/payment/callback",
+    "network":"eth",
+    "status":"paid"
 }

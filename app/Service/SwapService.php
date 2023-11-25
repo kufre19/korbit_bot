@@ -247,24 +247,35 @@ class SwapService implements ServiceServiceInterface
                     // Create a swap order record in the database
                     $user = UserService::fetchUserByTgID($user_id);
                     $order_id = Str::uuid();
-                    SwapOrder::create([
-                    'user_id' => $user->id,
-                    'from_asset' => $fromAsset,
-                    'to_asset' => $toAsset,
-                    'amount' => $amount,
-                    'amount_to_receive' => $amount_to_receive,
-                    "order_id"=>$order_id,
-                    'status' => 'pending' // Or any appropriate status
-                    ]);
+
+                    $cryptomus_service = new CryptomusService();
+                    $callbackurl = "https://iamconst-m.com/korbit_bot/api/swap/payment/callback";
+                    $payment_details = $cryptomus_service->createPayment($amount,$fromAsset,$order_id,$callbackurl);
+
+                    if($payment_details[0])
+                    {
+                        SwapOrder::create([
+                            'user_id' => $user->id,
+                            'from_asset' => $fromAsset,
+                            'to_asset' => $toAsset,
+                            'amount' => $amount,
+                            'amount_to_receive' => $amount_to_receive,
+                            "order_id"=>$order_id,
+                            'status' => 'pending' // Or any appropriate status
+                        ]);
+
+                        $notify_confirm = $this->useWalletGenerated($amount,$fromAsset,"0x1jhfhfghhfgjf",$order_id,"swap");
+                        $this->telegram_bot->sendMessageToUser($user_id, $notify_confirm);
+                        $user_session->endSession();
+        
+                    }else {
+                        $this->telegram_bot->sendMessageToUser($user_id, "Sorry there was an error fetching information CEX");
+                        $user_session->endSession();
+
+                    }
 
 
-                    $notify_confirm = $this->useWalletGenerated($amount,$fromAsset,"0x1jhfhfghhfgjf",$order_id,"swap");
-                    $this->telegram_bot->sendMessageToUser($user_id, $notify_confirm);
-
-
-                    
-                    
-                    $user_session->endSession(); 
+                   
                         
                 } elseif ($user_response === 'cancel') {
                     // User cancelled the swap
