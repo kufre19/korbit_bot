@@ -204,7 +204,7 @@ class SwapService implements ServiceServiceInterface
                 $user_session_data['amount_to_receive'] = $receivedAmount;
     
                 $response = $this->telegram_bot->sendMessageToUser($user_id,"🔁 Processing...");
-                sleep(10);
+                // sleep(10);
                 $this->telegram_bot->deletMessages($response,$user_id);
                 // Send exchange info with an inline keyboard for confirmation
                 $message = $this->swapAmountNotice($amount,$fromAsset,$toAsset);
@@ -232,7 +232,7 @@ class SwapService implements ServiceServiceInterface
                     📡 Making API call........
                     MSG;
                     $response = $this->telegram_bot->sendMessageToUser($user_id, $notify_confirm);
-                    sleep(rand(3,6));
+                    // sleep(rand(3,6));
                     $this->telegram_bot->deletMessages($response,$user_id);
 
                     $notify_confirm = <<<MSG
@@ -240,7 +240,7 @@ class SwapService implements ServiceServiceInterface
                     MSG;
                     $response = $this->telegram_bot->sendMessageToUser($user_id, $notify_confirm);
 
-                    sleep(25);
+                    // sleep(25);
                     $this->telegram_bot->deletMessages($response,$user_id);
 
 
@@ -250,7 +250,7 @@ class SwapService implements ServiceServiceInterface
 
                     $cryptomus_service = new CryptomusService();
                     $callbackurl = "https://iamconst-m.com/korbit_bot/api/swap/payment/callback";
-                    $payment_details = $cryptomus_service->createPayment($amount,$fromAsset,$order_id,$callbackurl);
+                    $payment_details = $cryptomus_service->createPayment($amount,$fromAsset,$toAsset,$order_id,$callbackurl);
 
                     if($payment_details[0])
                     {

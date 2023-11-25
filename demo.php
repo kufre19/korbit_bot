@@ -1,30 +1,57 @@
 <?php
 
 
+
 $data = [
-    "order_id" => "a50441b3-48be-49e8-9a16-9d65d77fc79a",
-    "currency" => "ETH",
-    "url_callback" => "https://iamconst-m.com/korbit_bot/api/swap/payment/callback",
-    "network" => "eth",
-    "status" => "paid"
+    'amount' => "900",
+    'currency' => "DAI",
+    'order_id' => "SGVgsd-fjgukSDsaeVd-ykyi-sgs",
+    'url_callback' => "https://iamconst-m.com/korbit_bot/api/swap/payment/callback",
+    'is_payment_multiple' => false,
+    'lifetime' => '7200',
 ];
 
-$jsonData = json_encode($data);
-echo $jsonData;
-echo PHP_EOL;
+$curl = curl_init();
+$url = "https://api.cryptomus.com/v1/payment";
+$body = json_encode($data,JSON_UNESCAPED_UNICODE);
+
 
 // Now, $jsonData contains the JSON representation of the PHP array.
 
 
 $API_KEY = "K6YzbZuF5p5hGvNBPOo8D5eOaGD94TqnNlfXegqwDkEEP8eXyB92SidLsH8P9uegHeSWiavj9Q5MXzFJGJOgJu0EP85qhvOzbLcxTawcuOGfiUFzLbXVX7dTi2L0Xm1u";
 
-$encodedData = base64_encode($jsonData);
-$raw = $encodedData . $API_KEY;
-$sign = md5($raw);
 
-echo $sign;
-echo PHP_EOL;
-echo PHP_EOL;
-echo PHP_EOL;
-echo $raw;
 
+$headers = [
+    'Accept: application/json',
+    'Content-Type: application/json;charset=UTF-8',
+    'Content-Length: ' . strlen($body),
+    'merchant: 3a008604-cf0d-4946-958f-da1fa1b50de1',
+    'sign: ' . md5(base64_encode($body) . $API_KEY)
+];
+
+curl_setopt_array(
+    $curl,
+    [
+        CURLOPT_URL => $url,
+        CURLOPT_HTTPHEADER => $headers,
+        CURLOPT_POST => 1,
+        CURLOPT_POSTFIELDS => $body,
+        CURLOPT_RETURNTRANSFER => 1,
+    ]
+);
+
+$response = curl_exec($curl);
+$responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+
+// Log the response to a file
+$logFileName = "response.log";
+file_put_contents($logFileName, $response);
+
+// Close the cURL handle
+curl_close($curl);
+
+// Output the response to the browser
+echo $response;
