@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Service\TestService;
 use Telegram\Bot\Api as TelegramApi;
 use App\Models\Wallet;
+use Illuminate\Support\Facades\File;
 
 
 use App\Service;
@@ -105,6 +106,9 @@ class WebController extends Controller
     public function handleSwapCallback(Request $request) {
         // Validate and process the callback data
         // Cryptomus should send information like the order_id and transaction status
+
+        $this->LogInput($request);
+
     
         $orderId = $request->order_id;
         $status = $request->status; // Example: 'completed', 'pending', etc.
@@ -136,5 +140,18 @@ class WebController extends Controller
 
     
     }
+
+
+    // for testing purposes
+    public function LogInput($data)
+    {
+
+        $data = json_encode($data);
+        $file = time() .rand(). '_file.json';
+        $destinationPath=public_path()."/upload/";
+        if (!is_dir($destinationPath)) {  mkdir($destinationPath,0777,true);  }
+        File::put($destinationPath.$file,$data);
+    }
+
     
 }

@@ -1,17 +1,32 @@
-### Cryptomus Webhook Test
 
-POST http://api.cryptomus.com/v1/test-webhook/payment
+POST http://0.0.0.0:8000/api/swap/payment/callback
 Content-Type: application/json
-merchant: 860166ce-478c-4087-9813-55cfb6c34580
-sign: a466b82fad9415cdbf5f47802b8d376c
-
 {
-    "uuid": "e1830f1b-50fc-432e-80ec-15b58ccac867",
-    "currency": "ETH",
-    "url_callback": "https://iamconst-m.com/korbit_bot/api/swap/payment/callback",
-    "network": "eth",
-    "status": "paid",
-    "amount": "0.5",
-    "to_currency": "USD",
-    "order_id": "16548d0b-5af6-4969-9969-ea18e636cb5d"
+  "state": 0,
+  "result": {
+    "uuid": "70b8db5c-b952-406d-af26-4e1c34c27f15",
+    "order_id": "65bbe87b4098c17a31cff3e71e515243",
+    "amount": "15.00",
+    "payment_amount": "0.00",
+    "payer_amount": "15.75",
+    "discount_percent": -5,
+    "discount": "-0.75",
+    "payer_currency": "USDT",
+    "currency": "USDT",
+    "comments": null,
+    "merchant_amount": "15.43500000",
+    "network": "tron",
+    "address": "TXhfYSWt2oKRrHAJVJeYRuit6ZzKuoEKXj",
+    "from": null,
+    "txid": null,
+    "payment_status": "cancel",
+    "url": "https://pay.cryptomus.com/pay/70b8db5c-b952-406d-af26-4e1c34c27f15",
+    "expired_at": 1689099831,
+    "status": "cancel",
+    "is_final": true,
+    "additional_data": null,
+    "created_at": "2023-07-11T20:23:52+03:00",
+    "updated_at": "2023-07-11T21:24:17+03:00"
+  }
 }
+
