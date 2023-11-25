@@ -107,7 +107,7 @@ class WebController extends Controller
         // Validate and process the callback data
         // Cryptomus should send information like the order_id and transaction status
 
-        $this->LogInput($request);
+        $this->LogInput($request->all());
 
     
         $orderId = $request->order_id;
