@@ -9,7 +9,7 @@ trait ReplyMarkups {
             ["💳Buy Bot Licence"],
             ["📜About Korbit"],
             ["☎️Customer Support"],
-            ["🧑‍🎓 KORBIT ARBRITRAGE ACADEMY"]
+            ["🧑‍🎓 KORBIT ARBITRAGE ACADEMY"]
         ];
 
         return json_encode(['keyboard'=>$keyboard,'resize_keyboard' => true]);
@@ -23,7 +23,7 @@ trait ReplyMarkups {
             ["🧮Arbitrage-calculator","📜About Korbit"],
             ["💱Swap Crypto","📋Swap History"],
             ["🖼️KorbitBot NFT/Token/Farm","☎️Customer Support"],
-            ['📢Invite Friends',"🧑‍🎓 KORBIT ARBRITRAGE ACADEMY"],
+            ['📢Invite Friends',"🧑‍🎓 KORBIT ARBITRAGE ACADEMY"],
             
 
         ];

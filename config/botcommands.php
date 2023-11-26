@@ -9,14 +9,14 @@ return [
         "💱Swap Crypto","📋Swap History",
         "💵Check Balance","📜About Korbit",
         "🖼️KorbitBot NFT/Token/Farm",
-        '📢Invite Friends',"🧑‍🎓 KORBIT ARBRITRAGE ACADEMY",
+        '📢Invite Friends',"🧑‍🎓 KORBIT ARBITRAGE ACADEMY",
         "🧮Arbitrage-calculator",
         "☎️Customer Support"
     ],
     "free_pass"=>[
         "💳Buy Bot Licence",
         "📜About Korbit",
-        "🧑‍🎓 KORBIT ARBRITRAGE ACADEMY",
+        "🧑‍🎓 KORBIT ARBITRAGE ACADEMY",
         "☎️Customer Support"
     ]
 ];
