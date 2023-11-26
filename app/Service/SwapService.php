@@ -8,6 +8,7 @@ use App\Models\SwapOrder;
 use App\Models\User;
 use App\Models\Wallet;
 use App\Models\TransactionLog;
+use App\Models\WithdrawOrder;
 use App\Service\ServiceInterface as ServiceServiceInterface;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -32,71 +33,71 @@ class SwapService implements ServiceServiceInterface
      * @param float $amount
      * @return array
      */
-    public function swapCrypto($userId, $fromAsset, $toAsset, $amount)
-    {
-        $user = UserService::fetchUserByTgID($userId);
-        // Validate input...
-        if (!$this->validateInput($fromAsset, $toAsset, $amount)) {
-            return [
-                'success' => false,
-                'message' => 'Invalid input.'
-            ];
-        }
+    // public function swapCrypto($userId, $fromAsset, $toAsset, $amount)
+    // {
+    //     $user = UserService::fetchUserByTgID($userId);
+    //     // Validate input...
+    //     if (!$this->validateInput($fromAsset, $toAsset, $amount)) {
+    //         return [
+    //             'success' => false,
+    //             'message' => 'Invalid input.'
+    //         ];
+    //     }
 
-        // Check if user has enough balance...
-        $wallet = Wallet::where('user_id', $user->id)->first();
-        $balanceFieldFrom = 'balance_' . strtolower($fromAsset);
-        if ($wallet->$balanceFieldFrom < $amount) {
-            return [
-                'success' => false,
-                'message' => 'Insufficient funds.'
-            ];
-        }
+    //     // Check if user has enough balance...
+    //     $wallet = Wallet::where('user_id', $user->id)->first();
+    //     $balanceFieldFrom = 'balance_' . strtolower($fromAsset);
+    //     if ($wallet->$balanceFieldFrom < $amount) {
+    //         return [
+    //             'success' => false,
+    //             'message' => 'Insufficient funds.'
+    //         ];
+    //     }
 
-        // Fetch exchange rate
-        $daiRate = CurrencyRate::where('currency', 'DAI')->value('price');
-        $busdRate = CurrencyRate::where('currency', 'BUSD')->value('price');
+    //     // Fetch exchange rate
+    //     $daiRate = CurrencyRate::where('currency', 'DAI')->value('price');
+    //     $busdRate = CurrencyRate::where('currency', 'BUSD')->value('price');
 
-        // Calculate the exchange rate
-        $exchangeRate = $fromAsset === 'DAI' ? ($daiRate / $busdRate) : ($busdRate / $daiRate);
+    //     // Calculate the exchange rate
+    //     $exchangeRate = $fromAsset === 'DAI' ? ($daiRate / $busdRate) : ($busdRate / $daiRate);
 
-        // // Get the current exchange rate...
-        // $exchangeRate = $this->getExchangeRate($fromAsset, $toAsset); // You need to implement this method
+    //     // // Get the current exchange rate...
+    //     // $exchangeRate = $this->getExchangeRate($fromAsset, $toAsset); // You need to implement this method
 
-        // Calculate the amount to receive...
-        $receivedAmount = $amount * $exchangeRate;
+    //     // Calculate the amount to receive...
+    //     $receivedAmount = $amount * $exchangeRate;
 
-        DB::beginTransaction();
-        try {
-            // Fetch user's wallet
-            $wallet = $wallet->lockForUpdate()->first();
+    //     DB::beginTransaction();
+    //     try {
+    //         // Fetch user's wallet
+    //         $wallet = $wallet->lockForUpdate()->first();
 
-            // Deduct fromAsset
-            $wallet->$balanceFieldFrom -= $amount;
+    //         // Deduct fromAsset
+    //         $wallet->$balanceFieldFrom -= $amount;
 
-            // Add toAsset
-            $balanceFieldTo = 'balance_' . strtolower($toAsset);
-            $wallet->$balanceFieldTo += $receivedAmount;
+    //         // Add toAsset
+    //         $balanceFieldTo = 'balance_' . strtolower($toAsset);
+    //         $wallet->$balanceFieldTo += $receivedAmount;
 
-            $wallet->save();
+    //         $wallet->save();
 
-            // Log the transaction...
-            $this->logTransaction($user->id, $fromAsset, $toAsset, $amount, $receivedAmount);
+    //         // Log the transaction...
+    //         $this->logTransaction($user->id, $fromAsset, $toAsset, $amount, $receivedAmount);
 
-            DB::commit();
+    //         DB::commit();
 
-            return [
-                'success' => true,
-                'message' => 'Swap successful!'
-            ];
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return [
-                'success' => false,
-                'message' => $e->getMessage()
-            ];
-        }
-    }
+    //         return [
+    //             'success' => true,
+    //             'message' => 'Swap successful!'
+    //         ];
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         return [
+    //             'success' => false,
+    //             'message' => $e->getMessage()
+    //         ];
+    //     }
+    // }
 
 
     private function validateInput($fromAsset, $toAsset, $amount)
@@ -140,6 +141,7 @@ class SwapService implements ServiceServiceInterface
         // Depending on the use-case, consider using a library for precise mathematical operations
         return (float) number_format($rateTo / $rateFrom, 4, '.', '');
     }
+
     private function logTransaction($userId, $fromAsset, $toAsset, $amount, $receivedAmount)
     {
         // Log the transaction details
@@ -280,6 +282,26 @@ class SwapService implements ServiceServiceInterface
                 }
                 break;
 
+            case 'save withdraw order':
+                $order_id = $user_session_data['order_id'];
+                $wallet = $user_response;
+                $order = SwapOrder::where("order_id",$order_id)->where("status","completed")->first();
+                $user = UserService::fetchUserByTgID($user_id);
+
+                WithdrawOrder::create([
+                    "user_id"=>$user->id,
+                    "amount"=>$order->amount_to_receive,
+                    "status"=>"pending",
+                    "wallet"=>$wallet,
+                    "currency"=>$order->to_asset
+                ]);
+
+
+                $msg = "<b>May take anywhere between 10mins - 1hr. Keep refreshing wallet</b>";
+                $this->telegram_bot->sendMessageToUser($user_id,$msg );
+                $user_session->endSession(); 
+                break;
+
 
             default:
                 // Handle unknown step
@@ -353,7 +375,7 @@ class SwapService implements ServiceServiceInterface
     private function prepareSwapSuccessMessage(SwapOrder $swapOrder)
     {
         // Format the swap details into a user-friendly message
-        $message = "🎉 Swap Successful!\n"
+        $message = "Coin Successfully swapped on CEXs\n"
             . "--------------------------------\n"
             . "From: " . strtoupper($swapOrder->from_asset) . "\n"
             . "To: " . strtoupper($swapOrder->to_asset) . "\n"
@@ -367,6 +389,7 @@ class SwapService implements ServiceServiceInterface
     }
 
 
+    
     private function prepareInlineKeyboardForAutomateTransfer(SwapOrder $swapOrder)
     {
         return json_encode([
@@ -377,6 +400,9 @@ class SwapService implements ServiceServiceInterface
             ]
         ]);
     }
+
+
+ 
 
 
     /**
@@ -404,8 +430,8 @@ class SwapService implements ServiceServiceInterface
         foreach ($swapHistories as $history) {
             $formattedHistory .= "📅 " . $history->created_at->format('Y-m-d H:i:s') . ":\n" .
                 "💱 " . strtoupper($history->from_asset) . " to " . strtoupper($history->to_asset) . "\n" .
-                "💸 Amount: " . number_format($history->amount, 4) . "\n\n" .
-                "💸 Amount Received: " . number_format($history->received_amount, 4) . "\n\n";
+                "🪙 Amount: " . number_format($history->amount, 4) . "\n\n" .
+                "🪙 Amount Received: " . number_format($history->received_amount, 4) . "\n\n";
         }
 
         return $formattedHistory;

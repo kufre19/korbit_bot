@@ -24,8 +24,6 @@ trait ReplyMarkups {
             ["💱Swap Crypto","📋Swap History"],
             ["🖼️KorbitBot NFT/Token/Farm","☎️Customer Support"],
             ['📢Invite Friends',"🧑‍🎓 KORBIT ARBITRAGE ACADEMY"],
-            
-
         ];
 
         return json_encode(['keyboard'=>$keyboard,'resize_keyboard' => true]);
@@ -85,12 +83,14 @@ trait ReplyMarkups {
                     "callback_data" => "pay_academy_access"
                 ]
             ],
-         
-          
+             
         ];
+
         return json_encode(['inline_keyboard' => $inline]);
         
     }
+
+
     public function getRateAmount()
     {
         $inline = [

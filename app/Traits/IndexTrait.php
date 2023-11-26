@@ -39,7 +39,7 @@ trait IndexTrait
         }
 
         if (isset($command->data) && $this->checkIfCallbackQueryButton($this->user_sent_text)) {
-            // Log::error("checked for callbackquery command");
+            Log::error("checked for callbackquery command");
 
             // Logic to handle callback query button
             $this->runCallbackQueryButtonCommand($this->user_sent_text);
@@ -138,7 +138,11 @@ trait IndexTrait
     public function checkIfCallbackQueryButton($text)
     {
         $callbackQueryButtons = Config::get("botcommands.callbackQueryButtons");
-        return in_array($text, $callbackQueryButtons);
+        if(in_array($text, $callbackQueryButtons) || strpos($text,"automate_transfer") !== false){
+            return true;
+        }
+
+        return false;
     }
 
     public function continueSessionAction($user_session, $webhookUpdates)

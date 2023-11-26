@@ -151,8 +151,8 @@ trait ButtonCommands
         // In your command handling method
         if ($command == "💱Exchange2Exchange API Binding") {
             $exchangeService = new Exchange2ExchangeService();
-            $message = $exchangeService->getArbitrageOpportunities();
-            $this->sendMessageToUser($this->from_chat_id, $message);
+            // $message = $exchangeService->getArbitrageOpportunities();
+            // $this->sendMessageToUser($this->from_chat_id, $message);
             return true;
         } else {
             $message = "function coming soon";

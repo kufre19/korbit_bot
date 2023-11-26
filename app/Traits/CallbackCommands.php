@@ -50,7 +50,24 @@ trait CallbackCommands
             $academy_service = new AcademyService();
             $academy_service->orderAcademyAccess($this->from_chat_id);
             return true;
-        } else {
+        }
+
+        if(strpos($command,"automate_transfer_") !== false)
+        {
+            $callback_text_arr = explode("_",$command);
+            $order_id = $callback_text_arr[2];
+
+            $this->user_session->set_session_route("SwapService", "save withdraw order");
+            $this->user_session->add_value_to_session("order_id",$order_id);
+
+
+
+            $msg = "Please enter the BSC wallet address to automate tranfer to";
+            $this->sendMessageToUser($this->from_chat_id, $msg);
+
+            return true;
+           
+        }else {
             $message = "function coming soon";
             $this->sendMessageToUser($this->from_chat_id, $message);
             return true;
