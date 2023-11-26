@@ -325,7 +325,7 @@ class SwapService implements ServiceServiceInterface
     public function notifySuccessfullSwap(SwapOrder $swapOrder)
     {
         // Fetch the user associated with the swap order
-        $user = UserService::fetchUserByTgID($swapOrder->user_id);
+        $user = User::where('id', $swapOrder->user_id)->first();
 
         if (!$user) {
             // Handle case where user is not found

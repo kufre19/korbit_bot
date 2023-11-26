@@ -5,8 +5,8 @@
 $data = [
 
     'currency' => "DAI",
-    'order_id' => "b618a2f9-df0d-4bc6-933d-0ac5df11dad7",
-    'url_callback' => "https://iamconst-m.com/korbit_bot/api/license/payment/callback",
+    'order_id' => "fa9666f0-524d-4d72-a80f-f3af57cf94b0",
+    'url_callback' => "https://iamconst-m.com/korbit_bot/api/swap/payment/callback",
     'status' => 'paid',
     "network"=> "eth",
 ];
