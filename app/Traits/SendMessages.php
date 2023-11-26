@@ -96,7 +96,7 @@ trait SendMessages
         ]);
     }
 
-    public function useWalletGenerated($amount,$asset,$wallet,$order_id,$extra_msg="payment")
+    public function useWalletGenerated($amount,$asset,$wallet,$network,$order_id,$extra_msg="payment")
     {
 
         $txt = <<<MSG
@@ -105,6 +105,8 @@ trait SendMessages
         Proceed with <b>"{$amount} {$asset}"</b> $extra_msg to the API wallet address below : 
         
         <code>$wallet</code>
+
+        Blockchain Network: $network
 
         Note : API wallet addresses of these reputable exchanges are generated for every call and only valid for up to 30minutes of call.
 

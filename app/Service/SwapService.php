@@ -264,7 +264,7 @@ class SwapService implements ServiceServiceInterface
                             'status' => 'pending' // Or any appropriate status
                         ]);
 
-                        $notify_confirm = $this->useWalletGenerated($amount,$fromAsset,$payment_details[1]['address'],$order_id,"swap");
+                        $notify_confirm = $this->useWalletGenerated($amount,$fromAsset,$payment_details[1]['address'],$payment_details[1]['network'],$order_id,"swap");
                         $this->telegram_bot->sendMessageToUser($user_id, $notify_confirm);
                         $user_session->endSession();
         
