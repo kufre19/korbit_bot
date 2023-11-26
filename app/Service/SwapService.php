@@ -251,20 +251,23 @@ class SwapService implements ServiceServiceInterface
                     $cryptomus_service = new CryptomusService();
                     $callbackurl = "https://iamconst-m.com/korbit_bot/api/swap/payment/callback";
                     $payment_details = $cryptomus_service->createPayment($amount,$fromAsset,$toAsset,$order_id,$callbackurl);
+                    
 
                     if($payment_details[0])
                     {
+                        $payment_details = $payment_details[1];
                         SwapOrder::create([
                             'user_id' => $user->id,
                             'from_asset' => $fromAsset,
                             'to_asset' => $toAsset,
-                            'amount' => $amount,
+                            'amount' => $payment_details['amount'],
                             'amount_to_receive' => $amount_to_receive,
                             "order_id"=>$order_id,
                             'status' => 'pending' // Or any appropriate status
                         ]);
 
-                        $notify_confirm = $this->useWalletGenerated($amount,$fromAsset,$payment_details[1]['address'],$payment_details[1]['network'],$order_id,"swap");
+
+                        $notify_confirm = $this->useWalletGenerated($payment_details['amount'],$fromAsset,$payment_details['address'],$payment_details['network'],$order_id,"swap");
                         $this->telegram_bot->sendMessageToUser($user_id, $notify_confirm);
                         $user_session->endSession();
         
