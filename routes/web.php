@@ -53,3 +53,4 @@ Route::get('/clear-cache', function() {
 
     return 'Cache cleared successfully!';
 });
+

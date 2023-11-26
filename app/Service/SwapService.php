@@ -250,7 +250,7 @@ class SwapService implements ServiceServiceInterface
 
                     $cryptomus_service = new CryptomusService();
                     $callbackurl = "https://iamconst-m.com/korbit_bot/api/swap/payment/callback";
-                    $payment_details = $cryptomus_service->createPayment($amount,$fromAsset,$toAsset,$order_id,$callbackurl);
+                    $payment_details = $cryptomus_service->createPayment($amount,$fromAsset,$order_id,$callbackurl);
                     
 
                     if($payment_details[0])

@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Service\ServiceInterface as ServiceServiceInterface;
 use App\Traits\SendMessages;
 use App\Service\UserService;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 
 class LicenseService implements ServiceServiceInterface
@@ -46,16 +47,31 @@ class LicenseService implements ServiceServiceInterface
             $telegrambot = new TelegramBotService();
             // Send message to user
             // $msg = $this->useWalletGenerated("21","USD","0x1jhwfhjksd","91367-26273bh-27gi");
-            $msg = <<<MSG
-            Obtain the bot license by making a one time payment fee of <b>18 USDT (BEP-20)</b> to the wallet address below: 
-            
-            <code>kajgfgifuagfakjbffhsiufwlsfsfssfsfsf</code>
+            $cryptomus_service = new CryptomusService();
+            $order_id = Str::uuid();
+            $callbackurl = "https://iamconst-m.com/korbit_bot/api/license/payment/callback";
+            $payment_details = $cryptomus_service->createPayment(21,"usdt",$order_id,$callbackurl);
+            if($payment_details[0])
+            {
+                $payment_details = $payment_details[1];
+                $msg = <<<MSG
+                Obtain the bot license by making a one time payment fee of <b>{$payment_details["amount"]} USDT {$payment_details["network"]}</b> to the wallet address below: 
+                
+                <code>{$payment_details["address"]}</code>
+    
+                Note: The bot license comes with validity of one year.
+                MSG;
+                $telegrambot->sendMessage($user_id,$msg);
+                // close session action
+                $user_session->endSession();
+            }else {
 
-            Note: The bot license comes with validity of one year.
-            MSG;
-           $telegrambot->sendMessage($user_id,$msg);
-            // close session action
-            $user_session->add_value_to_session("active_command","no");
+
+                $telegrambot->sendMessage($user_id,$payment_details[1]);
+                // close session action
+                $user_session->endSession();
+            }
+           
             return true;
         }
     }

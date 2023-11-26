@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\File;
 
 
 use App\Service;
+use App\Service\CryptomusService;
 use App\Service\TelegramBotService;
 use App\Service\WalletService;
 
@@ -53,8 +54,8 @@ class WebController extends Controller
 
    public function test_service()
    {
-      $test = new TestService();
-      return $test->test();
+     
+
    }
 
 //    public function handleDepositWebhook(Request $request)
