@@ -30,7 +30,6 @@ class CryptomusService {
                 'is_payment_multiple' => false,
                 'lifetime' => '7200',
                 'network' => $network
-
             ];
 
 
