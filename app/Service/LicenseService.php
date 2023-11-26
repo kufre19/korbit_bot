@@ -47,11 +47,11 @@ class LicenseService implements ServiceServiceInterface
             // initialize the TG bot sdk
             $telegrambot = new TelegramBotService();
             // Send message to user
-            // $msg = $this->useWalletGenerated("21","USD","0x1jhwfhjksd","91367-26273bh-27gi");
             $cryptomus_service = new CryptomusService();
             $order_id = Str::uuid();
             $callbackurl = "https://iamconst-m.com/korbit_bot/api/license/payment/callback";
-            $payment_details = $cryptomus_service->createPayment(21,"usdt",$order_id,$callbackurl);
+            $payment_details = $cryptomus_service->createPayment("21","usdt",$order_id,$callbackurl);
+           
             if($payment_details[0])
             {
                 $user = UserService::fetchUserByTgID($user_id);
