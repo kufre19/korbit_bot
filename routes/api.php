@@ -22,4 +22,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // In your routes/web.php or routes/api.php
 Route::post('swap/payment/callback',[WebController::class,"handleSwapCallback"])->name('swap.payment.callback');
 Route::post('license/payment/callback',[WebController::class,"handleLicenseCallback"])->name('license.payment.callback');
+Route::post('academy-access/payment/callback',[WebController::class,"handleAcademyCallback"])->name('academy.payment.callback');
+
 

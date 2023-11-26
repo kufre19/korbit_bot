@@ -3,16 +3,16 @@
 
 
 $data = [
-    'amount' => "900",
+
     'currency' => "DAI",
-    'order_id' => "SGVgsd-fjgukSDsaeVd-ykyi-sgs",
-    'url_callback' => "https://iamconst-m.com/korbit_bot/api/swap/payment/callback",
-    'is_payment_multiple' => false,
-    'lifetime' => '7200',
+    'order_id' => "b618a2f9-df0d-4bc6-933d-0ac5df11dad7",
+    'url_callback' => "https://iamconst-m.com/korbit_bot/api/license/payment/callback",
+    'status' => 'paid',
+    "network"=> "eth",
 ];
 
 $curl = curl_init();
-$url = "https://api.cryptomus.com/v1/payment";
+$url = "https://api.cryptomus.com/v1/test-webhook/payment";
 $body = json_encode($data,JSON_UNESCAPED_UNICODE);
 
 

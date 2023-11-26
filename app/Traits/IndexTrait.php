@@ -38,6 +38,12 @@ trait IndexTrait
             return true;
         }
 
+        if (isset($command->data) && $this->checkIfCallbackQueryButton($this->user_sent_text)) {
+            // Logic to handle callback query button
+            $this->runCallbackQueryButtonCommand($this->user_sent_text);
+            return true;
+        }
+
 
 
         if (isset($command->message->entities)) {
@@ -63,25 +69,23 @@ trait IndexTrait
                             // $message = "You're already registered!";
                             // $this->sendMessageToUser($this->from_chat_id, $message);
                             $user = UserService::fetchUserByTgID($this->from_chat_id);
-                            if($user->license == "active")
-                            {
+                            if ($user->license == "active") {
                                 // return full active keyboard
                                 $mainKeyboard = $this->updatedMainReplyKeyboard();;
                                 $startMessage = $this->HelloMessage($this->username);
                                 $this->sendMessageToUser($this->from_chat_id, $startMessage, $mainKeyboard);
-                            }else{
+                            } else {
                                 // only basic start keyboard
                                 $mainKeyboard = $this->startMainReplyKeyboard();
                                 $startMessage = $this->HelloMessage($this->username);
                                 $this->sendMessageToUser($this->from_chat_id, $startMessage, $mainKeyboard);
                                 return true;
-
                             }
                         }
                     }
                 }
-            }else{
-                 // Continue with the session action if any.
+            } else {
+                // Continue with the session action if any.
                 // Log::error("knew to continue here");
                 $this->continueSessionAction($this->user_session, $command);
             }
@@ -120,6 +124,19 @@ trait IndexTrait
             return false;
         }
         return true;
+    }
+
+
+    /**
+     * Checks if the text is a callback query button from the predefined list.
+     *
+     * @param string $text
+     * @return bool
+     */
+    public function checkIfCallbackQueryButton($text)
+    {
+        $callbackQueryButtons = Config::get("botcommands.callbackQueryButtons");
+        return in_array($text, $callbackQueryButtons);
     }
 
     public function continueSessionAction($user_session, $webhookUpdates)

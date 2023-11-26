@@ -13,10 +13,11 @@ use Illuminate\Support\Facades\Log;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use Telegram\Bot\Api as TelegramApi;
 use App\Service\SessionService;
+use App\Traits\CallbackCommands;
 
 class BotController extends Controller
 {
-    use IndexTrait,SendMessages,ReplyMarkups,ButtonCommands;
+    use IndexTrait,SendMessages,ReplyMarkups,ButtonCommands, CallbackCommands;
     public $bot_name;
     public $telegrambot;
     public $user_session;

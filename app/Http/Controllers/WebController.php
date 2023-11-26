@@ -152,6 +152,10 @@ class WebController extends Controller
         return response()->json(['message' => 'Callback processed successfully']);
     }
 
+    public function handleAcademyCallback(Request $request)
+    {
+        return response()->json(['message' => 'Callback processed successfully']);
+    }
 
     private function logTransaction($userId, $fromAsset, $toAsset, $amount, $receivedAmount)
     {

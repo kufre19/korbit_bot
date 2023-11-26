@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\User;
+use App\Service\AcademyService;
 use App\Service\Exchange2ExchangeService;
 use App\Service\ExchangeRateService;
 use App\Service\LicenseService;
@@ -52,6 +53,8 @@ trait ButtonCommands
         if ($command == "🧑‍🎓 KORBIT ARBITRAGE ACADEMY") {
             $message = Config::get("messages.get_trained");
 
+            $academy_service = new AcademyService();
+            
             $inline = $this->academyAccessButton();
             $this->sendMessageToUser($this->from_chat_id, $message, $inline);
             return true;

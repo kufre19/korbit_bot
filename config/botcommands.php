@@ -18,5 +18,8 @@ return [
         "📜About Korbit",
         "🧑‍🎓 KORBIT ARBITRAGE ACADEMY",
         "☎️Customer Support"
+    ],
+    "callbackQueryButtons"=>[
+        "pay_academy_access"
     ]
 ];
