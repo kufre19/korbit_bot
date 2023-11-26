@@ -11,7 +11,7 @@ use App\Models\TransactionLog;
 use App\Service\ServiceInterface as ServiceServiceInterface;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
-use App\Traits\SendMessages; 
+use App\Traits\SendMessages;
 
 class SwapService implements ServiceServiceInterface
 {
@@ -158,7 +158,7 @@ class SwapService implements ServiceServiceInterface
         // Fetch the current session data for the user
         $user_session_data = $user_session->getUserSessionData();
         $step = $user_session_data['step'] ?? null;
-    
+
         // Determine the step in the session and act accordingly
         switch ($step) {
             case 'get swap option':
@@ -170,59 +170,57 @@ class SwapService implements ServiceServiceInterface
                 // Update the session to move to the next step
                 $user_session_data['step'] = 'get swap amount';
                 $user_session->update_session($user_session_data);
-    
+
                 // Prompt the user for the amount to swap
                 $this->telegram_bot->sendMessageToUser($user_id, "How much {$fromAsset} do you want to swap to {$toAsset}?");
-    
-               
+
+
                 break;
-    
+
             case 'get swap amount':
                 // User provides the amount to swap
                 $amount = $user_response;
                 $fromAsset = $user_session_data['from_asset'];
                 $toAsset = $user_session_data['to_asset'];
 
-                if($amount < 50)
-                {
-                    $this->telegram_bot->sendMessageToUser($user_id,"The minimum amount for a swap is 50 {$fromAsset}");
+                if ($amount < 50) {
+                    $this->telegram_bot->sendMessageToUser($user_id, "The minimum amount for a swap is 50 {$fromAsset}");
                     break;
-
                 }
-    
+
                 // TODO: Check if the user has the amount available (not implemented here)
                 // For now, we'll assume the user has the amount
-    
+
                 // Store the amount in the session
                 $user_session_data['amount'] = $amount;
-    
+
                 // Calculate the expected amount to receive after the swap
                 $exchangeRate = $this->getExchangeRate($fromAsset, $toAsset);
                 $receivedAmount = $amount * $exchangeRate;
 
                 // Store the amount to receive in the session
                 $user_session_data['amount_to_receive'] = $receivedAmount;
-    
-                $response = $this->telegram_bot->sendMessageToUser($user_id,"🔁 Processing...");
+
+                $response = $this->telegram_bot->sendMessageToUser($user_id, "🔁 Processing...");
                 sleep(10);
-                $this->telegram_bot->deletMessages($response,$user_id);
+                $this->telegram_bot->deletMessages($response, $user_id);
                 // Send exchange info with an inline keyboard for confirmation
-                $message = $this->swapAmountNotice($amount,$fromAsset,$toAsset);
+                $message = $this->swapAmountNotice($amount, $fromAsset, $toAsset);
                 $inlineKeyboard = $this->getInlineKeyboardConfirmCancel();
-    
+
                 $this->telegram_bot->sendMessageToUser($user_id, $message, $inlineKeyboard);
-    
+
                 // Update session to wait for user's confirmation
                 $user_session_data['step'] = 'confirm swap';
                 $user_session->update_session($user_session_data);
                 break;
-    
+
             case 'confirm swap':
 
                 // now after user has been sent wallet a swap order should be created for this user (table and model will be needed )
                 $amount = $user_session_data['amount'];
                 $amount_to_receive = $user_session_data['amount_to_receive'];
-                
+
 
                 $fromAsset = $user_session_data['from_asset'];
                 $toAsset = $user_session_data['to_asset'];
@@ -232,8 +230,8 @@ class SwapService implements ServiceServiceInterface
                     📡 Making API call........
                     MSG;
                     $response = $this->telegram_bot->sendMessageToUser($user_id, $notify_confirm);
-                    sleep(rand(3,6));
-                    $this->telegram_bot->deletMessages($response,$user_id);
+                    sleep(rand(3, 6));
+                    $this->telegram_bot->deletMessages($response, $user_id);
 
                     $notify_confirm = <<<MSG
                     🛑 Do not close window while making API calls
@@ -241,7 +239,7 @@ class SwapService implements ServiceServiceInterface
                     $response = $this->telegram_bot->sendMessageToUser($user_id, $notify_confirm);
 
                     sleep(25);
-                    $this->telegram_bot->deletMessages($response,$user_id);
+                    $this->telegram_bot->deletMessages($response, $user_id);
 
 
                     // Create a swap order record in the database
@@ -250,11 +248,10 @@ class SwapService implements ServiceServiceInterface
 
                     $cryptomus_service = new CryptomusService();
                     $callbackurl = "https://iamconst-m.com/korbit_bot/api/swap/payment/callback";
-                    $payment_details = $cryptomus_service->createPayment($amount,$fromAsset,$order_id,$callbackurl);
-                    
+                    $payment_details = $cryptomus_service->createPayment($amount, $fromAsset, $order_id, $callbackurl);
 
-                    if($payment_details[0])
-                    {
+
+                    if ($payment_details[0]) {
                         $payment_details = $payment_details[1];
                         SwapOrder::create([
                             'user_id' => $user->id,
@@ -262,50 +259,120 @@ class SwapService implements ServiceServiceInterface
                             'to_asset' => $toAsset,
                             'amount' => $payment_details['amount'],
                             'amount_to_receive' => $amount_to_receive,
-                            "order_id"=>$order_id,
+                            "order_id" => $order_id,
                             'status' => 'pending' // Or any appropriate status
                         ]);
 
 
-                        $notify_confirm = $this->useWalletGenerated($payment_details['amount'],$fromAsset,$payment_details['address'],$payment_details['network'],$order_id,"swap");
+                        $notify_confirm = $this->useWalletGenerated($payment_details['amount'], $fromAsset, $payment_details['address'], $payment_details['network'], $order_id, "swap");
                         $this->telegram_bot->sendMessageToUser($user_id, $notify_confirm);
                         $user_session->endSession();
-        
-                    }else {
+                    } else {
                         $this->telegram_bot->sendMessageToUser($user_id, "Sorry there was an error fetching information CEX");
                         $user_session->endSession();
-
                     }
-
-
-                   
-                        
                 } elseif ($user_response === 'cancel') {
                     // User cancelled the swap
                     $this->telegram_bot->sendMessageToUser($user_id, "Swap cancelled.");
-    
+
                     // End the session
                     $user_session->endSession(); // Replace with the actual method that ends the session
                 }
                 break;
-    
-    
+
+
             default:
                 // Handle unknown step
                 $this->telegram_bot->sendMessageToUser($user_id, "I'm not sure what you're trying to do. Can you please start over?");
                 break;
         }
-    
+
         return true; // If the session should remain active, or handle ending the session if needed
     }
-    
-    private function getInlineKeyboardConfirmCancel() {
+
+    private function getInlineKeyboardConfirmCancel()
+    {
         // Define the inline keyboard with confirm and cancel options
         return json_encode([
             'inline_keyboard' => [
                 [
                     ['text' => 'Yes, proceed', 'callback_data' => 'confirm'],
                     ['text' => 'No, cancel', 'callback_data' => 'cancel']
+                ]
+            ]
+        ]);
+    }
+
+    private function getInlineKeyboard()
+    {
+        // Define the inline keyboard with confirm and cancel options
+        return json_encode([
+            'inline_keyboard' => [
+                [
+                    ['text' => 'Yes, proceed', 'callback_data' => 'confirm'],
+                    ['text' => 'No, cancel', 'callback_data' => 'cancel']
+                ]
+            ]
+        ]);
+    }
+
+
+    /**
+     * Notify user about a successful swap transaction.
+     *
+     * @param SwapOrder $swapOrder The swap order object containing the transaction details.
+     */
+    public function notifySuccessfullSwap(SwapOrder $swapOrder)
+    {
+        // Fetch the user associated with the swap order
+        $user = UserService::fetchUserByTgID($swapOrder->user_id);
+
+        if (!$user) {
+            // Handle case where user is not found
+            // Log error or take necessary action
+            return;
+        }
+
+        // Prepare the message content
+        $message = $this->prepareSwapSuccessMessage($swapOrder);
+
+         // Prepare an inline keyboard with the "Automate Transfer" button
+        $inlineKeyboard = $this->prepareInlineKeyboardForAutomateTransfer($swapOrder);
+
+
+        // Send the message to the user using Telegram Bot
+        $this->sendMessageToUser($user->tg_id, $message,$inlineKeyboard);
+    }
+
+    /**
+     * Prepare a formatted message for swap success notification.
+     *
+     * @param SwapOrder $swapOrder The swap order object.
+     * @return string The formatted message.
+     */
+    private function prepareSwapSuccessMessage(SwapOrder $swapOrder)
+    {
+        // Format the swap details into a user-friendly message
+        $message = "🎉 Swap Successful!\n"
+            . "--------------------------------\n"
+            . "From: " . strtoupper($swapOrder->from_asset) . "\n"
+            . "To: " . strtoupper($swapOrder->to_asset) . "\n"
+            . "Amount: " . number_format($swapOrder->amount, 4) . " " . strtoupper($swapOrder->from_asset) . "\n"
+            . "Received: " . number_format($swapOrder->received_amount, 4) . " " . strtoupper($swapOrder->to_asset) . "\n"
+            . "Order ID: " . $swapOrder->order_id . "\n"
+            . "--------------------------------\n"
+            . "Thank you for using our swap service!";
+
+        return $message;
+    }
+
+
+    private function prepareInlineKeyboardForAutomateTransfer(SwapOrder $swapOrder)
+    {
+        return json_encode([
+            'inline_keyboard' => [
+                [
+                    ['text' => 'Automate Transfer to wallet', 'callback_data' => 'automate_transfer_' . $swapOrder->order_id]
                 ]
             ]
         ]);
@@ -332,13 +399,13 @@ class SwapService implements ServiceServiceInterface
         }
 
         $formattedHistory = "🔄 *Your Recent Swap History:*\n" .
-                            "---------------------------------\n";
+            "---------------------------------\n";
 
         foreach ($swapHistories as $history) {
             $formattedHistory .= "📅 " . $history->created_at->format('Y-m-d H:i:s') . ":\n" .
-                                 "💱 " . strtoupper($history->from_asset) . " to " . strtoupper($history->to_asset) . "\n" .
-                                 "💸 Amount: " . number_format($history->amount, 4) . "\n\n".
-                                 "💸 Amount Received: " . number_format($history->received_amount, 4) . "\n\n";
+                "💱 " . strtoupper($history->from_asset) . " to " . strtoupper($history->to_asset) . "\n" .
+                "💸 Amount: " . number_format($history->amount, 4) . "\n\n" .
+                "💸 Amount Received: " . number_format($history->received_amount, 4) . "\n\n";
         }
 
         return $formattedHistory;

@@ -18,6 +18,7 @@ use App\Models\TransactionLog;
 use App\Service;
 use App\Service\AcademyService;
 use App\Service\CryptomusService;
+use App\Service\SwapService;
 use App\Service\TelegramBotService;
 use App\Service\WalletService;
 
@@ -106,6 +107,9 @@ class WebController extends Controller
             ]);
             $wallet_service->updateBalance($user_id, $order->to_asset, $order->amount_to_receive);
             $this->logTransaction($user_id, $order->from_asset, $order->to_asset, $order->amount, $order->amount_to_receive);
+            $swapService = new SwapService();
+            $swapService->notifySuccessfullSwap($order);
+
         } elseif ($status == "cancel") {
             $order->update([
                 "status" => "cancelled"
