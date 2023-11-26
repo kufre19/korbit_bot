@@ -358,10 +358,10 @@ class SwapService implements ServiceServiceInterface
             . "From: " . strtoupper($swapOrder->from_asset) . "\n"
             . "To: " . strtoupper($swapOrder->to_asset) . "\n"
             . "Amount: " . number_format($swapOrder->amount, 4) . " " . strtoupper($swapOrder->from_asset) . "\n"
-            . "Received: " . number_format($swapOrder->received_amount, 4) . " " . strtoupper($swapOrder->to_asset) . "\n"
+            . "Received: " . number_format($swapOrder->amount_to_receive, 4) . " " . strtoupper($swapOrder->to_asset) . "\n"
             . "Order ID: " . $swapOrder->order_id . "\n"
-            . "--------------------------------\n"
-            . "Thank you for using our swap service!";
+            . "--------------------------------\n";
+            
 
         return $message;
     }
