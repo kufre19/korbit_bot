@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Models\LicenseOrder;
 use App\Models\User;
 use App\Service\ServiceInterface as ServiceServiceInterface;
 use App\Traits\SendMessages;
@@ -53,6 +54,14 @@ class LicenseService implements ServiceServiceInterface
             $payment_details = $cryptomus_service->createPayment(21,"usdt",$order_id,$callbackurl);
             if($payment_details[0])
             {
+                $user = UserService::fetchUserByTgID($user_id);
+
+                LicenseOrder::create([
+                    "order_id"=>$order_id,
+                    "user_id"=>$user->id,
+                    "amount"=>"21",
+                    "status"=>"pending"
+                ]);
                 $payment_details = $payment_details[1];
                 $msg = <<<MSG
                 Obtain the bot license by making a one time payment fee of <b>{$payment_details["amount"]} USDT {$payment_details["network"]}</b> to the wallet address below: 

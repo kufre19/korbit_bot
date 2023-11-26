@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LicenseOrder;
 use App\Models\SwapOrder;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -9,6 +10,8 @@ use App\Service\TestService;
 use Telegram\Bot\Api as TelegramApi;
 use App\Models\Wallet;
 use Illuminate\Support\Facades\File;
+use App\Models\TransactionLog;
+
 
 
 use App\Service;
@@ -107,14 +110,50 @@ class WebController extends Controller
     public function handleSwapCallback(Request $request) {
         // Validate and process the callback data
         // Cryptomus should send information like the order_id and transaction status
-
-        $this->LogInput($request->all());
-
     
         $orderId = $request->order_id;
         $status = $request->status; // Example: 'completed', 'pending', etc.
 
         $order = SwapOrder::where('order_id', $orderId)->where("status","pending")->first();
+        if(!$order)
+        {
+            return response()->json(['message' => 'Callback processed successfully']);
+        }
+        $user_id = $order->user_id;
+        $user = User::where('id', $user_id)->first();
+
+
+        if(in_array($status,['paid','paid_over']))
+        {
+            // payment received proceed with updating user balance
+            $wallet_service = new WalletService();
+            $order->update([
+                "status"=>"completed"
+            ]);
+            $wallet_service->updateBalance($user_id,$order->to_asset,$order->amount_to_receive);
+            $this->logTransaction($user_id,$order->from_asset,$order->to_asset,$order->amount,$order->amount_to_receive);
+
+        }elseif ($status == "cancel") {
+            $order->update([
+                "status"=>"cancelled"
+            ]);
+        }
+        return response()->json(['message' => 'Callback processed successfully']);
+
+    
+    }
+
+
+    public function handleLicenseCallback(Request $request) {
+        // Validate and process the callback data
+        // Cryptomus should send information like the order_id and transaction status
+
+
+    
+        $orderId = $request->order_id;
+        $status = $request->status; // Example: 'completed', 'pending', etc.
+
+        $order = LicenseOrder::where('order_id', $orderId)->where("status","pending")->first();
         if(!$order)
         {
             return response()->json(['message' => 'Callback processed successfully']);
@@ -140,6 +179,19 @@ class WebController extends Controller
         return response()->json(['message' => 'Callback processed successfully']);
 
     
+    }
+
+
+    private function logTransaction($userId, $fromAsset, $toAsset, $amount, $receivedAmount)
+    {
+        // Log the transaction details
+        TransactionLog::create([
+            'user_id' => $userId,
+            'from_asset' => $fromAsset,
+            'to_asset' => $toAsset,
+            'amount' => $amount,
+            'received_amount' => $receivedAmount
+        ]);
     }
 
 
