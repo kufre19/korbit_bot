@@ -2,9 +2,9 @@ GET http://0.0.0.0:8000/bot/webhook
 Content-Type: application/json
 
 {
-  "update_id": 947056043,
-  "message": {
-    "message_id": 50,
+  "update_id": 947056132,
+  "callback_query": {
+    "id": "5689163697703468680",
     "from": {
       "id": 1324611645,
       "is_bot": false,
@@ -12,15 +12,65 @@ Content-Type: application/json
       "username": "ConstMK",
       "language_code": "en"
     },
-    "chat": {
-      "id": 1324611645,
-      "first_name": "Emmanuel",
-      "username": "ConstMK",
-      "type": "private"
+    "message": {
+      "message_id": 226,
+      "from": {
+        "id": 6428822176,
+        "is_bot": true,
+        "first_name": "Korbit bot",
+        "username": "signalKorbit_bot"
+      },
+      "chat": {
+        "id": 1324611645,
+        "first_name": "Emmanuel",
+        "username": "ConstMK",
+        "type": "private"
+      },
+      "date": 1698915733,
+      "text": "Please select below your swap potion",
+      "reply_markup": {
+        "inline_keyboard": [
+          [
+            {
+              "text": "DAI 📄 USDT",
+              "callback_data": "dai_usdt"
+            }
+          ],
+          [
+            {
+              "text": "DAI -> BUSD",
+              "callback_data": "dai_busd"
+            }
+          ],
+          [
+            {
+              "text": "USDT 📄 BUSD",
+              "callback_data": "usdt_busd"
+            }
+          ],
+          [
+            {
+              "text": "USDT 📄 DAI",
+              "callback_data": "usdt_dai"
+            }
+          ],
+          [
+            {
+              "text": "BUSD 📄 DAI",
+              "callback_data": "busd_dai"
+            }
+          ],
+          [
+            {
+              "text": "BUSD 📄 USDT",
+              "callback_data": "busd_usdt"
+            }
+          ]
+        ]
+      }
     },
-    "date": 1697625804,
-    "text": "whitemaxwell5@gmail.com"
+    "chat_instance": "734372869112901104",
+    "data": "pay_academy_access"
   }
 }
-
 

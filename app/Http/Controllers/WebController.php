@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AcademyOrder;
 use App\Models\LicenseOrder;
 use App\Models\SwapOrder;
 use App\Models\User;
@@ -15,6 +16,7 @@ use App\Models\TransactionLog;
 
 
 use App\Service;
+use App\Service\AcademyService;
 use App\Service\CryptomusService;
 use App\Service\TelegramBotService;
 use App\Service\WalletService;
@@ -154,6 +156,32 @@ class WebController extends Controller
 
     public function handleAcademyCallback(Request $request)
     {
+        $orderId = $request->order_id;
+        $status = $request->status; // Example: 'completed', 'pending', etc.
+
+        $order = AcademyOrder::where('order_id', $orderId)->where("status", "pending")->first();
+
+        if (!$order) {
+            return response()->json(['message' => 'Callback processed successfully']);
+        }
+        $user_id = $order->user_id;
+        $user = User::where('id', $user_id)->first();
+
+
+        if (in_array($status, ['paid', 'paid_over'])) {
+            // payment received proceed with updating user balance
+            $order->update([
+                "status" => "completed"
+            ]);
+            $user->update([
+                "academy_access"=>"active"
+            ]);
+
+            $academyService = new AcademyService();
+            $academyService->activationMessage($user->tg_id);
+        }
+
+
         return response()->json(['message' => 'Callback processed successfully']);
     }
 

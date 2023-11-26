@@ -31,7 +31,7 @@ trait IndexTrait
 
         // Check if the user sent text is a button.
         if ($this->checkIfTextIsButton($this->user_sent_text)) {
-            Log::error("checked for butn command");
+            // Log::error("checked for butn command");
 
             // run method/commands for buttons here
             $this->runButtonCommand($this->user_sent_text);
@@ -39,6 +39,8 @@ trait IndexTrait
         }
 
         if (isset($command->data) && $this->checkIfCallbackQueryButton($this->user_sent_text)) {
+            // Log::error("checked for callbackquery command");
+
             // Logic to handle callback query button
             $this->runCallbackQueryButtonCommand($this->user_sent_text);
             return true;
@@ -141,7 +143,7 @@ trait IndexTrait
 
     public function continueSessionAction($user_session, $webhookUpdates)
     {
-        Log::error("tried to continue session");
+        // Log::error("tried to continue session");
         $user_session_data = $user_session->getUserSessionData();
 
         if (isset($user_session_data['active_command']) && $user_session_data['active_command'] == "yes") {

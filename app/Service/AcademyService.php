@@ -57,6 +57,12 @@ class AcademyService implements ServiceInterface
 
     }
 
+    public function activationMessage($user_id)
+    {
+        $msg = "Your access to the Korbit Arbitrage Academy has been activated";
+        $this->telegram_bot->sendMessage($user_id,$msg);
+
+    }
     public function continueBotSession($user_id, $user_session, $user_response = "")
     {
         $user_session_data = $user_session->getUserSessionData();
