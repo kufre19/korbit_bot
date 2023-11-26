@@ -15,10 +15,23 @@ class UserService
 
     public static function updateUserEmail($user_id, $email)
     {
-        return  User::where('tg_id', $user_id)->update([
-            "email" => $email
+        // Check if the email exists for a user with a different 'tg_id'
+        $existingUser = User::where('email', $email)->where('tg_id', '!=', $user_id)->first();
+    
+        if ($existingUser) {
+            // Email already exists for another user, return false
+            return false;
+        }
+    
+        // Update the email for the user with the specified 'tg_id'
+        User::where('tg_id', $user_id)->update([
+            'email' => $email
         ]);
+    
+        // Return true to indicate a successful update
+        return true;
     }
+    
 
     public static function registeredNewUser($user_id,)
     {

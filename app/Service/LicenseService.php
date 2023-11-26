@@ -38,14 +38,21 @@ class LicenseService implements ServiceServiceInterface
         $answers_from_session["email"] = $user_response;
 
         if ($step == "store email") {
+            $telegrambot = new TelegramBotService();
+
             // update the list of answers in the session
             $user_session->add_value_to_session("answered_questions", );
 
             // update the user email
-            UserService::updateUserEmail($user_id,$user_response);
+            $updateEmail = UserService::updateUserEmail($user_id,$user_response);
+            if(!$updateEmail)
+            {
+                $msg = "This email is already in use by another user";
+                $telegrambot->sendMessage($user_id,$msg);
+                return true;
+            }
 
             // initialize the TG bot sdk
-            $telegrambot = new TelegramBotService();
             // Send message to user
             $cryptomus_service = new CryptomusService();
             $order_id = Str::uuid();
