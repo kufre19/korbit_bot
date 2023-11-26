@@ -341,7 +341,7 @@ class SwapService implements ServiceServiceInterface
 
 
         // Send the message to the user using Telegram Bot
-        $this->sendMessageToUser($user->tg_id, $message,$inlineKeyboard);
+        $this->telegram_bot->sendMessageToUser($user->tg_id, $message,$inlineKeyboard);
     }
 
     /**
