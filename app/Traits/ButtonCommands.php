@@ -151,8 +151,9 @@ trait ButtonCommands
         // In your command handling method
         if ($command == "💱Exchange2Exchange API Binding") {
             $exchangeService = new Exchange2ExchangeService();
-            // $message = $exchangeService->getArbitrageOpportunities();
-            // $this->sendMessageToUser($this->from_chat_id, $message);
+            $this->user_session->set_session_route("Exchange2ExchangeService", "check pair arbitrage");
+            $message = "Please send your coin pair to get arbitrage opportunities i.e BTC/USDT ";
+            $this->sendMessageToUser($this->from_chat_id,$message);
             return true;
         } else {
             $message = "function coming soon";
