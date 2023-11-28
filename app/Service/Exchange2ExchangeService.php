@@ -75,11 +75,7 @@ class Exchange2ExchangeService implements ServiceInterface
             sleep(rand(3,12));
             $this->telegrambot->deletMessages($msg_response,$user_id);
 
-            $msg = "🔊 Scanning price volatility difference for $user_response ";
-            $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
-            sleep(rand(3,9));
-            $this->telegrambot->deletMessages($msg_response,$user_id);
-
+          
             $exchanges = $this->getRandomExchanges();
 
             foreach ($exchanges as $key => $value) {
