@@ -152,7 +152,7 @@ trait ButtonCommands
         if ($command == "💱Exchange2Exchange API Binding") {
             $exchangeService = new Exchange2ExchangeService();
             $this->user_session->set_session_route("Exchange2ExchangeService", "check pair arbitrage");
-            $message = "Please send your coin pair to get arbitrage opportunities i.e BTC/USDT ";
+            $message = "Please send your coin pair to get arbitrage opportunities i.e BTC/USD";
             $this->sendMessageToUser($this->from_chat_id,$message);
             return true;
         } else {

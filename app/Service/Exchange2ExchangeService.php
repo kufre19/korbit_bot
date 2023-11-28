@@ -126,6 +126,10 @@ class Exchange2ExchangeService implements ServiceInterface
         // Calculate the sell price with a simulated profit margin
         $profitPercent = rand(10, 190) / 10; // 0.1% to 1.9%
         $sellPrice = $currentPrice * (1 + $profitPercent / 100);
+
+        $currentPrice = number_format($currentPrice,2);
+        $sellPrice = number_format($sellPrice,2);
+
     
         return "🏆 ARBITRAGE OPPORTUNITY FOR {$pair}\n"
             . "Buy on: Binance at \${$currentPrice}\n"
