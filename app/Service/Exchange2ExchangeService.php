@@ -65,27 +65,27 @@ class Exchange2ExchangeService implements ServiceInterface
             $pair_two = strtoupper($pairs[1]);
 
             // PROMPTING USER THAT API SEARCHIN IS GOING ON
-            sleep(rand(3,10));
             $msg = "🔎 Searching... ";
             $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
+            sleep(rand(3,10));
             $this->telegrambot->deletMessages($msg_response,$user_id);
 
+            $msg = "🔊 Scanning price volatility difference for $user_response ";
+            $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
             sleep(rand(3,12));
-            $msg = "🔊 Scanning price volatility difference for $user_response ";
-            $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
             $this->telegrambot->deletMessages($msg_response,$user_id);
 
-            sleep(rand(3,9));
             $msg = "🔊 Scanning price volatility difference for $user_response ";
             $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
+            sleep(rand(3,9));
             $this->telegrambot->deletMessages($msg_response,$user_id);
 
             $exchanges = $this->getRandomExchanges();
 
             foreach ($exchanges as $key => $value) {
-                sleep(rand(1,4));
                 $msg = "🤖 Signaling {$value}";
                 $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
+                sleep(rand(1,4));
                 $this->telegrambot->deletMessages($msg_response,$user_id);
 
             }
@@ -100,9 +100,9 @@ class Exchange2ExchangeService implements ServiceInterface
 
             if($this->arbitrage_found)
             {
-                sleep(rand(1,4));
                 $msg = "🎯 Arbitrage Opportunity found...";
                 $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
+                sleep(rand(1,4));
                 $this->telegrambot->deletMessages($msg_response,$user_id);
 
                 $msg_response = $this->telegrambot->sendMessageToUser($user_id, $responseMessage);
