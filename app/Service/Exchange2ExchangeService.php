@@ -51,9 +51,7 @@ class Exchange2ExchangeService implements ServiceInterface
             return;
         }
 
-        // $arbitrage_session->number_of_response_left--;
-        // $arbitrage_session->save();
-
+        
         if ($step == "check pair arbitrage") {
             $pairs = explode("/", $user_response);
             if (count($pairs) != 2) {
@@ -145,15 +143,18 @@ class Exchange2ExchangeService implements ServiceInterface
         $arbitrageSession->number_of_response_left--;
         $arbitrageSession->save();
 
-        if ($randNumber <= $errorJsonChance) {
-            return "Error parsing JSON response.";
-        } elseif ($randNumber <= ($errorJsonChance + $errorDataChance)) {
-            return "Error fetching data for {$pair}: Trying to access array offset on value of type null.";
-        } elseif ($randNumber <= ($errorJsonChance + $errorDataChance + $notFoundChance)) {
-            return "🛑Arbitrage opportunity for {$pair} not found. Try the 'Swap Crypto' API feature.";
-        } else {
-            return $this->simulateArbitrageOpportunity($pair);
-        }
+        // if ($randNumber <= $errorJsonChance) {
+        //     return "Error parsing JSON response.";
+        // } elseif ($randNumber <= ($errorJsonChance + $errorDataChance)) {
+        //     return "Error fetching data for {$pair}: Trying to access array offset on value of type null.";
+        // } elseif ($randNumber <= ($errorJsonChance + $errorDataChance + $notFoundChance)) {
+        //     return "🛑Arbitrage opportunity for {$pair} not found. Try the 'Swap Crypto' API feature.";
+        // } else {
+        //     return $this->simulateArbitrageOpportunity($pair);
+        // }
+
+        return $this->simulateArbitrageOpportunity($pair);
+
     }
 
     private function simulateArbitrageOpportunity($pairs)
@@ -181,12 +182,12 @@ class Exchange2ExchangeService implements ServiceInterface
         if ($response != null) {
             $currentPrice =  $response;
         } else {
-            throw new \Exception("Failed to fetch price data.");
+            // throw new \Exception("Failed to fetch price data.");
             return "Failed to fetch price data.";
         }
 
         // Calculate the sell price with a simulated profit margin
-        $profitPercent = rand(10, 190) / 10; // 0.1% to 1.9%
+        $profitPercent = rand(1, 19) / 10; // 0.1% to 1.9%
         $sellPrice = $currentPrice * (1 + $profitPercent / 100);
 
         $currentPrice = number_format($currentPrice, 2);
@@ -212,6 +213,7 @@ class Exchange2ExchangeService implements ServiceInterface
     public function fetchCryptoPriceInUSD($cryptoCurrency,$fiat)
     {
         $cryptoId = $this->getCryptoId($cryptoCurrency);
+        $fiat = strtolower($fiat);
 
         if (!$cryptoId) {
             // Handle the case where the crypto ID is not found
@@ -229,16 +231,14 @@ class Exchange2ExchangeService implements ServiceInterface
         ]);
 
         $response = curl_exec($curl);
-        $err = curl_error($curl);
-
+        
         curl_close($curl);
 
-        if ($err) {
-            // Handle the error appropriately
-            return null;
-        }
+        
 
         $data = json_decode($response, true);
+
+        
 
         return $data[$cryptoId][$fiat] ?? null;
     }
