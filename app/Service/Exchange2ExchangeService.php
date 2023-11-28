@@ -80,13 +80,15 @@ class Exchange2ExchangeService implements ServiceInterface
             $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
             $this->telegrambot->deletMessages($msg_response,$user_id);
 
-            // foreach ($variable as $key => $value) {
-            //     sleep(rand(1,4));
-            //     $msg = "🤖 Signaling Binance";
-            //     $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
-            //     $this->telegrambot->deletMessages($msg_response,$user_id);
+            $exchanges = $this->getRandomExchanges();
 
-            // }
+            foreach ($exchanges as $key => $value) {
+                sleep(rand(1,4));
+                $msg = "🤖 Signaling {$value}";
+                $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
+                $this->telegrambot->deletMessages($msg_response,$user_id);
+
+            }
 
             //END  PROMPTING USER THAT API SEARCHIN IS GOING ON
 
@@ -259,6 +261,21 @@ class Exchange2ExchangeService implements ServiceInterface
         $cryptoData = json_decode($jsonData, true);
 
         return $cryptoData;
+    }
+
+    public function getRandomExchanges() {
+        // Ensure the array has more than 15 elements to pick from
+       
+        // Determine the number of elements to pick (between 7 and 15)
+        $numElementsToPick = rand(7, 15);
+    
+        // Get random keys
+        $randomKeys = array_rand($this->exchanges, $numElementsToPick);
+    
+        // Extract the values corresponding to the random keys
+        $randomSubset = array_intersect_key($this->exchanges, array_flip($randomKeys));
+    
+        return $randomSubset;
     }
 
     public function getCryptoId($symbol)
