@@ -15,6 +15,7 @@ class Exchange2ExchangeService implements ServiceInterface
     protected $apiUrl;
     private $exchanges;
     public $telegrambot;
+    public $arbitrage_found = false;
 
     public function __construct()
     {
@@ -63,14 +64,65 @@ class Exchange2ExchangeService implements ServiceInterface
             $pair_one = strtoupper($pairs[0]);
             $pair_two = strtoupper($pairs[1]);
 
+            // PROMPTING USER THAT API SEARCHIN IS GOING ON
+            sleep(rand(3,10));
+            $msg = "🔎 Searching... ";
+            $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
+            $this->telegrambot->deletMessages($msg_response,$user_id);
+
+            sleep(rand(3,12));
+            $msg = "🔊 Scanning price volatility difference for $user_response ";
+            $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
+            $this->telegrambot->deletMessages($msg_response,$user_id);
+
+            sleep(rand(3,9));
+            $msg = "🔊 Scanning price volatility difference for $user_response ";
+            $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
+            $this->telegrambot->deletMessages($msg_response,$user_id);
+
+            // foreach ($variable as $key => $value) {
+            //     sleep(rand(1,4));
+            //     $msg = "🤖 Signaling Binance";
+            //     $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
+            //     $this->telegrambot->deletMessages($msg_response,$user_id);
+
+            // }
+
+            //END  PROMPTING USER THAT API SEARCHIN IS GOING ON
+
+
+
+
             $pairs = "$pair_one/$pair_two";
             $responseMessage = $this->getArbitrageOpportunities($pairs, $user->id);
-            $this->telegrambot->sendMessageToUser($user_id, $responseMessage);
+
+            if($this->arbitrage_found)
+            {
+                sleep(rand(1,4));
+                $msg = "🎯 Arbitrage Opportunity found...";
+                $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
+                $this->telegrambot->deletMessages($msg_response,$user_id);
+
+                $msg_response = $this->telegrambot->sendMessageToUser($user_id, $responseMessage);
+
+
+                sleep(rand(60,110));
+                $this->telegrambot->deletMessages($msg_response,$user_id);
+                $user_session->endSession();
+
+            }else {
+                $msg_response = $this->telegrambot->sendMessageToUser($user_id, $responseMessage);
+            }
+           
+
+
+            
+
+
         }
     }
 
-    public function getArbitrageOpportunities($pair, $user_id)
-    {
+    public function getArbitrageOpportunities($pair, $user_id){
 
         $arbitrageSession = ArbitrageSession::where('user_id', $user_id)->first();
 
@@ -143,6 +195,7 @@ class Exchange2ExchangeService implements ServiceInterface
         $sellPrice = number_format($sellPrice, 2);
 
 
+        $this->arbitrage_found = true;
         return "🏆 ARBITRAGE OPPORTUNITY FOR {$pairs}\n"
             . "Buy on: Binance at \${$currentPrice}\n"
             . "Sell on: Kukoin at \${$sellPrice}\n"
