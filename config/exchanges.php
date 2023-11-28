@@ -1,0 +1,33 @@
+<?php
+
+return $cryptoExchanges = [
+    "Bitkub",
+    "OKX",
+    "Coinbase",
+    "Bitso",
+    "Currency.com",
+    "Phemex",
+    "Poloniex",
+    "C-Patex",
+    "Bitfinex",
+    "Coinsbit",
+    "BITEXLIVE",
+    "Bybit",
+    "HTX",
+    "WhiteBIT",
+    "Kukoin",
+    "Bullish",
+    "Citex",
+    "Bitbank",
+    "BitMEX",
+    "Bitstamp",
+    "Gemini",
+    "Zaif",
+    "Coinone",
+    "Kraken",
+    "Tidex",
+    "Bitvavo", 
+    "CT.com",
+    "XT.COM",
+    "Bithumb"
+];

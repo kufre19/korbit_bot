@@ -2,104 +2,162 @@
 
 namespace App\Service;
 
+use App\Models\ArbitrageSession;
 use App\Traits\SendMessages;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
+use Carbon\Carbon;
 
 class Exchange2ExchangeService implements ServiceInterface
 {
     use SendMessages;
     protected $apiKey;
     protected $apiUrl;
-    private $exchanges = ['bitstamp', 'cex', 'exmo', 'hitbtc']; // Add more exchanges as needed
+    private $exchanges;
+    public $telegrambot;
 
     public function __construct()
     {
-        
+        $this->exchanges = Config::get("exchanges");
+        $this->telegrambot = new TelegramBotService();
     }
 
     public function continueBotSession($user_id, $user_session, $user_response = "")
     {
-         // Fetch the current session data for the user
-         $user_session_data = $user_session->getUserSessionData();
-         $step = $user_session_data['step'] ?? null;
+        // Fetch the current session data for the user
+        $user_session_data = $user_session->getUserSessionData();
+        $step = $user_session_data['step'] ?? null;
 
-         
-         if($step == "check pair arbitrage")
-         {
+        $user = UserService::fetchUserByTgID($user_id);
+        $responses = rand(10, 15);
+        $arbitrage_session = ArbitrageSession::firstOrCreate(
+            ['user_id' => $user->id],
+            ['restart_timer' => time() + 86400, 'number_of_response_left' => $responses ,"total_responses"=>$responses]
+        );
 
-         }
-    }
+        // Check if the user's daily limit is reached or reset timer if needed
+        if (time() >= $arbitrage_session->restart_timer) {
+            $arbitrage_session->restart_timer = time() + 86400; // Reset the timer for the next day
+            $responses = rand(10, 15);
+            $arbitrage_session->number_of_response_left = $responses; // Reset the response count
+            $arbitrage_session->total_responses = $responses; // Reset the response count
+            $arbitrage_session->save();
 
 
-
-     /**
-     * Fetch and process arbitrage opportunities for a given pair.
-     *
-     * @param string $pair The cryptocurrency pair (e.g., 'BTC/USDT').
-     * @return string The message to send to the user.
-     */
-    public function getArbitrageOpportunities($pair)
-    {
-        // Simulated delay to mimic API call
-        sleep(rand(2, 5)); // Random delay between 2 to 5 seconds
-
-        // Randomly decide if an error should be simulated
-        $simulateError = rand(1, 10) <= 3; // 30% chance of an error
-
-        if ($simulateError) {
-            return $this->simulateErrorResponse();
         }
 
-        // Proceed with fetching data (You can replace this with actual API calls)
-        $data = $this->fetchData($pair);
+        if ($arbitrage_session->number_of_response_left <= 0) {
+            $this->telegrambot->sendMessageToUser($user_id, "You have reached your daily limit for using Exchange2Exchange API Binding.");
+            $user_session->endSession();
+            return;
+        }
 
-        // Process the fetched data to find arbitrage opportunities
-        return $this->processData($data, $pair);
-    }
+        // $arbitrage_session->number_of_response_left--;
+        // $arbitrage_session->save();
 
-    private function fetchData($pair)
-    {
-        // Implement the logic to fetch data from the API
-        // For now, returning simulated data
-        return [
-            'buyPrice' => rand(10000, 11000), // Simulated price
-            'sellPrice' => rand(11001, 12000), // Simulated price
-            'buyExchange' => 'Binance',
-            'sellExchange' => 'Kukoin',
-        ];
-    }
+        if ($step == "check pair arbitrage") {
+            $pairs = explode("/", $user_response);
+            if (count($pairs) != 2) {
+                $this->telegrambot->sendMessageToUser($user_id, "Invalid pair format. Please enter in format BTC/USD.");
+                return;
+            }
 
-    private function processData($data, $pair)
-    {
-        // Implement the logic to process the fetched data
-        $profit = (($data['sellPrice'] - $data['buyPrice']) / $data['buyPrice']) * 100;
-        $profit = number_format($profit, 2);
+            $pair_one = strtoupper($pairs[0]);
+            $pair_two = strtoupper($pairs[1]);
 
-        return "🏆 ARBITRAGE OPPORTUNITY FOR {$pair}\n"
-             . "Buy on: {$data['buyExchange']} at \${$data['buyPrice']}\n"
-             . "Sell on: {$data['sellExchange']} at \${$data['sellPrice']}\n"
-             . "🥇Potential profit: {$profit}%\n"
-             . "⚠️ WARNING: Be aware that cryptocurrencies are subject to rapid price fluctuations.";
-    }
-
-    private function simulateErrorResponse()
-    {
-        // Implement the logic to return a simulated error message
-        $errorType = rand(1, 3); // Random error type
-
-        switch ($errorType) {
-            case 1:
-                return "Error fetching data: Trying to access array offset on value of type null.";
-            case 2:
-                return "Error parsing JSON response.";
-            case 3:
-                return "🛑Arbitrage opportunity not found. Try the 'Swap Crypto' API feature.";
+            $pairs = "$pair_one/$pair_two";
+            $responseMessage = $this->getArbitrageOpportunities($pairs,$user->id);
+            $this->telegrambot->sendMessageToUser($user_id, $responseMessage);
         }
     }
 
+    public function getArbitrageOpportunities($pair, $user_id)
+    {
     
-   
+        $arbitrageSession = ArbitrageSession::where('user_id', $user_id)->first();
+        
+        if (!$arbitrageSession || $arbitrageSession->number_of_response_left <= 0) {
+            // Handle case where the user has no more responses left for the day
+            return "You have reached your daily limit for arbitrage opportunities. Please try again tomorrow.";
+        }
+    
+        $totalResponsesForToday = $arbitrageSession->total_responses; // Total responses assigned for today
+        $responsesLeft = $arbitrageSession->number_of_response_left;
+    
+        // Calculate percentages based on remaining responses
+        $errorJsonChance = round(0.2 * $totalResponsesForToday);
+        $errorDataChance = round(0.2 * $totalResponsesForToday);
+        $notFoundChance = round(0.1 * $totalResponsesForToday);
+        $successChance = $responsesLeft - ($errorJsonChance + $errorDataChance + $notFoundChance);
+    
+        // Generate a random number within the range of remaining responses
+        $randNumber = rand(1, $responsesLeft);
+    
+        // Decrement the number of responses left
+        $arbitrageSession->number_of_response_left--;
+        $arbitrageSession->save();
 
-   
-  
+        if ($randNumber <= $errorJsonChance) {
+            return "Error parsing JSON response.";
+        } elseif ($randNumber <= ($errorJsonChance + $errorDataChance)) {
+            return "Error fetching data for {$pair}: Trying to access array offset on value of type null.";
+        } elseif ($randNumber <= ($errorJsonChance + $errorDataChance + $notFoundChance)) {
+            return "🛑Arbitrage opportunity for {$pair} not found. Try the 'Swap Crypto' API feature.";
+        } else {
+            return $this->simulateArbitrageOpportunity($pair);
+        }
+    
+        
+    }
+    
+    private function simulateArbitrageOpportunity($pair)
+    {
+        // Extract the base and quote currencies from the pair
+        [$baseCurrency, $quoteCurrency] = explode('/', $pair);
+    
+        if ($quoteCurrency !== 'USD') {
+            // Handle cases where the quote currency is not USD
+            return "Currently, only pairs with USD as the quote currency are supported.";
+        }
+    
+        // Fetch the current price for the base currency in terms of USD
+        $currentPrice = $this->fetchCurrentPrice($baseCurrency);
+    
+        // Calculate the sell price with a simulated profit margin
+        $profitPercent = rand(10, 190) / 10; // 0.1% to 1.9%
+        $sellPrice = $currentPrice * (1 + $profitPercent / 100);
+    
+        return "🏆 ARBITRAGE OPPORTUNITY FOR {$pair}\n"
+            . "Buy on: Binance at \${$currentPrice}\n"
+            . "Sell on: Kukoin at \${$sellPrice}\n"
+            . "🥇Potential profit: {$profitPercent}%\n"
+            . "⚠️ WARNING: Be aware that cryptocurrencies are subject to rapid price fluctuations.";
+    }
+    
+    private function fetchCurrentPrice($currency)
+    {
+        // Make an HTTP request to Blockchain.com API for BTC and convert to the required currency
+        // $btcToCurrencyUrl = "https://blockchain.info/tobtc?currency={$currency}&value=1";
+        // $btcResponse = file_get_contents($btcToCurrencyUrl);
+    
+        // if ($btcResponse === false) {
+        //     // Handle the error appropriately
+        //     throw new \Exception("Failed to fetch current price for {$currency}.");
+        // }
+    
+        // Convert the response to the required currency, assuming 1 BTC to USD rate
+        // $btcToUsd = $this->fetchBtcToUsd(); // Implement this method to get BTC to USD conversion rate
+        // return 1 / $btcResponse * $btcToUsd; // Convert from BTC to the required currency
+
+        return 326000;
+    }
+    
+    private function fetchBtcToUsd()
+    {
+        // Fetch the current BTC to USD conversion rate
+        // Implement the logic to fetch this data, e.g., from another API or a stored value
+        // For this example, we'll return a simulated rate
+        return 20000; // Example rate, replace with actual data fetching logic
+    }
+    
 }
