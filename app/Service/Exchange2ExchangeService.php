@@ -32,7 +32,7 @@ class Exchange2ExchangeService implements ServiceInterface
         $responses = rand(10, 15);
         $arbitrage_session = ArbitrageSession::firstOrCreate(
             ['user_id' => $user->id],
-            ['restart_timer' => time() + 86400, 'number_of_response_left' => $responses ,"total_responses"=>$responses]
+            ['restart_timer' => time() + 86400, 'number_of_response_left' => $responses, "total_responses" => $responses]
         );
 
         // Check if the user's daily limit is reached or reset timer if needed
@@ -42,8 +42,6 @@ class Exchange2ExchangeService implements ServiceInterface
             $arbitrage_session->number_of_response_left = $responses; // Reset the response count
             $arbitrage_session->total_responses = $responses; // Reset the response count
             $arbitrage_session->save();
-
-
         }
 
         if ($arbitrage_session->number_of_response_left <= 0) {
@@ -66,33 +64,33 @@ class Exchange2ExchangeService implements ServiceInterface
             $pair_two = strtoupper($pairs[1]);
 
             $pairs = "$pair_one/$pair_two";
-            $responseMessage = $this->getArbitrageOpportunities($pairs,$user->id);
+            $responseMessage = $this->getArbitrageOpportunities($pairs, $user->id);
             $this->telegrambot->sendMessageToUser($user_id, $responseMessage);
         }
     }
 
     public function getArbitrageOpportunities($pair, $user_id)
     {
-    
+
         $arbitrageSession = ArbitrageSession::where('user_id', $user_id)->first();
-        
+
         if (!$arbitrageSession || $arbitrageSession->number_of_response_left <= 0) {
             // Handle case where the user has no more responses left for the day
             return "You have reached your daily limit for arbitrage opportunities. Please try again tomorrow.";
         }
-    
+
         $totalResponsesForToday = $arbitrageSession->total_responses; // Total responses assigned for today
         $responsesLeft = $arbitrageSession->number_of_response_left;
-    
+
         // Calculate percentages based on remaining responses
         $errorJsonChance = round(0.2 * $totalResponsesForToday);
         $errorDataChance = round(0.2 * $totalResponsesForToday);
         $notFoundChance = round(0.1 * $totalResponsesForToday);
         $successChance = $responsesLeft - ($errorJsonChance + $errorDataChance + $notFoundChance);
-    
+
         // Generate a random number within the range of remaining responses
         $randNumber = rand(1, $responsesLeft);
-    
+
         // Decrement the number of responses left
         $arbitrageSession->number_of_response_left--;
         $arbitrageSession->save();
@@ -106,62 +104,119 @@ class Exchange2ExchangeService implements ServiceInterface
         } else {
             return $this->simulateArbitrageOpportunity($pair);
         }
-    
-        
     }
-    
-    private function simulateArbitrageOpportunity($pair)
+
+    private function simulateArbitrageOpportunity($pairs)
     {
         // Extract the base and quote currencies from the pair
-        [$baseCurrency, $quoteCurrency] = explode('/', $pair);
-    
-        if ($quoteCurrency !== 'USD') {
+        $pair_split = explode('/', $pairs);
+
+
+        if (!in_array("USD", $pair_split)) {
             // Handle cases where the quote currency is not USD
             return "Currently, only pairs with USD as the quote currency are supported.";
         }
-    
+
+        if ($pair_split[0] == "USD") {
+            $cryptoCurrency = $pair_split[1];
+            $fiat = $pair_split[0];
+        } else {
+            $cryptoCurrency = $pair_split[0];
+            $fiat = $pair_split[1];
+        }
+
         // Fetch the current price for the base currency in terms of USD
-        $currentPrice = $this->fetchCurrentPrice($baseCurrency);
-    
+        $response = $this->fetchCryptoPriceInUSD($cryptoCurrency,$fiat);
+
+        if ($response != null) {
+            $currentPrice =  $response;
+        } else {
+            throw new \Exception("Failed to fetch price data.");
+            return "Failed to fetch price data.";
+        }
+
         // Calculate the sell price with a simulated profit margin
         $profitPercent = rand(10, 190) / 10; // 0.1% to 1.9%
         $sellPrice = $currentPrice * (1 + $profitPercent / 100);
 
-        $currentPrice = number_format($currentPrice,2);
-        $sellPrice = number_format($sellPrice,2);
+        $currentPrice = number_format($currentPrice, 2);
+        $sellPrice = number_format($sellPrice, 2);
 
-    
-        return "🏆 ARBITRAGE OPPORTUNITY FOR {$pair}\n"
+
+        return "🏆 ARBITRAGE OPPORTUNITY FOR {$pairs}\n"
             . "Buy on: Binance at \${$currentPrice}\n"
             . "Sell on: Kukoin at \${$sellPrice}\n"
             . "🥇Potential profit: {$profitPercent}%\n"
             . "⚠️ WARNING: Be aware that cryptocurrencies are subject to rapid price fluctuations.";
     }
-    
-    private function fetchCurrentPrice($currency)
-    {
-        // Make an HTTP request to Blockchain.com API for BTC and convert to the required currency
-        // $btcToCurrencyUrl = "https://blockchain.info/tobtc?currency={$currency}&value=1";
-        // $btcResponse = file_get_contents($btcToCurrencyUrl);
-    
-        // if ($btcResponse === false) {
-        //     // Handle the error appropriately
-        //     throw new \Exception("Failed to fetch current price for {$currency}.");
-        // }
-    
-        // Convert the response to the required currency, assuming 1 BTC to USD rate
-        // $btcToUsd = $this->fetchBtcToUsd(); // Implement this method to get BTC to USD conversion rate
-        // return 1 / $btcResponse * $btcToUsd; // Convert from BTC to the required currency
 
-        return 326000;
-    }
-    
-    private function fetchBtcToUsd()
+
+
+    /**
+     * Fetch the current price of a cryptocurrency in USD using cURL.
+     *
+     * @param string $cryptoCurrency The symbol of the cryptocurrency (e.g., 'BTC').
+     * @return float|null The current price in USD or null if an error occurs.
+     */
+    public function fetchCryptoPriceInUSD($cryptoCurrency,$fiat)
     {
-        // Fetch the current BTC to USD conversion rate
-        // Implement the logic to fetch this data, e.g., from another API or a stored value
-        // For this example, we'll return a simulated rate
-        return 20000; // Example rate, replace with actual data fetching logic
+        $cryptoId = $this->getCryptoId($cryptoCurrency);
+
+        if (!$cryptoId) {
+            // Handle the case where the crypto ID is not found
+            return null;
+        }
+
+        $url = "https://api.coingecko.com/api/v3/simple/price?ids={$cryptoId}&vs_currencies={$fiat}";
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, [
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 30
+        ]);
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+            // Handle the error appropriately
+            return null;
+        }
+
+        $data = json_decode($response, true);
+
+        return $data[$cryptoId][$fiat] ?? null;
     }
-    
+
+
+    protected function loadCryptoData()
+    {
+        $filePath = public_path('crypto_id.json');
+
+        // Check if the file exists
+        if (!file_exists($filePath)) {
+            throw new \Exception("Crypto data file not found.");
+        }
+
+        $jsonData = file_get_contents($filePath);
+        $cryptoData = json_decode($jsonData, true);
+
+        return $cryptoData;
+    }
+
+    public function getCryptoId($symbol)
+    {
+        $cryptoData =  $this->loadCryptoData();
+        foreach ($cryptoData as $crypto) {
+            if (strtoupper($crypto['symbol']) === strtoupper($symbol)) {
+                return $crypto['id'];
+            }
+        }
+
+        return null; // Return null if the symbol is not found
+    }
 }
