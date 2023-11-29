@@ -16,6 +16,9 @@ class Exchange2ExchangeService implements ServiceInterface
     private $exchanges;
     public $telegrambot;
     public $arbitrage_found = false;
+    public $exchange_one;
+    public $exchange_two;
+
 
     public function __construct()
     {
@@ -199,8 +202,8 @@ class Exchange2ExchangeService implements ServiceInterface
 
         $this->arbitrage_found = true;
         return "🏆 ARBITRAGE OPPORTUNITY FOR {$pairs}\n"
-            . "Buy on: Binance at \${$currentPrice}\n"
-            . "Sell on: Kukoin at \${$sellPrice}\n"
+            . "Buy on: {$this->exchange_one} at \${$currentPrice}\n"
+            . "Sell on: {$this->exchange_two} at \${$sellPrice}\n"
             . "🥇Potential profit: {$profitPercent}%\n"
             . "⚠️ WARNING: Be aware that cryptocurrencies are subject to rapid price fluctuations.";
     }
@@ -264,7 +267,7 @@ class Exchange2ExchangeService implements ServiceInterface
 
     public function getRandomExchanges() {
         // Ensure the array has more than 15 elements to pick from
-       
+    
         // Determine the number of elements to pick (between 7 and 15)
         $numElementsToPick = rand(7, 15);
     
@@ -274,8 +277,18 @@ class Exchange2ExchangeService implements ServiceInterface
         // Extract the values corresponding to the random keys
         $randomSubset = array_intersect_key($this->exchanges, array_flip($randomKeys));
     
-        return $randomSubset;
+        // Pick two unique random keys from the subset
+        $selectedKeys = array_rand($randomSubset, 2);
+    
+        // Assign the values to properties
+        $this->exchange_one = $randomSubset[$selectedKeys[0]];
+        $this->exchange_two = $randomSubset[$selectedKeys[1]];
+    
+        return $randomSubset; // or you can return just the two selected exchanges
     }
+    
+
+    
 
     public function getCryptoId($symbol)
     {
