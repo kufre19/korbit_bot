@@ -106,10 +106,10 @@ class Exchange2ExchangeService implements ServiceInterface
 
 
 
-                http_response_code(200);
-                echo "ok";
-                sleep(rand(60,110));
-                $this->telegrambot->deletMessages($msg_response,$user_id);
+                // http_response_code(200);
+                // echo "ok";
+                // sleep(rand(60,110));
+                // $this->telegrambot->deletMessages($msg_response,$user_id);
                 $user_session->endSession();
 
             }else {
