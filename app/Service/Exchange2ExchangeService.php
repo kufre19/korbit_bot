@@ -110,6 +110,7 @@ class Exchange2ExchangeService implements ServiceInterface
                 // echo "ok";
                 // sleep(rand(60,110));
                 // $this->telegrambot->deletMessages($msg_response,$user_id);
+                
                 $user_session->endSession();
 
             }else {
