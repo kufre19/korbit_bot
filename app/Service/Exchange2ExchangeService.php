@@ -62,7 +62,7 @@ class Exchange2ExchangeService implements ServiceInterface
             $pair_one = strtoupper($pairs[0]);
             $pair_two = strtoupper($pairs[1]);
 
-            PROMPTING USER THAT API SEARCHIN IS GOING ON
+            // PROMPTING USER THAT API SEARCHIN IS GOING ON
             $msg = "🔎 Searching... ";
             $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
             sleep(rand(3,10));
