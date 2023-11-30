@@ -9,6 +9,7 @@ class ArbitrageSession extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'restart_timer', 'user_id', 'number_of_response_left', 'total_responses'
+        'restart_timer', 'user_id', 'number_of_response_left', 'total_responses',
+        'error_json_chance','error_data_chance','not_found_chance','success_chance'
     ];
 }

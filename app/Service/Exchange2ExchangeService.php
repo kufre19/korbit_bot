@@ -34,10 +34,7 @@ class Exchange2ExchangeService implements ServiceInterface
 
         $user = UserService::fetchUserByTgID($user_id);
         $responses = rand(10, 15);
-        $arbitrage_session = ArbitrageSession::firstOrCreate(
-            ['user_id' => $user->id],
-            ['restart_timer' => time() + 86400, 'number_of_response_left' => $responses, "total_responses" => $responses]
-        );
+        $arbitrage_session = $this->initializeDailySession($user->id,$responses);
 
         // Check if the user's daily limit is reached or reset timer if needed
         if (time() >= $arbitrage_session->restart_timer) {
@@ -65,7 +62,7 @@ class Exchange2ExchangeService implements ServiceInterface
             $pair_one = strtoupper($pairs[0]);
             $pair_two = strtoupper($pairs[1]);
 
-            // PROMPTING USER THAT API SEARCHIN IS GOING ON
+            PROMPTING USER THAT API SEARCHIN IS GOING ON
             $msg = "🔎 Searching... ";
             $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
             sleep(rand(3,10));
@@ -125,45 +122,71 @@ class Exchange2ExchangeService implements ServiceInterface
         }
     }
 
-    public function getArbitrageOpportunities($pair, $user_id){
-
-        $arbitrageSession = ArbitrageSession::where('user_id', $user_id)->first();
-
-        if (!$arbitrageSession || $arbitrageSession->number_of_response_left <= 0) {
-            // Handle case where the user has no more responses left for the day
-            return "You have reached your daily limit for arbitrage opportunities. Please try again tomorrow.";
-        }
-
-        $totalResponsesForToday = $arbitrageSession->total_responses; // Total responses assigned for today
-        $responsesLeft = $arbitrageSession->number_of_response_left;
-
-        // Calculate percentages based on remaining responses
-        $errorJsonChance = round(0.2 * $totalResponsesForToday);
-        $errorDataChance = round(0.2 * $totalResponsesForToday);
-        $notFoundChance = round(0.1 * $totalResponsesForToday);
-        $successChance = $responsesLeft - ($errorJsonChance + $errorDataChance + $notFoundChance);
-
-        // Generate a random number within the range of remaining responses
-        $randNumber = rand(1, $responsesLeft);
-
-        // Decrement the number of responses left
-        $arbitrageSession->number_of_response_left--;
-        $arbitrageSession->save();
-
-        // if ($randNumber <= $errorJsonChance) {
-        //     return "Error parsing JSON response.";
-        // } elseif ($randNumber <= ($errorJsonChance + $errorDataChance)) {
-        //     return "Error fetching data for {$pair}: Trying to access array offset on value of type null.";
-        // } elseif ($randNumber <= ($errorJsonChance + $errorDataChance + $notFoundChance)) {
-        //     return "🛑Arbitrage opportunity for {$pair} not found. Try the 'Swap Crypto' API feature.";
-        // } else {
-        //     return $this->simulateArbitrageOpportunity($pair);
-        // }
-
-        return $this->simulateArbitrageOpportunity($pair);
-
+    
+    public function initializeDailySession($user_id, $totalResponses) {
+        $errorJsonChance = round(0.2 * $totalResponses); 
+        $errorDataChance = round(0.2 * $totalResponses); 
+        $notFoundChance = round(0.1 * $totalResponses); 
+        $successChance = $totalResponses - ($errorJsonChance + $errorDataChance + $notFoundChance);
+    
+        return ArbitrageSession::firstOrCreate( 
+        ['user_id' => $user_id],
+        ['restart_timer' => time() + 86400,
+         'number_of_response_left' => $totalResponses, 
+         "total_responses" => $totalResponses,
+         'error_json_chance' => $errorJsonChance,
+         'error_data_chance' => $errorDataChance,
+         'not_found_chance' => $notFoundChance,
+         'success_chance' => $successChance
+        ],
+        
+        );
     }
-
+    
+    public function getArbitrageOpportunities($pair, $user_id) {
+        $session = ArbitrageSession::where('user_id', $user_id)->first();
+    
+        if (!$session || $session->number_of_response_left <= 0) {
+            return "Daily limit reached. Try again tomorrow.";
+        }
+    
+        $probabilities = [
+            'error_json' => $session->error_json_chance,
+            'error_data' => $session->error_data_chance,
+            'not_found' => $session->not_found_chance,
+            'success' => $session->success_chance,
+        ];
+    
+        // Filter out the probabilities that are zero
+        $availableProbabilities = array_filter($probabilities, function ($chance) {
+            return $chance > 0;
+        });
+    
+        if (empty($availableProbabilities)) {
+            return "Daily limit reached. Try again tomorrow....";
+        }
+    
+        // Randomly pick a response type
+        $responseType = array_rand($availableProbabilities);
+    
+        // Deduct from the selected probability and update session
+        $session->{$responseType . '_chance'}--;
+        $session->number_of_response_left--;
+        $session->save();
+    
+        // Generate the response based on the selected type
+        switch ($responseType) {
+            case 'error_json':
+                return "Error parsing JSON response.";
+            case 'error_data':
+                return "Error fetching data for {$pair}: Trying to access array offset on value of type null.";
+            case 'not_found':
+                return "🛑Arbitrage opportunity for {$pair} not found. Try the 'Swap Crypto' API feature.";
+            case 'success':
+                return $this->simulateArbitrageOpportunity($pair);
+        }
+    }
+    
     private function simulateArbitrageOpportunity($pairs)
     {
         // Extract the base and quote currencies from the pair
