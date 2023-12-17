@@ -10,6 +10,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Filament\Models\Contracts\FilamentUser;
 use App\Service\TelegramBotService;
+use App\Service\AcademyService;
+
 
 
 
@@ -77,6 +79,11 @@ class User extends Authenticatable implements FilamentUser
             if ($user->wasChanged('license') && $user->license === 'active') {
                 $telegramService = new TelegramBotService();
                 $telegramService->updateNewRegisteredUser($user->tg_id);
+            }
+
+            if ($user->wasChanged('academy_access') && $user->license === 'active') {
+                $telegramService = new AcademyService();
+                $telegramService->activationMessage($user->tg_id);
             }
         });
     }

@@ -24,8 +24,8 @@ class SwapOrderResource extends Resource
         return $form
         ->schema([
             Forms\Components\TextInput::make('order_id')->required(),
-            Forms\Components\BelongsToSelect::make('user_id')
-                ->relationship('user', 'name'), // Assuming 'name' is a field in your User model
+            // Forms\Components\BelongsToSelect::make('user_id')
+            //     ->relationship('user', 'tg_id'), // Assuming 'name' is a field in your User model
             Forms\Components\TextInput::make('from_asset')->required(),
             Forms\Components\TextInput::make('to_asset')->required(),
             Forms\Components\TextInput::make('amount')->numeric()->required(),
@@ -34,7 +34,6 @@ class SwapOrderResource extends Resource
                 ->options([
                     'pending' => 'Pending',
                     'completed' => 'Completed',
-                    // Add other statuses as needed
                 ])->required(),
         ]);
     }
@@ -44,7 +43,7 @@ class SwapOrderResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('order_id'),
-                Tables\Columns\TextColumn::make('user.name')->label('User'),
+                Tables\Columns\TextColumn::make('user.tg_id')->label('TG ID'),
                 Tables\Columns\TextColumn::make('from_asset'),
                 Tables\Columns\TextColumn::make('to_asset'),
                 Tables\Columns\TextColumn::make('amount'),
@@ -69,7 +68,7 @@ class SwapOrderResource extends Resource
     {
         return [
             'index' => Pages\ListSwapOrders::route('/'),
-            'create' => Pages\CreateSwapOrder::route('/create'),
+            // 'create' => Pages\CreateSwapOrder::route('/create'),
             'edit' => Pages\EditSwapOrder::route('/{record}/edit'),
         ];
     }    

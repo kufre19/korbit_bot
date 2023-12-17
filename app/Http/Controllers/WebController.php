@@ -106,7 +106,7 @@ class WebController extends Controller
                 "status" => "completed"
             ]);
             $wallet_service->updateBalance($user_id, $order->to_asset, $order->amount_to_receive);
-            $this->logTransaction($user_id, $order->from_asset, $order->to_asset, $order->amount, $order->amount_to_receive);
+            WalletService::logTransaction($user_id, $order->from_asset, $order->to_asset, $order->amount, $order->amount_to_receive);
             $swapService = new SwapService();
             $swapService->notifySuccessfullSwap($order);
 
@@ -189,17 +189,7 @@ class WebController extends Controller
         return response()->json(['message' => 'Callback processed successfully']);
     }
 
-    private function logTransaction($userId, $fromAsset, $toAsset, $amount, $receivedAmount)
-    {
-        // Log the transaction details
-        TransactionLog::create([
-            'user_id' => $userId,
-            'from_asset' => $fromAsset,
-            'to_asset' => $toAsset,
-            'amount' => $amount,
-            'received_amount' => $receivedAmount
-        ]);
-    }
+    
 
 
     // for testing purposes

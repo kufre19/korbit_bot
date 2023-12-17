@@ -5,6 +5,8 @@ namespace App\Service;
 use App\Models\Wallet;
 use Illuminate\Support\Facades\DB;
 use Cryptomus\Api\Client;
+use App\Models\TransactionLog;
+
 
 class WalletService
 {
@@ -140,4 +142,16 @@ class WalletService
               return false;
           }
       }
+
+      public static function logTransaction($userId, $fromAsset, $toAsset, $amount, $receivedAmount)
+    {
+        // Log the transaction details
+        TransactionLog::create([
+            'user_id' => $userId,
+            'from_asset' => $fromAsset,
+            'to_asset' => $toAsset,
+            'amount' => $amount,
+            'received_amount' => $receivedAmount
+        ]);
+    }
 }
