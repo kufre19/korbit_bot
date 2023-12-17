@@ -146,6 +146,8 @@ trait ButtonCommands
             $this->sendMessageToUser($this->from_chat_id, $rates, $inline);
 
             $this->user_session->set_session_route("ArbitrageCalculatorService", "get rate amount");
+            return true;
+
         }
 
         // In your command handling method
