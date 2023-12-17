@@ -24,6 +24,9 @@ class User extends Authenticatable implements FilamentUser
         'tg_id',
         'referral_code',
         'name',
+        'license',
+        'academy_access',
+        'referral_code',
         'email',
         'password'
     ];
@@ -62,6 +65,22 @@ class User extends Authenticatable implements FilamentUser
     public function getFilamentName(): string
     {
         return "{$this->name}";
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::updated(function ($user) {
+            // Check what was changed
+            $changes = $user->getChanges();
+
+            // Run custom method
+            // $user->customAfterUpdateMethod();
+
+            // Optionally log the changes
+            \Log::info('User updated:', $changes);
+        });
     }
 
 }
