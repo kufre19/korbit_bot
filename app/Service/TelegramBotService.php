@@ -27,7 +27,6 @@ class TelegramBotService{
 
     public function updateNewRegisteredUser($tg_id)
     {
-
         // creat and send the updated keyboard to user
         $new_keyboard = $this->updatedMainReplyKeyboard();
         $msg = "Congratulation your license has been activated";
