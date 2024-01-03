@@ -19,7 +19,7 @@ trait ReplyMarkups {
     public function updatedMainReplyKeyboard()
     {
         $keyboard = [
-            ["💱Exchange2Exchange API Binding"],
+            ["💱Exchange2Exchange API Binding","🖼️Swap NFT"],
             ["🧮Arbitrage-calculator","📜About Korbit"],
             ["💱Swap Crypto","📋Swap History"],
             ["🖼️KorbitBot NFT/Token/Farm","☎️Customer Support"],

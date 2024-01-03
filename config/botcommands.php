@@ -11,7 +11,8 @@ return [
         "🖼️KorbitBot NFT/Token/Farm",
         '📢Invite Friends',"🧑‍🎓 KORBIT ARBITRAGE ACADEMY",
         "🧮Arbitrage-calculator",
-        "☎️Customer Support"
+        "☎️Customer Support",
+        "🖼️Swap NFT"
     ],
     "free_pass"=>[
         "💳Buy Bot Licence",

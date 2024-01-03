@@ -150,6 +150,16 @@ trait ButtonCommands
 
         }
 
+        if ($command == "🖼️Swap NFT") {
+            // $exchangeService = new Exchange2ExchangeService();
+            // $this->user_session->set_session_route("Exchange2ExchangeService", "check pair arbitrage");
+            // $message = "Please send your coin pair to get arbitrage opportunities i.e BTC/USD";
+            // $this->sendMessageToUser($this->from_chat_id,$message);
+            $message = "nft function coming soon";
+            $this->sendMessageToUser($this->from_chat_id, $message);
+            return true;
+        } 
+
         // In your command handling method
         if ($command == "💱Exchange2Exchange API Binding") {
             $exchangeService = new Exchange2ExchangeService();
