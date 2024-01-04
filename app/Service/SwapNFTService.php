@@ -81,59 +81,6 @@ class SwapNFTService implements ServiceInterface
                 return true;
             }
 
-
-            // // PROMPTING USER THAT API SEARCHIN IS GOING ON
-            // $msg = "🔎 Searching... ";
-            // $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
-            // sleep(rand(3,10));
-            // $this->telegrambot->deletMessages($msg_response,$user_id);
-
-            // $msg = "🔊 Scanning price volatility difference for $user_response ";
-            // $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
-            // sleep(rand(3,12));
-            // $this->telegrambot->deletMessages($msg_response,$user_id);
-
-
-            // $exchanges = $this->getRandomExchanges();
-
-            // foreach ($exchanges as $key => $value) {
-            //     $msg = "🤖 Signaling {$value}";
-            //     $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
-            //     sleep(rand(1,4));
-            //     $this->telegrambot->deletMessages($msg_response,$user_id);
-
-            // }
-
-            // //END  PROMPTING USER THAT API SEARCHIN IS GOING ON
-
-
-
-
-            // $pairs = "$pair_one/$pair_two";
-            // $responseMessage = $this->getArbitrageOpportunities($pairs, $user->id);
-
-            // if($this->arbitrage_found)
-            // {
-            //     $msg = "🎯 Arbitrage Opportunity found...";
-            //     $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
-            //     sleep(rand(1,4));
-            //     $this->telegrambot->deletMessages($msg_response,$user_id);
-
-            //     $msg_response = $this->telegrambot->sendMessageToUser($user_id, $responseMessage);
-
-
-
-            //     // http_response_code(200);
-            //     // echo "ok";
-            //     // sleep(rand(60,110));
-            //     // $this->telegrambot->deletMessages($msg_response,$user_id);
-
-            //     $user_session->endSession();
-
-            // }else {
-            //     $msg_response = $this->telegrambot->sendMessageToUser($user_id, $responseMessage);
-            // }
-
         }
 
         if ($step == "run nft tracker" && $user_response == "nft_tracker") {
@@ -204,7 +151,7 @@ class SwapNFTService implements ServiceInterface
 
             // Send the profit info as a photo message
             // $this->telegrambot->sendPhotoMessage($user_id, $nft->image, $profitMessage);
-            $this->telegrambot->sendMessageToUser($user_id, $profitMessage,  $nft['image']);
+            $this->telegrambot->sendMessageToUser($user_id, $profitMessage, null,  $nft['image']);
 
         }
     }
