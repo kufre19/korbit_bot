@@ -231,6 +231,8 @@ class SwapNFTService implements ServiceInterface
                 $nftSwapSession->decrement('nft_error_display_chance');
             }
         }
+
+        return;
     }
 
     private function success_message($user_id)
