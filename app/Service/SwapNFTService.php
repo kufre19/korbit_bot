@@ -139,7 +139,9 @@ class SwapNFTService implements ServiceInterface
 
             // Decide to show error or profit and display it
             $this->handleNftOutcome($user->id, $selectedNftId, $user_id);
+            $user_session->endSession();
         }
+
 
         if ($step === 'awaiting_wallet_address') {
             $orderId = $user_session_data['swap_nft_order_id'];
