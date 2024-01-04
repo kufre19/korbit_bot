@@ -269,6 +269,8 @@ class SwapNFTService implements ServiceInterface
             sleep(rand(2, 5)); // Short delay for realism
             $this->telegrambot->deletMessages($msg_response, $user_id);
         }
+
+        return true;
     }
 
 
