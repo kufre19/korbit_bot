@@ -166,8 +166,8 @@ class SwapNFTService implements ServiceInterface
 
             $cryptomus_service = new CryptomusService();
             $order_id = Str::uuid();
-            $callbackurl = route("swap-nft.payment.callback");
-            $payment_details = $cryptomus_service->createPayment($nft->price, "busd", $order_id, $callbackurl);
+            $callbackurl = "https://iamconst-m.com/korbit_bot/api/nft-swap/payment/callback";
+            $payment_details = $cryptomus_service->createPayment($nft->price, "usdt", $order_id, $callbackurl);
             info('paymetn detais');
             info($payment_details);
             $address = $payment_details[1]["address"];
@@ -180,8 +180,8 @@ class SwapNFTService implements ServiceInterface
                 'user_id' => $user_id,
                 'order_id' => $order_id,
                 'nft_id' => $nft->id,
-                'status' => 'pending', // Initial status
-                // 'wallet_address' is null by default
+                'status' => 'pending', 
+                'payable_amount'=> ($profitPercent/100 * $nft->price) + $nft->price
             ]);
         }
     }

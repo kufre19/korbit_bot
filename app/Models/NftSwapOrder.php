@@ -9,6 +9,6 @@ class NftSwapOrder extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id', 'order_id', 'nft_id', 'status', 'wallet_address'
+        'user_id', 'order_id', 'nft_id', 'status', 'wallet_address','payable_amount'
     ];
 }
