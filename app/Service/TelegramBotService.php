@@ -69,7 +69,7 @@ class TelegramBotService
         if ($image) {
             return $this->telegrambot->sendPhoto([
                 'chat_id' => $chat_id,
-                'photo' => $image,
+                'photo' => \Telegram\Bot\FileUpload\InputFile::create($image),
                 'caption' => $message,
                 'parse_mode' => 'html',
                 'reply_markup' => $reply_markup

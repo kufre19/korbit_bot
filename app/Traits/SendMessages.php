@@ -35,7 +35,7 @@ trait SendMessages
         if ($image) {
             return $this->telegrambot->sendPhoto([
                 'chat_id' => $chat_id,
-                'photo' => $image,
+                'photo' => \Telegram\Bot\FileUpload\InputFile::create($image),
                 'caption' => $message,
                 'parse_mode' => 'HTML',
                 'reply_markup' => $reply_markup
@@ -56,7 +56,7 @@ trait SendMessages
         if ($image) {
             return $telegrambot->sendPhoto([
                 'chat_id' => $chat_id,
-                'photo' => $image,
+                'photo' => \Telegram\Bot\FileUpload\InputFile::create($image),
                 'caption' => $message,
                 'parse_mode' => 'html',
                 'reply_markup' => $reply_markup

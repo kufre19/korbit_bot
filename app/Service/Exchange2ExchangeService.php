@@ -46,7 +46,7 @@ class Exchange2ExchangeService implements ServiceInterface
         }
 
         if ($arbitrage_session->number_of_response_left <= 0) {
-            $this->telegrambot->sendMessageToUser($user_id, "You have reached your daily limit for using Exchange2Exchange API Binding.");
+            // $this->telegrambot->sendMessageToUser($user_id, "You have reached your daily limit for using Exchange2Exchange API Binding.");
             $user_session->endSession();
             return;
         }
@@ -142,6 +142,7 @@ class Exchange2ExchangeService implements ServiceInterface
         
         );
     }
+
     
     public function getArbitrageOpportunities($pair, $user_id) {
         $session = ArbitrageSession::where('user_id', $user_id)->first();
