@@ -39,7 +39,7 @@ class SwapNFTService implements ServiceInterface
         $user = UserService::fetchUserByTgID($user_id);
         // $responses = rand(10, 15);
         $responses = 10;
-        $arbitrage_session = $this->initializeDailySession($user->id,$responses);
+        $arbitrage_session = $this->initializeDailySession($user->id, $responses);
 
         // Check if the user's daily limit is reached or reset timer if needed
         if (time() >= $arbitrage_session->restart_timer) {
@@ -57,13 +57,13 @@ class SwapNFTService implements ServiceInterface
             return;
         }
 
-        
+
         if ($step == "check toc selection") {
             $toc_selection = $user_response;
             if ($toc_selection == "cancel_nftSwapToc") {
                 $this->telegrambot->sendMessageToUser($user_id, "NFT Swap Canceled");
                 return true;
-            }else{
+            } else {
                 $msg = <<<MSG
                 NFTs are unique digital assets that represent ownership of specific items, such as virtual
                 concert tickets or rare pieces of art 🎨. NFTs are stored on the blockchain, which means 
@@ -74,12 +74,10 @@ class SwapNFTService implements ServiceInterface
                 and not the individual NFTs themselves 📊.
                 MSG;
                 $inline = $this->nftTracker();
-                $this->telegrambot->sendMessageToUser($user_id,$msg,$inline);
+                $this->telegrambot->sendMessageToUser($user_id, $msg, $inline);
                 $user_session_data['step'] = 'run nft tracker';
                 $user_session->update_session($user_session_data);
                 return true;
-
-
             }
 
             // $pair_one = strtoupper($pairs[0]);
@@ -96,7 +94,7 @@ class SwapNFTService implements ServiceInterface
             // sleep(rand(3,12));
             // $this->telegrambot->deletMessages($msg_response,$user_id);
 
-          
+
             // $exchanges = $this->getRandomExchanges();
 
             // foreach ($exchanges as $key => $value) {
@@ -130,7 +128,7 @@ class SwapNFTService implements ServiceInterface
             //     // echo "ok";
             //     // sleep(rand(60,110));
             //     // $this->telegrambot->deletMessages($msg_response,$user_id);
-                
+
             //     $user_session->endSession();
 
             // }else {
@@ -139,201 +137,144 @@ class SwapNFTService implements ServiceInterface
 
         }
 
-        if ($step == "run nft tracker") {
-            if ($user_response == "nft_tracker") {
-                // Randomly decide if the button should be responsive
-                if (rand(1, 10) <= 4) { // 40% chance of being unresponsive
-                    // Unresponsive behavior
-                    return;
-                }
-    
-                // Fetch list of NFTs
-                $nftList = $this->fetchArbitrableNFTs();
-                if (!$nftList) {
+        if ($step == "run nft tracker" && $user_response == "nft_tracker") {
+            $arbitrageSession = SwapNftSession::where('user_id', $user_id)->first();
+        
+            if (!$arbitrageSession || $arbitrageSession->number_of_response_left <= 0) {
+                $this->telegrambot->sendMessageToUser($user_id, "You have reached your daily limit for NFT tracking.");
+                return;
+            }
+        
+            if (rand(1, 10) <= 4) { // 40% chance of being unresponsive
+                $this->telegrambot->sendMessageToUser($user_id, "Please try again.");
+                $arbitrageSession->decrement('number_of_response_left');
+                return;
+            }
+        
+            try {
+                $nftList = $this->fetchArbitrableNFTs($user_id);
+                if (empty($nftList)) {
                     $this->telegrambot->sendMessageToUser($user_id, "No NFTs available for arbitrage at the moment.");
                     return;
                 }
-    
-                // Display NFTs to the user
-                $message = $this->formatNFTListMessage($nftList);
-                $this->telegrambot->sendMessageToUser($user_id, $message);
-    
-                // Update session step to handle NFT selection
+        
+                foreach ($nftList as $nft) {
+                    $this->telegrambot->sendMessageToUser($user_id, $nft['text'], null, $nft['image']);
+                }
+        
                 $user_session_data['step'] = 'select nft';
                 $user_session->update_session($user_session_data);
+            } catch (\Exception $e) {
+                $this->telegrambot->sendMessageToUser($user_id, "An error occurred while fetching NFTs.");
             }
-        }
-    
-
-
-
-    }
-
-    private function fetchArbitrableNFTs($user_id)
-    {
-        // Fetch the current session for the user
-        $swapSession = SwapNftSession::where('user_id', $user_id)->first();
-
-        if (!$swapSession) {
-            // Handle the case where there is no session
-            return null;
-        }
-
-        // Get the number of NFTs to fetch
-        $numberOfNFTs = $swapSession->arbitrageable_nft;
-
-        // Fetch the specified number of random NFTs from the NFTs table
-        $nfts = Nfts::inRandomOrder()->take($numberOfNFTs)->get();
-
-        if ($nfts->isEmpty()) {
-            // Handle the case where no NFTs are available
-            return null;
-        }
-
-        // Convert the NFTs to an array for easier handling
-        $nftList = $nfts->toArray();
-
-        return $nftList;
-    }
-
-
-    
-    public function initializeDailySession($user_id, $totalResponses) {
-        $errorJsonChance = round(0.2 * $totalResponses); 
-        $errorDataChance = round(0.2 * $totalResponses); 
-        $notFoundChance = round(0.1 * $totalResponses); 
-        $successChance = $totalResponses - ($errorJsonChance + $errorDataChance + $notFoundChance);
-    
-        return SwapNftSession::firstOrCreate( 
-        ['user_id' => $user_id],
-        ['restart_timer' => time() + 86400,
-         'number_of_response_left' => $totalResponses,
-         'arbitrageable_nft'=>rand(1,4),
-         "total_responses" => $totalResponses,
-         'error_json_chance' => $errorJsonChance,
-         'error_data_chance' => $errorDataChance,
-         'not_found_chance' => $notFoundChance,
-         'success_chance' => $successChance
-        ],
         
-        );
+            $arbitrageSession->decrement('number_of_response_left');
+        }
+    }
+
+   
+
+    private function fetchArbitrableNFTs($user_id) {
+        $swapSession = SwapNftSession::where('user_id', $user_id)->first();
+    
+        if (!$swapSession) {
+            return null;
+        }
+    
+        $nfts = Nfts::inRandomOrder()->take($swapSession->arbitrageable_nft)->get();
+        return $nfts->map(function ($nft) {
+            return [
+                'text' => "{$nft->name} - {$nft->meta_data}",
+                'image' => $nft->image
+            ];
+        })->toArray();
+    }
+
+
+
+
+    public function initializeDailySession($user_id, $totalResponses) {
+        $now = time();
+        $arbitrageSession = SwapNftSession::firstOrNew(['user_id' => $user_id]);
+    
+        if (!$arbitrageSession->exists || $now >= $arbitrageSession->restart_timer) {
+            $arbitrageSession->fill([
+                'restart_timer' => $now + 86400,
+                'number_of_response_left' => $totalResponses,
+                'arbitrageable_nft' => rand(1, 4),
+                'total_responses' => $totalResponses,
+                'error_json_chance' => round(0.2 * $totalResponses),
+                'error_data_chance' => round(0.2 * $totalResponses),
+                'not_found_chance' => round(0.1 * $totalResponses),
+                'success_chance' => $totalResponses - round(0.5 * $totalResponses)
+            ])->save();
+        }
+    
+        return $arbitrageSession;
     }
     
-    public function getArbitrageOpportunities($pair, $user_id) {
-        $session = ArbitrageSession::where('user_id', $user_id)->first();
+
+    public function getNFTArbitrageOpportunities($user_id) {
+        $session = SwapNftSession::where('user_id', $user_id)->first();
     
         if (!$session || $session->number_of_response_left <= 0) {
             return "Daily limit reached. Try again tomorrow.";
         }
     
-        $probabilities = [
-            'error_json' => $session->error_json_chance,
-            'error_data' => $session->error_data_chance,
-            'not_found' => $session->not_found_chance,
-            'success' => $session->success_chance,
-        ];
+        // Randomly pick a response type based on NFT arbitrage scenarios
+        $responseType = rand(1, 4); // Assuming 1-4 covers all potential response types
     
-        // Filter out the probabilities that are zero
-        $availableProbabilities = array_filter($probabilities, function ($chance) {
-            return $chance > 0;
-        });
-    
-        if (empty($availableProbabilities)) {
-            return "Daily limit reached. Try again tomorrow....";
-        }
-    
-        // Randomly pick a response type
-        $responseType = array_rand($availableProbabilities);
-    
-        // Deduct from the selected probability and update session
-        $session->{$responseType . '_chance'}--;
-        $session->number_of_response_left--;
-        $session->save();
+        // Decrement the response count
+        $session->decrement('number_of_response_left');
     
         // Generate the response based on the selected type
         switch ($responseType) {
-            case 'error_json':
-                return "Error parsing JSON response.";
-            case 'error_data':
-                return "Error fetching data for {$pair}: Trying to access array offset on value of type null.";
-            case 'not_found':
-                return "🛑Arbitrage opportunity for {$pair} not found. Try the 'Swap Crypto' API feature.";
-            case 'success':
-                return $this->simulateArbitrageOpportunity($pair);
+            case 1:
+                return ;
+            case 2:
+                return "Error fetching NFT data: Trying to access array offset on value of type null.";
+            case 3:
+                return "🛑 NFT Arbitrage opportunity not found.";
+            case 4:
+                return "🎉 NFT Arbitrage opportunity found! [Provide more details here]";
         }
     }
     
-    private function simulateArbitrageOpportunity($pairs)
+    private function findNFTArbitrageOpportunity($user_id) {
+        // Logic to find an NFT arbitrage opportunity
+        // This is a placeholder - you need to implement the actual logic
+        return "Placeholder: NFT Arbitrage Opportunity Details.";
+    }
+    
+
+   
+
+
+
+
+
+
+
+    public function getRandomExchanges()
     {
-        // Extract the base and quote currencies from the pair
-        $pair_split = explode('/', $pairs);
-
-
-        if (!in_array("USD", $pair_split)) {
-            // Handle cases where the quote currency is not USD
-            return "Currently, only pairs with USD as the quote currency are supported.";
-        }
-
-        if ($pair_split[0] == "USD") {
-            $cryptoCurrency = $pair_split[1];
-            $fiat = $pair_split[0];
-        } else {
-            $cryptoCurrency = $pair_split[0];
-            $fiat = $pair_split[1];
-        }
-
-        // Fetch the current price for the base currency in terms of USD
-        $response = $this->fetchCryptoPriceInUSD($cryptoCurrency,$fiat);
-
-        if ($response != null) {
-            $currentPrice =  $response;
-        } else {
-            // throw new \Exception("Failed to fetch price data.");
-            return "Failed to fetch price data.";
-        }
-
-        // Calculate the sell price with a simulated profit margin
-        $profitPercent = rand(1, 19) / 10; // 0.1% to 1.9%
-        $sellPrice = $currentPrice * (1 + $profitPercent / 100);
-
-        $currentPrice = number_format($currentPrice, 2);
-        $sellPrice = number_format($sellPrice, 2);
-
-
-        $this->arbitrage_found = true;
-        return "🏆 ARBITRAGE OPPORTUNITY FOR {$pairs}\n"
-            . "Buy on: {$this->exchange_one} at \${$currentPrice}\n"
-            . "Sell on: {$this->exchange_two} at \${$sellPrice}\n"
-            . "🥇Potential profit: {$profitPercent}%\n"
-            . "⚠️ WARNING: Be aware that cryptocurrencies are subject to rapid price fluctuations.";
-    }
-
-
-
-  
-
-
- 
-    public function getRandomExchanges() {
         // Ensure the array has more than 15 elements to pick from
-    
+
         // Determine the number of elements to pick (between 7 and 15)
         $numElementsToPick = rand(7, 15);
-    
+
         // Get random keys
         $randomKeys = array_rand($this->exchanges, $numElementsToPick);
-    
+
         // Extract the values corresponding to the random keys
         $randomSubset = array_intersect_key($this->exchanges, array_flip($randomKeys));
-    
+
         // Pick two unique random keys from the subset
         $selectedKeys = array_rand($randomSubset, 2);
-    
+
         // Assign the values to properties
         $this->exchange_one = $randomSubset[$selectedKeys[0]];
         $this->exchange_two = $randomSubset[$selectedKeys[1]];
-    
+
         return $randomSubset; // or you can return just the two selected exchanges
     }
-    
 }

@@ -8,26 +8,70 @@ trait SendMessages
 
 
 
-    public function sendMessageToUser($chat_id, $message, $reply_markup = null)
+    // public function sendMessageToUser($chat_id, $message, $reply_markup = null)
+    // {
+    //     return $this->telegrambot->sendMessage([
+    //         'chat_id' => $chat_id,
+    //         'text' => $message,
+    //         "parse_mode"=>"html",
+    //         'reply_markup' => $reply_markup
+    //     ]);
+    // }
+
+    // public function sendMessageToUserDetached($telegrambot, $chat_id, $message, $reply_markup = null)
+    // {
+
+    //     return $telegrambot->sendMessage([
+    //         'chat_id' => $chat_id,
+    //         'text' => $message,
+    //         "parse_mode"=>"html",
+    //         'reply_markup' => $reply_markup
+    //     ]);
+    // }
+
+
+    public function sendMessageToUser($chat_id, $message, $reply_markup = null, $image = null)
     {
-        return $this->telegrambot->sendMessage([
-            'chat_id' => $chat_id,
-            'text' => $message,
-            "parse_mode"=>"html",
-            'reply_markup' => $reply_markup
-        ]);
+        if ($image) {
+            return $this->telegrambot->sendPhoto([
+                'chat_id' => $chat_id,
+                'photo' => $image,
+                'caption' => $message,
+                'parse_mode' => 'HTML',
+                'reply_markup' => $reply_markup
+            ]);
+        } else {
+            return $this->telegrambot->sendMessage([
+                'chat_id' => $chat_id,
+                'text' => $message,
+                'parse_mode' => 'HTML',
+                'reply_markup' => $reply_markup
+            ]);
+        }
     }
 
-    public function sendMessageToUserDetached($telegrambot, $chat_id, $message, $reply_markup = null)
-    {
 
-        return $telegrambot->sendMessage([
-            'chat_id' => $chat_id,
-            'text' => $message,
-            "parse_mode"=>"html",
-            'reply_markup' => $reply_markup
-        ]);
+    public function sendMessageToUserDetached($telegrambot, $chat_id, $message, $reply_markup = null, $image = null)
+    {
+        if ($image) {
+            return $telegrambot->sendPhoto([
+                'chat_id' => $chat_id,
+                'photo' => $image,
+                'caption' => $message,
+                'parse_mode' => 'html',
+                'reply_markup' => $reply_markup
+            ]);
+        } else {
+            return $telegrambot->sendMessage([
+                'chat_id' => $chat_id,
+                'text' => $message,
+                'parse_mode' => 'html',
+                'reply_markup' => $reply_markup
+            ]);
+        }
     }
+
+
 
 
     public function HelloMessage($username)
@@ -71,7 +115,7 @@ trait SendMessages
         return $txt;
     }
 
-    public function swapAmountNotice($amount,$fromAsset,$toAsset)
+    public function swapAmountNotice($amount, $fromAsset, $toAsset)
     {
 
         $txt = <<<MSG
@@ -87,7 +131,7 @@ trait SendMessages
         return $txt;
     }
 
-    public function deletMessages($response,$chat_id)
+    public function deletMessages($response, $chat_id)
     {
         $messageId = $response->getMessageId();
         return $this->telegrambot->deleteMessage([
@@ -96,7 +140,7 @@ trait SendMessages
         ]);
     }
 
-    public function useWalletGenerated($amount,$asset,$wallet,$network,$order_id,$extra_msg="payment")
+    public function useWalletGenerated($amount, $asset, $wallet, $network, $order_id, $extra_msg = "payment")
     {
 
         $txt = <<<MSG
@@ -117,6 +161,5 @@ trait SendMessages
 
     public function swapSuccessNotice()
     {
-        
     }
 }
