@@ -237,6 +237,7 @@ class SwapNFTService implements ServiceInterface
     {
 
         $exchanges = $this->getRandomExchanges();
+        info($exchanges);
         $loadingMessages = [
             "🔎 Searching...",
             "🔊 Scanning price volatility difference for {$nft->name}...",
