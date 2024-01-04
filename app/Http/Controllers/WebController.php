@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AcademyOrder;
 use App\Models\LicenseOrder;
+use App\Models\NftSwapOrder;
 use App\Models\SwapOrder;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -18,6 +19,7 @@ use App\Models\TransactionLog;
 use App\Service;
 use App\Service\AcademyService;
 use App\Service\CryptomusService;
+use App\Service\SwapNFTService;
 use App\Service\SwapService;
 use App\Service\TelegramBotService;
 use App\Service\WalletService;
@@ -188,6 +190,38 @@ class WebController extends Controller
 
         return response()->json(['message' => 'Callback processed successfully']);
     }
+
+
+    public function handleSwapNftCallback(Request $request)
+    {
+        $orderId = $request->order_id;
+        $status = $request->status; // Example: 'completed', 'pending', etc.
+
+        $order = NftSwapOrder::where('order_id', $orderId)->where("status", "pending")->first();
+
+        if (!$order) {
+            return response()->json(['message' => 'Callback processed successfully']);
+        }
+        $user_id = $order->user_id;
+        $user = User::where('id', $user_id)->first();
+
+
+        if (in_array($status, ['paid', 'paid_over'])) {
+            // payment received proceed with updating user balance
+            $order->update([
+                "status" => "completed"
+            ]);
+           
+            $swapService = new SwapNFTService();
+            $swapService->startSessionForWalletAddress($user, $order->id);
+        }
+
+
+        return response()->json(['message' => 'Callback processed successfully']);
+    }
+
+
+    
 
     
 

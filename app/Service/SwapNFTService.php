@@ -4,7 +4,9 @@ namespace App\Service;
 
 use App\Models\ArbitrageSession;
 use App\Models\Nfts;
+use App\Models\NftSwapOrder;
 use App\Models\NftSwapSession;
+use App\Models\Session;
 use App\Models\SwapNftSession;
 use App\Traits\ReplyMarkups;
 use App\Traits\SendMessages;
@@ -82,7 +84,6 @@ class SwapNFTService implements ServiceInterface
                 $user_session->update_session($user_session_data);
                 return true;
             }
-
         }
 
         if ($step == "run nft tracker" && $user_response == "nft_tracker") {
@@ -131,16 +132,21 @@ class SwapNFTService implements ServiceInterface
 
             // Store the selected NFT ID in the session
             $user_session_data['selected_nft_id'] = $selectedNftId;
-            $nft = Nfts::find($selectedNftId);
             $user_session->update_session($user_session_data);
 
             // Run loading messages
             // $this->displayLoadingMessages($user_id, $nft);
 
             // Decide to show error or profit and display it
-            $this->handleNftOutcome($user->id, $selectedNftId,$user_id);
-
+            $this->handleNftOutcome($user->id, $selectedNftId, $user_id);
         }
+
+        if ($step === 'awaiting_wallet_address') {
+            $orderId = $user_session_data['swap_nft_order_id'];
+            $this->updateWalletAddressForOrder($user_id, $orderId, $user_response);
+            return true;
+        }
+
     }
 
     private function displayNftProfitInfo($user_id, $nft)
@@ -160,15 +166,24 @@ class SwapNFTService implements ServiceInterface
             $order_id = Str::uuid();
             $callbackurl = route("swap-nft.payment.callback");
 
-            $payment_details = $cryptomus_service->createPayment("300","usdt",$order_id,$callbackurl);
-            $text ="<code>{$payment_details["address"]}</code>";
-            $this->telegrambot->sendMessage($user_id,$text);
+            $payment_details = $cryptomus_service->createPayment("300", "usdt", $order_id, $callbackurl);
+            $text = "<code>{$payment_details["address"]}</code>";
+            $this->telegrambot->sendMessage($user_id, $text);
 
+
+            // Create a new swap order
+            $swapOrder = NftSwapOrder::create([
+                'user_id' => $user_id,
+                'order_id' => $order_id,
+                'nft_id' => $nft->id,
+                'status' => 'pending', // Initial status
+                // 'wallet_address' is null by default
+            ]);
         }
     }
 
 
-    private function handleNftOutcome($user_id, $nftId,$tg_user_id)
+    private function handleNftOutcome($user_id, $nftId, $tg_user_id)
     {
         $nftSwapSession = NftSwapSession::where('user_id', $user_id)->first();
         $nft = Nfts::find($nftId);
@@ -326,15 +341,36 @@ class SwapNFTService implements ServiceInterface
         // Update session step for NFT selection
     }
 
-    private function findNFTArbitrageOpportunity($user_id)
+    
+
+
+
+
+    public function startSessionForWalletAddress($user, $orderId)
     {
-        // Logic to find an NFT arbitrage opportunity
-        // This is a placeholder - you need to implement the actual logic
-        return "Placeholder: NFT Arbitrage Opportunity Details.";
+        // Create or update the session for the user
+        sleep(rand(60,120));
+        // $session = Session::firstOrCreate(['user_id' => $user->tg_id]);
+        $session = new SessionService($user->tg_id);
+        $session->fetch_user_session();
+        $session->set_session_route("SwapNFTService", "awaiting_wallet_address");
+        $session->add_value_to_session("swap_nft_order_id",$orderId);
+
+        // Send a message to the user asking for their wallet address
+        $this->telegrambot->sendMessageToUser($user->tg_id, "Please enter your wallet address:");
+        return true;
     }
 
 
-
+    private function updateWalletAddressForOrder($user_id, $orderId, $walletAddress)
+    {
+        $order = NftSwapOrder::where('id', $orderId)->first();
+        if ($order) {
+            $order->update(['wallet_address' => $walletAddress]);
+            // Notify user of the update
+            $this->telegrambot->sendMessageToUser($user_id, "Your wallet address has been recorded.");
+        }
+    }
 
 
 
