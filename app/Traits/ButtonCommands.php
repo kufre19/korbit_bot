@@ -9,6 +9,7 @@ use App\Service\ExchangeRateService;
 use App\Service\LicenseService;
 use App\Service\ReferralService;
 use App\Service\SessionService;
+use App\Service\SwapNFTService;
 use App\Service\SwapService;
 use App\Service\UserService;
 use App\Service\WalletService;
@@ -151,13 +152,16 @@ trait ButtonCommands
         }
 
         if ($command == "🖼️Swap NFT") {
-            // $exchangeService = new Exchange2ExchangeService();
-            // $this->user_session->set_session_route("Exchange2ExchangeService", "check pair arbitrage");
-            // $message = "Please send your coin pair to get arbitrage opportunities i.e BTC/USD";
-            // $this->sendMessageToUser($this->from_chat_id,$message);
-            $message = "nft function coming soon";
-            $this->sendMessageToUser($this->from_chat_id, $message);
+            
+
+            $nftSwapService = new SwapNFTService();
+            $this->user_session->set_session_route("SwapNFTService", "check toc selection");
+            $message = "Please read and accept the Terms and Conditions from {Korbit_website_termsofservice} link before proceeding.";
+            $inline = $this->nftSwapToc();
+            $this->sendMessageToUser($this->from_chat_id,$message,$inline);
             return true;
+
+          
         } 
 
         // In your command handling method

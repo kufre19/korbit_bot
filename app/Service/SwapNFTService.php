@@ -3,6 +3,9 @@
 namespace App\Service;
 
 use App\Models\ArbitrageSession;
+use App\Models\Nfts;
+use App\Models\SwapNftSession;
+use App\Traits\ReplyMarkups;
 use App\Traits\SendMessages;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
@@ -11,6 +14,7 @@ use Carbon\Carbon;
 class SwapNFTService implements ServiceInterface
 {
     use SendMessages;
+    use ReplyMarkups;
     protected $apiKey;
     protected $apiUrl;
     private $exchanges;
@@ -22,7 +26,7 @@ class SwapNFTService implements ServiceInterface
 
     public function __construct()
     {
-        $this->exchanges = Config::get("exchanges");
+        $this->exchanges = Config::get("nft_exchanges");
         $this->telegrambot = new TelegramBotService();
     }
 
@@ -33,13 +37,15 @@ class SwapNFTService implements ServiceInterface
         $step = $user_session_data['step'] ?? null;
 
         $user = UserService::fetchUserByTgID($user_id);
-        $responses = rand(10, 15);
+        // $responses = rand(10, 15);
+        $responses = 10;
         $arbitrage_session = $this->initializeDailySession($user->id,$responses);
 
         // Check if the user's daily limit is reached or reset timer if needed
         if (time() >= $arbitrage_session->restart_timer) {
             $arbitrage_session->restart_timer = time() + 86400; // Reset the timer for the next day
-            $responses = rand(10, 15);
+            // $responses = rand(10, 15);
+            $responses = 10;
             $arbitrage_session->number_of_response_left = $responses; // Reset the response count
             $arbitrage_session->total_responses = $responses; // Reset the response count
             $arbitrage_session->save();
@@ -52,75 +58,144 @@ class SwapNFTService implements ServiceInterface
         }
 
         
-        if ($step == "check pair arbitrage") {
-            $pairs = explode("/", $user_response);
-            if (count($pairs) != 2) {
-                $this->telegrambot->sendMessageToUser($user_id, "Invalid pair format. Please enter in format BTC/USD.");
-                return;
+        if ($step == "check toc selection") {
+            $toc_selection = $user_response;
+            if ($toc_selection == "cancel_nftSwapToc") {
+                $this->telegrambot->sendMessageToUser($user_id, "NFT Swap Canceled");
+                return true;
+            }else{
+                $msg = <<<MSG
+                NFTs are unique digital assets that represent ownership of specific items, such as virtual
+                concert tickets or rare pieces of art 🎨. NFTs are stored on the blockchain, which means 
+                they can't be easily edited, copied or duplicated. 🔐 There, they can act as a publicly verifiable
+                proof of ownership on a decentralized database.
+                
+                ⚠️ Disclaimer: API has been built to detect volatilities across floor price of total volume of collectibles
+                and not the individual NFTs themselves 📊.
+                MSG;
+                $inline = $this->nftTracker();
+                $this->telegrambot->sendMessageToUser($user_id,$msg,$inline);
+                $user_session_data['step'] = 'run nft tracker';
+                $user_session->update_session($user_session_data);
+                return true;
+
+
             }
 
-            $pair_one = strtoupper($pairs[0]);
-            $pair_two = strtoupper($pairs[1]);
+            // $pair_one = strtoupper($pairs[0]);
+            // $pair_two = strtoupper($pairs[1]);
 
-            // PROMPTING USER THAT API SEARCHIN IS GOING ON
-            $msg = "🔎 Searching... ";
-            $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
-            sleep(rand(3,10));
-            $this->telegrambot->deletMessages($msg_response,$user_id);
+            // // PROMPTING USER THAT API SEARCHIN IS GOING ON
+            // $msg = "🔎 Searching... ";
+            // $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
+            // sleep(rand(3,10));
+            // $this->telegrambot->deletMessages($msg_response,$user_id);
 
-            $msg = "🔊 Scanning price volatility difference for $user_response ";
-            $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
-            sleep(rand(3,12));
-            $this->telegrambot->deletMessages($msg_response,$user_id);
+            // $msg = "🔊 Scanning price volatility difference for $user_response ";
+            // $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
+            // sleep(rand(3,12));
+            // $this->telegrambot->deletMessages($msg_response,$user_id);
 
           
-            $exchanges = $this->getRandomExchanges();
+            // $exchanges = $this->getRandomExchanges();
 
-            foreach ($exchanges as $key => $value) {
-                $msg = "🤖 Signaling {$value}";
-                $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
-                sleep(rand(1,4));
-                $this->telegrambot->deletMessages($msg_response,$user_id);
+            // foreach ($exchanges as $key => $value) {
+            //     $msg = "🤖 Signaling {$value}";
+            //     $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
+            //     sleep(rand(1,4));
+            //     $this->telegrambot->deletMessages($msg_response,$user_id);
 
-            }
+            // }
 
-            //END  PROMPTING USER THAT API SEARCHIN IS GOING ON
-
-
-
-
-            $pairs = "$pair_one/$pair_two";
-            $responseMessage = $this->getArbitrageOpportunities($pairs, $user->id);
-
-            if($this->arbitrage_found)
-            {
-                $msg = "🎯 Arbitrage Opportunity found...";
-                $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
-                sleep(rand(1,4));
-                $this->telegrambot->deletMessages($msg_response,$user_id);
-
-                $msg_response = $this->telegrambot->sendMessageToUser($user_id, $responseMessage);
+            // //END  PROMPTING USER THAT API SEARCHIN IS GOING ON
 
 
 
-                // http_response_code(200);
-                // echo "ok";
-                // sleep(rand(60,110));
-                // $this->telegrambot->deletMessages($msg_response,$user_id);
+
+            // $pairs = "$pair_one/$pair_two";
+            // $responseMessage = $this->getArbitrageOpportunities($pairs, $user->id);
+
+            // if($this->arbitrage_found)
+            // {
+            //     $msg = "🎯 Arbitrage Opportunity found...";
+            //     $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
+            //     sleep(rand(1,4));
+            //     $this->telegrambot->deletMessages($msg_response,$user_id);
+
+            //     $msg_response = $this->telegrambot->sendMessageToUser($user_id, $responseMessage);
+
+
+
+            //     // http_response_code(200);
+            //     // echo "ok";
+            //     // sleep(rand(60,110));
+            //     // $this->telegrambot->deletMessages($msg_response,$user_id);
                 
-                $user_session->endSession();
+            //     $user_session->endSession();
 
-            }else {
-                $msg_response = $this->telegrambot->sendMessageToUser($user_id, $responseMessage);
-            }
-           
-
-
-            
-
+            // }else {
+            //     $msg_response = $this->telegrambot->sendMessageToUser($user_id, $responseMessage);
+            // }
 
         }
+
+        if ($step == "run nft tracker") {
+            if ($user_response == "nft_tracker") {
+                // Randomly decide if the button should be responsive
+                if (rand(1, 10) <= 4) { // 40% chance of being unresponsive
+                    // Unresponsive behavior
+                    return;
+                }
+    
+                // Fetch list of NFTs
+                $nftList = $this->fetchArbitrableNFTs();
+                if (!$nftList) {
+                    $this->telegrambot->sendMessageToUser($user_id, "No NFTs available for arbitrage at the moment.");
+                    return;
+                }
+    
+                // Display NFTs to the user
+                $message = $this->formatNFTListMessage($nftList);
+                $this->telegrambot->sendMessageToUser($user_id, $message);
+    
+                // Update session step to handle NFT selection
+                $user_session_data['step'] = 'select nft';
+                $user_session->update_session($user_session_data);
+            }
+        }
+    
+
+
+
     }
+
+    private function fetchArbitrableNFTs($user_id)
+    {
+        // Fetch the current session for the user
+        $swapSession = SwapNftSession::where('user_id', $user_id)->first();
+
+        if (!$swapSession) {
+            // Handle the case where there is no session
+            return null;
+        }
+
+        // Get the number of NFTs to fetch
+        $numberOfNFTs = $swapSession->arbitrageable_nft;
+
+        // Fetch the specified number of random NFTs from the NFTs table
+        $nfts = Nfts::inRandomOrder()->take($numberOfNFTs)->get();
+
+        if ($nfts->isEmpty()) {
+            // Handle the case where no NFTs are available
+            return null;
+        }
+
+        // Convert the NFTs to an array for easier handling
+        $nftList = $nfts->toArray();
+
+        return $nftList;
+    }
+
 
     
     public function initializeDailySession($user_id, $totalResponses) {
@@ -129,10 +204,11 @@ class SwapNFTService implements ServiceInterface
         $notFoundChance = round(0.1 * $totalResponses); 
         $successChance = $totalResponses - ($errorJsonChance + $errorDataChance + $notFoundChance);
     
-        return ArbitrageSession::firstOrCreate( 
+        return SwapNftSession::firstOrCreate( 
         ['user_id' => $user_id],
         ['restart_timer' => time() + 86400,
-         'number_of_response_left' => $totalResponses, 
+         'number_of_response_left' => $totalResponses,
+         'arbitrageable_nft'=>rand(1,4),
          "total_responses" => $totalResponses,
          'error_json_chance' => $errorJsonChance,
          'error_data_chance' => $errorDataChance,
@@ -234,61 +310,10 @@ class SwapNFTService implements ServiceInterface
 
 
 
-    /**
-     * Fetch the current price of a cryptocurrency in USD using cURL.
-     *
-     * @param string $cryptoCurrency The symbol of the cryptocurrency (e.g., 'BTC').
-     * @return float|null The current price in USD or null if an error occurs.
-     */
-    public function fetchCryptoPriceInUSD($cryptoCurrency,$fiat)
-    {
-        $cryptoId = $this->getCryptoId($cryptoCurrency);
-        $fiat = strtolower($fiat);
-
-        if (!$cryptoId) {
-            // Handle the case where the crypto ID is not found
-            return null;
-        }
-
-        $url = "https://api.coingecko.com/api/v3/simple/price?ids={$cryptoId}&vs_currencies={$fiat}";
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl, [
-            CURLOPT_URL => $url,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT => 30
-        ]);
-
-        $response = curl_exec($curl);
-        
-        curl_close($curl);
-
-        
-
-        $data = json_decode($response, true);
-
-        
-
-        return $data[$cryptoId][$fiat] ?? null;
-    }
+  
 
 
-    protected function loadCryptoData()
-    {
-        $filePath = public_path('crypto_id.json');
-
-        // Check if the file exists
-        if (!file_exists($filePath)) {
-            throw new \Exception("Crypto data file not found.");
-        }
-
-        $jsonData = file_get_contents($filePath);
-        $cryptoData = json_decode($jsonData, true);
-
-        return $cryptoData;
-    }
-
+ 
     public function getRandomExchanges() {
         // Ensure the array has more than 15 elements to pick from
     
@@ -311,18 +336,4 @@ class SwapNFTService implements ServiceInterface
         return $randomSubset; // or you can return just the two selected exchanges
     }
     
-
-    
-
-    public function getCryptoId($symbol)
-    {
-        $cryptoData =  $this->loadCryptoData();
-        foreach ($cryptoData as $crypto) {
-            if (strtoupper($crypto['symbol']) === strtoupper($symbol)) {
-                return $crypto['id'];
-            }
-        }
-
-        return null; // Return null if the symbol is not found
-    }
 }

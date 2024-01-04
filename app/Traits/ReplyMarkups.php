@@ -106,5 +106,42 @@ trait ReplyMarkups {
         return json_encode(['inline_keyboard' => $inline]);
         
     }
+
+
+
+    public function nftTracker()
+    {
+        $inline = [
+            [
+                [
+                    "text" => "NFT Delta Tracker",
+                    "callback_data" => "nft_tracker"
+                ]
+            ],
+         
+          
+        ];
+        return json_encode(['inline_keyboard' => $inline]);
+        
+    }
+
+    public function nftSwapToc()
+    {
+        $inline = [
+            [
+                [
+                    "text" => "Accept",
+                    "callback_data" => "accept_nftSwapToc"
+                ],
+                [
+                    "text" => "Cancel",
+                    "callback_data" => "cancel_nftSwapToc"
+                ]
+            ],
+         
+          
+        ];
+        return json_encode(['inline_keyboard' => $inline]);
+    }
     
 }
