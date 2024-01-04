@@ -135,8 +135,7 @@ class SwapNFTService implements ServiceInterface
             $user_session_data['selected_nft_id'] = $selectedNftId;
             $user_session->update_session($user_session_data);
 
-            // Run loading messages
-            // $this->displayLoadingMessages($user_id, $nft);
+   
 
             // Decide to show error or profit and display it
             $this->handleNftOutcome($user->id, $selectedNftId, $user_id);
@@ -168,7 +167,8 @@ class SwapNFTService implements ServiceInterface
             $callbackurl = route("swap-nft.payment.callback");
 
             $payment_details = $cryptomus_service->createPayment($nft->price, "busd", $order_id, $callbackurl);
-            $text = "<code>{$payment_details[1]["address"]}</code>";
+            $address = $payment_details[1]["address"];
+            $text = "<code>{$address}</code>";
             $this->telegrambot->sendMessage($user_id, $text);
 
 
