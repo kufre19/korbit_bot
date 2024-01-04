@@ -184,6 +184,8 @@ class SwapNFTService implements ServiceInterface
                 'payable_amount'=> ($profitPercent/100 * $nft->price) + $nft->price
             ]);
         }
+
+        return;
     }
 
 
@@ -198,7 +200,7 @@ class SwapNFTService implements ServiceInterface
         }
 
         // Display loading messages
-        // $this->displayLoadingMessages($tg_user_id, $nft);
+        $this->displayLoadingMessages($tg_user_id, $nft);
 
         // Check if any outcome's chance is exhausted and then decide
         if ($nftSwapSession->nft_profit_display_chance == 0) {
