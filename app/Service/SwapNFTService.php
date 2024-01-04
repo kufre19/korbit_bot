@@ -193,10 +193,9 @@ class SwapNFTService implements ServiceInterface
         }
     }
 
-    private function displayNftProfitInfo($user_id, $nftId)
+    private function displayNftProfitInfo($user_id, $nft)
     {
         // Fetch NFT details from the database
-        $nft = Nfts::find($nftId);
         if ($nft) {
             $profitPercent = rand(10, 250) / 1000; // Random profit percentage between 0.1% to 2.5%
             $profitMessage = "🏆 ARBITRAGE OPPORTUNITY FOR {$nft->name}\n"
