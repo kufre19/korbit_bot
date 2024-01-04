@@ -143,5 +143,18 @@ trait ReplyMarkups {
         ];
         return json_encode(['inline_keyboard' => $inline]);
     }
+
+    public function createNftInlineKeyboard($nftId) {
+        return json_encode([
+            'inline_keyboard' => [
+                [
+                    [
+                        'text' => ' Arbitrage opportunity', // Text displayed on the button
+                        'callback_data' => 'nft_selected_' . $nftId // Callback data sent when the button is clicked
+                    ]
+                ]
+            ]
+        ]);
+    }
     
 }

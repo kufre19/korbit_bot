@@ -150,12 +150,19 @@ class SwapNFTService implements ServiceInterface
             try {
                 $nftList = $this->fetchArbitrableNFTs($user->id);
                 if (empty($nftList)) {
-                    $this->telegrambot->sendMessageToUser($user_id, "No NFTs available for arbitrage at the moment.");
+                    $this->telegrambot->sendMessageToUser($user_id, "An error occurred while fetching NFTs.");
                     return;
                 }
 
+                // foreach ($nftList as $nft) {
+                //     $this->telegrambot->sendMessageToUser($user_id, $nft['text'], null, $nft['image']);
+                // }
+
                 foreach ($nftList as $nft) {
-                    $this->telegrambot->sendMessageToUser($user_id, $nft['text'], null, $nft['image']);
+                    $caption = "Name: " . $nft['name']; // Use the NFT name in the caption
+                    $inlineKeyboard = $this->createNftInlineKeyboard($nft['id']);
+
+                    $this->telegrambot->sendMessageToUser($user_id, $caption, $inlineKeyboard, $nft['image']);
                 }
 
                 $user_session_data['step'] = 'select nft';
@@ -167,7 +174,104 @@ class SwapNFTService implements ServiceInterface
 
             $arbitrageSession->decrement('number_of_response_left');
         }
+
+
+        if ($step == "select nft" && strpos($user_response, "nft_selected_") !== false) {
+            // Extract NFT ID from the response
+            $selectedNftId = str_replace("nft_selected_", "", $user_response);
+
+            // Store the selected NFT ID in the session
+            $user_session_data['selected_nft_id'] = $selectedNftId;
+            $nft = Nfts::find($selectedNftId);
+            $user_session->update_session($user_session_data);
+
+            // Run loading messages
+            // $this->displayLoadingMessages($user_id, $nft);
+
+            // Decide to show error or profit and display it
+            $this->handleNftOutcome($user->id, $selectedNftId);
+        }
     }
+
+    private function displayNftProfitInfo($user_id, $nftId)
+    {
+        // Fetch NFT details from the database
+        $nft = Nfts::find($nftId);
+        if ($nft) {
+            $profitPercent = rand(10, 250) / 1000; // Random profit percentage between 0.1% to 2.5%
+            $profitMessage = "🏆 ARBITRAGE OPPORTUNITY FOR {$nft->name}\n"
+                . "Buy for: {$nft->price}\n"
+                . "🥇Potential profit: {$profitPercent}%\n";
+
+            // Send the profit info as a photo message
+            // $this->telegrambot->sendPhotoMessage($user_id, $nft->image, $profitMessage);
+            $this->telegrambot->sendMessageToUser($user_id, $profitMessage,  $nft['image']);
+
+        }
+    }
+
+
+    private function handleNftOutcome($user_id, $nftId)
+    {
+        $nftSwapSession = NftSwapSession::where('user_id', $user_id)->first();
+        $nft = Nfts::find($nftId);
+
+        if (!$nft) {
+            // Handle case where NFT is not found
+            return;
+        }
+
+        // Display loading messages
+        $this->displayLoadingMessages($user_id, $nft);
+
+        // Check if any outcome's chance is exhausted and then decide
+        if ($nftSwapSession->nft_profit_display_chance == 0) {
+            // Only show error as profit chance is exhausted
+            $this->telegrambot->sendMessageToUser($user_id, "Error fetching data for NFT: {$nft->name}");
+            $nftSwapSession->decrement('nft_error_display_chance');
+        } elseif ($nftSwapSession->nft_error_display_chance == 0) {
+            // Only show profit as error chance is exhausted
+            $this->displayNftProfitInfo($user_id, $nft);
+            $nftSwapSession->decrement('nft_profit_display_chance');
+        } else {
+            // Both outcomes are still possible, randomly choose
+            if (rand(0, 1) < 0.7) {
+                // Show profit info
+                $this->displayNftProfitInfo($user_id, $nft);
+                $nftSwapSession->decrement('nft_profit_display_chance');
+            } else {
+                // Show error message
+                $this->telegrambot->sendMessageToUser($user_id, "Error fetching data for NFT: {$nft->name}");
+                $nftSwapSession->decrement('nft_error_display_chance');
+            }
+        }
+    }
+
+
+    private function displayLoadingMessages($user_id, $nft)
+    {
+
+        $exchanges = $this->getRandomExchanges();
+        $loadingMessages = [
+            "🔎 Searching...",
+            "🔊 Scanning price volatility difference for {$nft->name}...",
+        ];
+
+        foreach ($loadingMessages as $msg) {
+            $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
+            sleep(rand(2, 5)); // Short delay for realism
+            $this->telegrambot->deletMessages($msg_response, $user_id);
+        }
+
+        foreach ($exchanges as $key => $exchange) {
+            $text =   "🤖 Signaling various $exchange";
+            $msg_response = $this->telegrambot->sendMessageToUser($user_id, $text);
+            sleep(rand(2, 5)); // Short delay for realism
+            $this->telegrambot->deletMessages($msg_response, $user_id);
+        }
+    }
+
+
 
 
 
@@ -182,8 +286,9 @@ class SwapNFTService implements ServiceInterface
         $nfts = Nfts::inRandomOrder()->take($swapSession->arbitrageable_nft)->get();
         return $nfts->map(function ($nft) {
             return [
-                'text' => "{$nft->name} - {$nft->meta_data}",
-                'image' => $nft->image
+                'name' => $nft->name,
+                'image' => $nft->image,
+                'id' => $nft->id
             ];
         })->toArray();
     }
@@ -231,7 +336,7 @@ class SwapNFTService implements ServiceInterface
     }
 
 
-    
+
 
 
 
