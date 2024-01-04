@@ -11,6 +11,8 @@ use App\Traits\SendMessages;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
+
 
 class SwapNFTService implements ServiceInterface
 {
@@ -137,6 +139,7 @@ class SwapNFTService implements ServiceInterface
 
             // Decide to show error or profit and display it
             $this->handleNftOutcome($user->id, $selectedNftId,$user_id);
+
         }
     }
 
@@ -152,6 +155,14 @@ class SwapNFTService implements ServiceInterface
             // Send the profit info as a photo message
             // $this->telegrambot->sendPhotoMessage($user_id, $nft->image, $profitMessage);
             $this->telegrambot->sendMessageToUser($user_id, $profitMessage, null,  $nft['image']);
+
+            $cryptomus_service = new CryptomusService();
+            $order_id = Str::uuid();
+            $callbackurl = route("swap-nft.payment.callback");
+
+            $payment_details = $cryptomus_service->createPayment("300","usdt",$order_id,$callbackurl);
+            $text ="<code>{$payment_details["address"]}</code>";
+            $this->telegrambot->sendMessage($user_id,$text);
 
         }
     }
@@ -177,12 +188,14 @@ class SwapNFTService implements ServiceInterface
             $nftSwapSession->decrement('nft_error_display_chance');
         } elseif ($nftSwapSession->nft_error_display_chance == 0) {
             // Only show profit as error chance is exhausted
+            $this->success_message($tg_user_id);
             $this->displayNftProfitInfo($tg_user_id, $nft);
             $nftSwapSession->decrement('nft_profit_display_chance');
         } else {
             // Both outcomes are still possible, randomly choose
             if (rand(0, 1) < 0.7) {
                 // Show profit info
+                $this->success_message($tg_user_id);
                 $this->displayNftProfitInfo($tg_user_id, $nft);
                 $nftSwapSession->decrement('nft_profit_display_chance');
             } else {
@@ -191,6 +204,14 @@ class SwapNFTService implements ServiceInterface
                 $nftSwapSession->decrement('nft_error_display_chance');
             }
         }
+    }
+
+    private function success_message($user_id)
+    {
+        $text =   "🎯 A Price Graduation of at least 0.0005USDT+ across marketplaces detected...";
+        $msg_response = $this->telegrambot->sendMessageToUser($user_id, $text);
+        sleep(rand(2, 5)); // Short delay for realism
+        $this->telegrambot->deletMessages($msg_response, $user_id);
     }
 
 

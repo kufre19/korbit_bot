@@ -23,5 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('swap/payment/callback',[WebController::class,"handleSwapCallback"])->name('swap.payment.callback');
 Route::post('license/payment/callback',[WebController::class,"handleLicenseCallback"])->name('license.payment.callback');
 Route::post('academy-access/payment/callback',[WebController::class,"handleAcademyCallback"])->name('academy.payment.callback');
+Route::post('swap-nft/payment/callback',[WebController::class,"handleAcademyCallback"])->name('swap-nft.payment.callback');
+
 
 
