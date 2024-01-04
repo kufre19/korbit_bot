@@ -168,6 +168,7 @@ class SwapNFTService implements ServiceInterface
             $order_id = Str::uuid();
             $callbackurl = route("swap-nft.payment.callback");
             $payment_details = $cryptomus_service->createPayment($nft->price, "busd", $order_id, $callbackurl);
+            info('paymetn detais');
             info($payment_details);
             $address = $payment_details[1]["address"];
             $text = "<code>{$address}</code>";
