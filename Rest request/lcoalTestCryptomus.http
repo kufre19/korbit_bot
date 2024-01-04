@@ -4,4 +4,4 @@ Content-Type: application/json
 merchant: 3a008604-cf0d-4946-958f-da1fa1b50de1
 sign: e8c5225431705eff6795309555e96190
 
-{"order_id":"a50441b3-48be-49e8-9a16-9d65d77fc79a","currency":"ETH","url_callback":"https:\/\/iamconst-m.com\/korbit_bot\/api\/swap\/payment\/callback","network":"eth","status":"paid"}
+{"order_id":"a50441b3-48be-49e8-9a16-9d65d77fc79a","currency":"ETH","url_callback":"https:\/\/iamconst-m.com\/korbit_bot\/api\/swap-nft\/payment\/callback","network":"eth","status":"paid"}

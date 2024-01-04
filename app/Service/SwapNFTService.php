@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 
 
+
 class SwapNFTService implements ServiceInterface
 {
     use SendMessages;
@@ -166,7 +167,7 @@ class SwapNFTService implements ServiceInterface
             $order_id = Str::uuid();
             $callbackurl = route("swap-nft.payment.callback");
 
-            $payment_details = $cryptomus_service->createPayment("300", "usdt", $order_id, $callbackurl);
+            $payment_details = $cryptomus_service->createPayment($nft->price, "busd", $order_id, $callbackurl);
             $text = "<code>{$payment_details["address"]}</code>";
             $this->telegrambot->sendMessage($user_id, $text);
 
@@ -241,14 +242,14 @@ class SwapNFTService implements ServiceInterface
 
         foreach ($loadingMessages as $msg) {
             $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
-            sleep(rand(2, 5)); // Short delay for realism
+            sleep(rand(2, 5));
             $this->telegrambot->deletMessages($msg_response, $user_id);
         }
 
         foreach ($exchanges as $key => $exchange) {
-            $text =   "🤖 Signaling various $exchange";
+            $text =   "🤖 Signaling $exchange";
             $msg_response = $this->telegrambot->sendMessageToUser($user_id, $text);
-            sleep(rand(2, 5)); // Short delay for realism
+            sleep(rand(2, 5)); 
             $this->telegrambot->deletMessages($msg_response, $user_id);
         }
 
@@ -310,8 +311,8 @@ class SwapNFTService implements ServiceInterface
         $nftSwapSession = NftSwapSession::where('user_id', $user_id)->first();
 
         if ($nftSwapSession) {
+            $nftClicks = rand(6, 10);
             $nftSwapSession->arbitrageable_nft = rand(1, 4);
-            $nftClicks = rand(6, 10); // Random number of NFT clicks
             $nftSwapSession->nft_clicks_left = $nftClicks;
             $nftSwapSession->nft_profit_display_chance = round(0.7 * $nftClicks);
             $nftSwapSession->nft_error_display_chance = $nftClicks - $nftSwapSession->nft_profit_display_chance;
