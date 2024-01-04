@@ -189,7 +189,7 @@ class SwapNFTService implements ServiceInterface
             // $this->displayLoadingMessages($user_id, $nft);
 
             // Decide to show error or profit and display it
-            $this->handleNftOutcome($user->id, $selectedNftId);
+            $this->handleNftOutcome($user->id, $selectedNftId,$user_id);
         }
     }
 
@@ -211,7 +211,7 @@ class SwapNFTService implements ServiceInterface
     }
 
 
-    private function handleNftOutcome($user_id, $nftId)
+    private function handleNftOutcome($user_id, $nftId,$tg_user_id)
     {
         $nftSwapSession = NftSwapSession::where('user_id', $user_id)->first();
         $nft = Nfts::find($nftId);
@@ -222,26 +222,26 @@ class SwapNFTService implements ServiceInterface
         }
 
         // Display loading messages
-        $this->displayLoadingMessages($user_id, $nft);
+        $this->displayLoadingMessages($tg_user_id, $nft);
 
         // Check if any outcome's chance is exhausted and then decide
         if ($nftSwapSession->nft_profit_display_chance == 0) {
             // Only show error as profit chance is exhausted
-            $this->telegrambot->sendMessageToUser($user_id, "Error fetching data for NFT: {$nft->name}");
+            $this->telegrambot->sendMessageToUser($tg_user_id, "Error fetching data for NFT: {$nft->name}");
             $nftSwapSession->decrement('nft_error_display_chance');
         } elseif ($nftSwapSession->nft_error_display_chance == 0) {
             // Only show profit as error chance is exhausted
-            $this->displayNftProfitInfo($user_id, $nft);
+            $this->displayNftProfitInfo($tg_user_id, $nft);
             $nftSwapSession->decrement('nft_profit_display_chance');
         } else {
             // Both outcomes are still possible, randomly choose
             if (rand(0, 1) < 0.7) {
                 // Show profit info
-                $this->displayNftProfitInfo($user_id, $nft);
+                $this->displayNftProfitInfo($tg_user_id, $nft);
                 $nftSwapSession->decrement('nft_profit_display_chance');
             } else {
                 // Show error message
-                $this->telegrambot->sendMessageToUser($user_id, "Error fetching data for NFT: {$nft->name}");
+                $this->telegrambot->sendMessageToUser($tg_user_id, "Error fetching data for NFT: {$nft->name}");
                 $nftSwapSession->decrement('nft_error_display_chance');
             }
         }
