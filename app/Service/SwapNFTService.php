@@ -343,7 +343,7 @@ class SwapNFTService implements ServiceInterface
         try {
             $nftList = $this->fetchArbitrableNFTs($user_id);
             if (empty($nftList)) {
-                $this->telegrambot->sendMessageToUser($user_id, "An error occurred while fetching NFTs.");
+                $this->telegrambot->sendMessageToUser($user_id->tg_id, "An error occurred while fetching NFTs.");
                 return;
             }
 
@@ -355,14 +355,14 @@ class SwapNFTService implements ServiceInterface
                 $caption = "Name: " . $nft['name']; // Use the NFT name in the caption
                 $inlineKeyboard = $this->createNftInlineKeyboard($nft['id']);
 
-                $this->telegrambot->sendMessageToUser($user_id, $caption, $inlineKeyboard, $nft['image']);
+                $this->telegrambot->sendMessageToUser($user_id->tg_id, $caption, $inlineKeyboard, $nft['image']);
             }
 
             $user_session_data['step'] = 'select nft';
             $user_session->update_session($user_session_data);
         } catch (\Exception $e) {
             info($e);
-            $this->telegrambot->sendMessageToUser($user_id, "An error occurred while fetching NFTs.");
+            $this->telegrambot->sendMessageToUser($user_id->tg_id, "An error occurred while fetching NFTs.");
         }
     }
 
