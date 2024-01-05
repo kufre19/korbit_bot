@@ -170,7 +170,8 @@ class SwapNFTService implements ServiceInterface
             $payment_details = $cryptomus_service->createPayment($nft->price, "usdt", $order_id, $callbackurl);
             info('paymetn detais');
             info($payment_details);
-            $address = "etdthrjyuguihilj/kkkgkfh";
+            // $address = "etdthrjyuguihilj/kkkgkfh";
+            $address = $payment_details[1]['address'];
             $text = "<code>{$address}</code>";
             $this->telegrambot->sendMessage($user_id, $text);
 
