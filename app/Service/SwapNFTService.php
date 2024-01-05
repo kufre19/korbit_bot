@@ -209,7 +209,7 @@ class SwapNFTService implements ServiceInterface
             $nftSwapSession->decrement('nft_error_display_chance');
         } elseif ($nftSwapSession->nft_error_display_chance == 0) {
             // Only show profit as error chance is exhausted
-            $this->success_message($$user->tg_id);
+            $this->success_message($user->tg_id);
             // info("display profit 1");
             $this->displayNftProfitInfo($user, $nft);
             $nftSwapSession->decrement('nft_profit_display_chance');
@@ -217,7 +217,7 @@ class SwapNFTService implements ServiceInterface
             // Both outcomes are still possible, randomly choose
             if (rand(0, 1) < 0.7) {
                 // Show profit info
-                $this->success_message($user);
+                $this->success_message($user->tg_id);
                 // info("display profit 2");
                 $this->displayNftProfitInfo($user, $nft);
                 $nftSwapSession->decrement('nft_profit_display_chance');
