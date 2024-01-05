@@ -97,33 +97,31 @@ class SwapNFTService implements ServiceInterface
                 return;
             }
 
-
-            try {
-                $nftList = $this->fetchArbitrableNFTs($user->id);
-                if (empty($nftList)) {
-                    $this->telegrambot->sendMessageToUser($user_id, "An error occurred while fetching NFTs.");
-                    return;
+          
+    
+            // Check if any chance is exhausted and decide accordingly
+            if ($arbitrageSession->responsive_chance > 0 && $arbitrageSession->unresponsive_chance == 0) {
+                // Only responsive option is available
+                $this->displayNFTsToUser($user->id,$user_session_data,$user_session);
+                $arbitrageSession->decrement('responsive_chance');
+            } elseif ($arbitrageSession->responsive_chance == 0 && $arbitrageSession->unresponsive_chance > 0) {
+                // Only unresponsive option is available
+                // Remain unresponsive
+                $arbitrageSession->decrement('unresponsive_chance');
+            } else {
+                // Both options are available, choose randomly
+                $totalChances = $arbitrageSession->responsive_chance + $arbitrageSession->unresponsive_chance;
+                if (rand(1, $totalChances) <= $arbitrageSession->responsive_chance) {
+                    $this->displayNFTsToUser($user->id,$user_session_data,$user_session);
+                    $arbitrageSession->decrement('responsive_chance');
+                } else {
+                    $arbitrageSession->decrement('unresponsive_chance');
                 }
-
-                // foreach ($nftList as $nft) {
-                //     $this->telegrambot->sendMessageToUser($user_id, $nft['text'], null, $nft['image']);
-                // }
-
-                foreach ($nftList as $nft) {
-                    $caption = "Name: " . $nft['name']; // Use the NFT name in the caption
-                    $inlineKeyboard = $this->createNftInlineKeyboard($nft['id']);
-
-                    $this->telegrambot->sendMessageToUser($user_id, $caption, $inlineKeyboard, $nft['image']);
-                }
-
-                $user_session_data['step'] = 'select nft';
-                $user_session->update_session($user_session_data);
-            } catch (\Exception $e) {
-                info($e);
-                $this->telegrambot->sendMessageToUser($user_id, "An error occurred while fetching NFTs.");
             }
 
             $arbitrageSession->decrement('number_of_response_left');
+
+
         }
 
 
@@ -340,20 +338,32 @@ class SwapNFTService implements ServiceInterface
 
 
 
-    private function displayNFTsToUser($user_id, $nftSwapSession)
+    private function displayNFTsToUser($user_id, $user_session_data,$user_session)
     {
-        $nftList = $this->fetchArbitrableNFTs($user_id);
-        if (empty($nftList)) {
-            $this->telegrambot->sendMessageToUser($user_id, "No NFTs available at the moment.");
-            return;
-        }
+        try {
+            $nftList = $this->fetchArbitrableNFTs($user_id);
+            if (empty($nftList)) {
+                $this->telegrambot->sendMessageToUser($user_id, "An error occurred while fetching NFTs.");
+                return;
+            }
 
-        foreach ($nftList as $nft) {
-            $this->telegrambot->sendMessageToUser($user_id, $nft['text'], null, $nft['image']);
-        }
+            // foreach ($nftList as $nft) {
+            //     $this->telegrambot->sendMessageToUser($user_id, $nft['text'], null, $nft['image']);
+            // }
 
-        $nftSwapSession->decrement('number_of_response_left');
-        // Update session step for NFT selection
+            foreach ($nftList as $nft) {
+                $caption = "Name: " . $nft['name']; // Use the NFT name in the caption
+                $inlineKeyboard = $this->createNftInlineKeyboard($nft['id']);
+
+                $this->telegrambot->sendMessageToUser($user_id, $caption, $inlineKeyboard, $nft['image']);
+            }
+
+            $user_session_data['step'] = 'select nft';
+            $user_session->update_session($user_session_data);
+        } catch (\Exception $e) {
+            info($e);
+            $this->telegrambot->sendMessageToUser($user_id, "An error occurred while fetching NFTs.");
+        }
     }
 
     
