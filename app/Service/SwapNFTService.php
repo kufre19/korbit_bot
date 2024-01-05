@@ -136,7 +136,7 @@ class SwapNFTService implements ServiceInterface
    
 
             // Decide to show error or profit and display it
-            $this->handleNftOutcome($user->id, $selectedNftId, $user_id);
+            $this->handleNftOutcome($user, $selectedNftId);
             $user_session->endSession();
         }
 
@@ -187,7 +187,7 @@ class SwapNFTService implements ServiceInterface
     }
 
 
-    private function handleNftOutcome($user, $nftId,)
+    private function handleNftOutcome($user, $nftId)
     {
         $nftSwapSession = NftSwapSession::where('user_id', $user->id)->first();
         $nft = Nfts::find($nftId);
