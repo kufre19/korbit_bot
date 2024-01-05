@@ -393,7 +393,8 @@ class SwapNFTService implements ServiceInterface
         if ($order) {
             $order->update(['wallet_address' => $walletAddress]);
             // Notify user of the update
-            $this->telegrambot->sendMessageToUser($user_id, "Your wallet address has been recorded.");
+            // $this->telegrambot->sendMessageToUser($user_id, "Your wallet address has been recorded.");
+            return true;
         }
     }
 
