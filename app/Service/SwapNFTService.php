@@ -167,9 +167,9 @@ class SwapNFTService implements ServiceInterface
             $cryptomus_service = new CryptomusService();
             $order_id = Str::uuid();
             $callbackurl = "https://iamconst-m.com/korbit_bot/api/nft-swap/payment/callback";
-            // $payment_details = $cryptomus_service->createPayment($nft->price, "usdt", $order_id, $callbackurl);
+            $payment_details = $cryptomus_service->createPayment($nft->price, "usdt", $order_id, $callbackurl);
             info('paymetn detais');
-            // info($payment_details);
+            info($payment_details);
             $address = "etdthrjyuguihilj/kkkgkfh";
             $text = "<code>{$address}</code>";
             $this->telegrambot->sendMessage($user_id, $text);
@@ -200,7 +200,7 @@ class SwapNFTService implements ServiceInterface
         }
 
         // Display loading messages
-        $this->displayLoadingMessages($tg_user_id, $nft);
+        // $this->displayLoadingMessages($tg_user_id, $nft);
 
         // Check if any outcome's chance is exhausted and then decide
         if ($nftSwapSession->nft_profit_display_chance == 0) {
