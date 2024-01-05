@@ -149,7 +149,7 @@ class SwapNFTService implements ServiceInterface
 
     }
 
-    private function displayNftProfitInfo($user_id, $nft)
+    private function displayNftProfitInfo($user, $nft)
     {
         // Fetch NFT details from the database
         if ($nft) {
@@ -160,7 +160,7 @@ class SwapNFTService implements ServiceInterface
 
             // Send the profit info as a photo message
             // $this->telegrambot->sendPhotoMessage($user_id, $nft->image, $profitMessage);
-            $this->telegrambot->sendMessageToUser($user_id, $profitMessage, null,  $nft['image']);
+            $this->telegrambot->sendMessageToUser($user->tg_id, $profitMessage, null,  $nft['image']);
 
             $cryptomus_service = new CryptomusService();
             $order_id = Str::uuid();
@@ -170,12 +170,12 @@ class SwapNFTService implements ServiceInterface
             // $address = "etdthrjyuguihilj/kkkgkfh";
             $address = $payment_details[1]['address'];
             $text = "<code>{$address}</code>";
-            $this->telegrambot->sendMessage($user_id, $text);
+            $this->telegrambot->sendMessage($user->tg_id, $text);
 
 
             // Create a new swap order
              NftSwapOrder::create([
-                'user_id' => $user_id,
+                'user_id' => $user->id,
                 'order_id' => $order_id,
                 'nft_id' => $nft->id,
                 'status' => 'pending', 
@@ -187,9 +187,9 @@ class SwapNFTService implements ServiceInterface
     }
 
 
-    private function handleNftOutcome($user_id, $nftId, $tg_user_id)
+    private function handleNftOutcome($user, $nftId,)
     {
-        $nftSwapSession = NftSwapSession::where('user_id', $user_id)->first();
+        $nftSwapSession = NftSwapSession::where('user_id', $user->id)->first();
         $nft = Nfts::find($nftId);
 
         if (!$nft) {
@@ -198,34 +198,34 @@ class SwapNFTService implements ServiceInterface
         }
 
         // Display loading messages
-        $this->displayLoadingMessages($tg_user_id, $nft);
+        $this->displayLoadingMessages($user->tg_id, $nft);
 
         // Check if any outcome's chance is exhausted and then decide
         if ($nftSwapSession->nft_profit_display_chance == 0) {
             // Only show error as profit chance is exhausted
             // info("display error 1");
 
-            $this->telegrambot->sendMessageToUser($tg_user_id, "Error fetching data for NFT: {$nft->name}");
+            $this->telegrambot->sendMessageToUser($user->tg_id, "Error fetching data for NFT: {$nft->name}");
             $nftSwapSession->decrement('nft_error_display_chance');
         } elseif ($nftSwapSession->nft_error_display_chance == 0) {
             // Only show profit as error chance is exhausted
-            $this->success_message($tg_user_id);
+            $this->success_message($$user->tg_id);
             // info("display profit 1");
-            $this->displayNftProfitInfo($tg_user_id, $nft);
+            $this->displayNftProfitInfo($user, $nft);
             $nftSwapSession->decrement('nft_profit_display_chance');
         } else {
             // Both outcomes are still possible, randomly choose
             if (rand(0, 1) < 0.7) {
                 // Show profit info
-                $this->success_message($tg_user_id);
+                $this->success_message($user);
                 // info("display profit 2");
-                $this->displayNftProfitInfo($tg_user_id, $nft);
+                $this->displayNftProfitInfo($user, $nft);
                 $nftSwapSession->decrement('nft_profit_display_chance');
             } else {
                 // Show error message
                 // info("display error 2");
 
-                $this->telegrambot->sendMessageToUser($tg_user_id, "Error fetching data for NFT: {$nft->name}");
+                $this->telegrambot->sendMessageToUser($user->tg_id, "Error fetching data for NFT: {$nft->name}");
                 $nftSwapSession->decrement('nft_error_display_chance');
             }
         }
@@ -246,7 +246,7 @@ class SwapNFTService implements ServiceInterface
     {
 
         $exchanges = $this->getRandomExchanges();
-        info($exchanges);
+        // info($exchanges);
         $loadingMessages = [
             "🔎 Searching...",
             "🔊 Scanning price volatility difference for {$nft->name}...",

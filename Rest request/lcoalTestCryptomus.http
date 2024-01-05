@@ -2,6 +2,6 @@
 POST https://api.cryptomus.com/v1/test-webhook/payment
 Content-Type: application/json
 merchant: 3a008604-cf0d-4946-958f-da1fa1b50de1
-sign: e8c5225431705eff6795309555e96190
+sign: c8559fe4b6d596d37a516ddcd0f28299
 
-{"order_id":"a50441b3-48be-49e8-9a16-9d65d77fc79a","currency":"ETH","url_callback":"https:\/\/iamconst-m.com\/korbit_bot\/api\/swap-nft\/payment\/callback","network":"eth","status":"paid"}
+{"order_id":"e66d74b9-a91e-4d01-97b2-3ad0c0ac541c","currency":"USDT","url_callback":"https:\/\/iamconst-m.com\/korbit_bot\/api\/swap-nft\/payment\/callback","network":"bsc","status":"paid"}

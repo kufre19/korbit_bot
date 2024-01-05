@@ -4,11 +4,11 @@
 
 $data = [
 
-    'currency' => "DAI",
-    'order_id' => "f362ec35-97da-4777-a2ab-988dfaa73d85",
-    'url_callback' => "https://iamconst-m.com/korbit_bot/api/license/payment/callback",
+    'currency' => "USDT",
+    'order_id' => "e7d677b3-1944-41cf-b428-1a3b84ee5a6f",
+    'url_callback' => "https://iamconst-m.com/korbit_bot/api/swap-nft/payment/callback",
     'status' => 'paid',
-    "network"=> "eth",
+    "network"=> "bsc",
 ];
 
 $curl = curl_init();
@@ -48,7 +48,7 @@ $responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
 // Log the response to a file
 $logFileName = "response.log";
-file_put_contents($logFileName, $response);
+file_put_contents($logFileName, md5(base64_encode($body) . $API_KEY));
 
 // Close the cURL handle
 curl_close($curl);
