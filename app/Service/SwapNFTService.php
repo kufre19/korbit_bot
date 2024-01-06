@@ -26,8 +26,8 @@ class SwapNFTService implements ServiceInterface
     private $exchanges;
     public $telegrambot;
     public $arbitrage_found = false;
-    public $exchange_one;
-    public $exchange_two;
+    public $user_session;
+    public $user_session_data;
 
 
     public function __construct()
@@ -41,6 +41,9 @@ class SwapNFTService implements ServiceInterface
         // Fetch the current session data for the user
         $user_session_data = $user_session->getUserSessionData();
         $step = $user_session_data['step'] ?? null;
+        $this->user_session_data = $user_session_data;
+        $this->user_session = $user_session;
+
 
         $user = UserService::fetchUserByTgID($user_id);
         $responses = rand(6, 10);
@@ -97,12 +100,12 @@ class SwapNFTService implements ServiceInterface
                 return;
             }
 
-          
-    
+
+
             // Check if any chance is exhausted and decide accordingly
             if ($arbitrageSession->responsive_chance > 0 && $arbitrageSession->unresponsive_chance == 0) {
                 // Only responsive option is available
-                $this->displayNFTsToUser($user,$user_session_data,$user_session);
+                $this->displayNFTsToUser($user, $user_session_data, $user_session);
                 $arbitrageSession->decrement('responsive_chance');
             } elseif ($arbitrageSession->responsive_chance == 0 && $arbitrageSession->unresponsive_chance > 0) {
                 // Only unresponsive option is available
@@ -112,7 +115,7 @@ class SwapNFTService implements ServiceInterface
                 // Both options are available, choose randomly
                 $totalChances = $arbitrageSession->responsive_chance + $arbitrageSession->unresponsive_chance;
                 if (rand(1, $totalChances) <= $arbitrageSession->responsive_chance) {
-                    $this->displayNFTsToUser($user,$user_session_data,$user_session);
+                    $this->displayNFTsToUser($user, $user_session_data, $user_session);
                     $arbitrageSession->decrement('responsive_chance');
                 } else {
                     $arbitrageSession->decrement('unresponsive_chance');
@@ -120,8 +123,6 @@ class SwapNFTService implements ServiceInterface
             }
 
             $arbitrageSession->decrement('number_of_response_left');
-
-
         }
 
 
@@ -133,12 +134,33 @@ class SwapNFTService implements ServiceInterface
             $user_session_data['selected_nft_id'] = $selectedNftId;
             $user_session->update_session($user_session_data);
 
-   
+
 
             // Decide to show error or profit and display it
             $this->handleNftOutcome($user, $selectedNftId);
+        }
+
+        if ($step == "procced_with_swap") {
+
+            $procced_response = $user_response;
+            if ($procced_response == "accept_swap") {
+                $nftId = $user_session_data['selected_nft_id'];
+                $nft = Nfts::find($nftId);
+
+                $this->create_nft_swap_order($user, $nft);
+                return true;
+
+            } else {
+                $this->telegrambot->sendMessageToUser($user->tg_id, "NFT swap cancelled");
+                return true;
+            }
+
             $user_session->endSession();
         }
+
+
+
+
 
 
         if ($step === 'awaiting_wallet_address') {
@@ -146,46 +168,36 @@ class SwapNFTService implements ServiceInterface
             $this->updateWalletAddressForOrder($user_id, $orderId, $user_response);
             return true;
         }
-
     }
 
-    private function displayNftProfitInfo($user, $nft)
+
+
+
+    private function create_nft_swap_order($user, $nft)
     {
-        // Fetch NFT details from the database
-        if ($nft) {
-            $profitPercent = rand(10, 250) / 1000; // Random profit percentage between 0.1% to 2.5%
-            $profitAmount = ($profitPercent/100 * $nft->price) + $nft->price;
-            $nft_name = strtoupper($nft->name);
-            $profitMessage = "🏆 ARBITRAGE OPPORTUNITY FOR {$nft_name}\n"
-                . "Buy {$nft_name} for {$nft->price}\n"
-                . "🥇Potential profit: {$profitAmount}%\n";
+        $cryptomus_service = new CryptomusService();
+        $order_id = Str::uuid();
+        $callbackurl = "https://iamconst-m.com/korbit_bot/api/nft-swap/payment/callback";
+        $payment_details = $cryptomus_service->createPayment($nft->price, "usdt", $order_id, $callbackurl);
 
-            // Send the profit info as a photo message
-            // $this->telegrambot->sendPhotoMessage($user_id, $nft->image, $profitMessage);
-            $this->telegrambot->sendMessageToUser($user->tg_id, $profitMessage, null,  $nft['image']);
-
-            $cryptomus_service = new CryptomusService();
-            $order_id = Str::uuid();
-            $callbackurl = "https://iamconst-m.com/korbit_bot/api/nft-swap/payment/callback";
-            $payment_details = $cryptomus_service->createPayment($nft->price, "usdt", $order_id, $callbackurl);
-           
-            // $address = "etdthrjyuguihilj/kkkgkfh";
-            $address = $payment_details[1]['address'];
-            $text = "<code>{$address}</code>";
-            $this->telegrambot->sendMessage($user->tg_id, $text);
+        $this->telegrambot->sendMessageToUser($user->tg_id, $payment_details);
 
 
-            // Create a new swap order
-             NftSwapOrder::create([
-                'user_id' => $user->id,
-                'order_id' => $order_id,
-                'nft_id' => $nft->id,
-                'status' => 'pending', 
-                'payable_amount'=> $profitAmount
-            ]);
-        }
 
-        return;
+        // $address = "etdthrjyuguihilj/kkkgkfh";
+        $address = $payment_details[1]['address'];
+        $text = "<code>{$address}</code>";
+        $this->telegrambot->sendMessage($user->tg_id, $text);
+        $profitAmount = $this->user_session_data['profitAmount'];
+
+        // Create a new swap order
+        NftSwapOrder::create([
+            'user_id' => $user->id,
+            'order_id' => $order_id,
+            'nft_id' => $nft->id,
+            'status' => 'pending',
+            'payable_amount' => $profitAmount
+        ]);
     }
 
 
@@ -201,18 +213,17 @@ class SwapNFTService implements ServiceInterface
 
         // Display loading messages
         $this->displayLoadingMessages($user->tg_id, $nft);
+        $error_text = "Error fetching data for {$nft->name}: Trying to access array offset on value of type null";
 
         // Check if any outcome's chance is exhausted and then decide
         if ($nftSwapSession->nft_profit_display_chance == 0) {
             // Only show error as profit chance is exhausted
-            // info("display error 1");
 
-            $this->telegrambot->sendMessageToUser($user->tg_id, "Error fetching data for NFT: {$nft->name}");
+            $this->telegrambot->sendMessageToUser($user->tg_id, $error_text);
             $nftSwapSession->decrement('nft_error_display_chance');
         } elseif ($nftSwapSession->nft_error_display_chance == 0) {
             // Only show profit as error chance is exhausted
             $this->success_message($user->tg_id);
-            // info("display profit 1");
             $this->displayNftProfitInfo($user, $nft);
             $nftSwapSession->decrement('nft_profit_display_chance');
         } else {
@@ -220,16 +231,38 @@ class SwapNFTService implements ServiceInterface
             if (rand(0, 1) < 0.7) {
                 // Show profit info
                 $this->success_message($user->tg_id);
-                // info("display profit 2");
                 $this->displayNftProfitInfo($user, $nft);
                 $nftSwapSession->decrement('nft_profit_display_chance');
             } else {
                 // Show error message
-                // info("display error 2");
-
-                $this->telegrambot->sendMessageToUser($user->tg_id, "Error fetching data for NFT: {$nft->name}");
+                $this->telegrambot->sendMessageToUser($user->tg_id, $error_text);
                 $nftSwapSession->decrement('nft_error_display_chance');
             }
+        }
+
+        return;
+    }
+
+    private function displayNftProfitInfo($user, $nft)
+    {
+        // Fetch NFT details from the database
+        if ($nft) {
+            $profitPercent = rand(10, 250) / 1000; // Random profit percentage between 0.1% to 2.5%
+            $profitAmount = ($profitPercent / 100 * $nft->price) + $nft->price;
+            $this->user_session_data['profitAmount'] = $profitAmount;
+            $this->user_session->update_session($this->user_session_data);
+            $nft_name = strtoupper($nft->name);
+            $profitMessage = "🏆 ARBITRAGE OPPORTUNITY FOR {$nft_name}\n"
+                . "Buy {$nft_name} for {$nft->price}\n"
+                . "🥇Potential profit: {$profitAmount}%\n";
+
+            // Send the profit info as a photo message
+            // $this->telegrambot->sendPhotoMessage($user_id, $nft->image, $profitMessage);
+            $this->telegrambot->sendMessageToUser($user->tg_id, $profitMessage, null,  $nft['image']);
+
+            $text =   "Do you want to continue with the NFT Swap";
+            $inline = $this->nftswapConfirm();
+            $msg_response = $this->telegrambot->sendMessageToUser($user->tg_id, $text, $inline);
         }
 
         return;
@@ -263,7 +296,7 @@ class SwapNFTService implements ServiceInterface
         foreach ($exchanges as $key => $exchange) {
             $text =   "🤖 Signaling $exchange";
             $msg_response = $this->telegrambot->sendMessageToUser($user_id, $text);
-            sleep(rand(2, 5)); 
+            sleep(rand(2, 5));
             $this->telegrambot->deletMessages($msg_response, $user_id);
         }
 
@@ -340,7 +373,7 @@ class SwapNFTService implements ServiceInterface
 
 
 
-    private function displayNFTsToUser($user, $user_session_data,$user_session)
+    private function displayNFTsToUser($user, $user_session_data, $user_session)
     {
         try {
             $nftList = $this->fetchArbitrableNFTs($user->id);
@@ -367,7 +400,7 @@ class SwapNFTService implements ServiceInterface
         }
     }
 
-    
+
 
 
 
@@ -375,12 +408,12 @@ class SwapNFTService implements ServiceInterface
     public function startSessionForWalletAddress($user, $orderId)
     {
         // Create or update the session for the user
-        sleep(rand(60,120));
+        sleep(rand(60, 120));
         // $session = Session::firstOrCreate(['user_id' => $user->tg_id]);
         $session = new SessionService($user->tg_id);
         $session->fetch_user_session();
         $session->set_session_route("SwapNFTService", "awaiting_wallet_address");
-        $session->add_value_to_session("swap_nft_order_id",$orderId);
+        $session->add_value_to_session("swap_nft_order_id", $orderId);
 
         // Send a message to the user asking for their wallet address
         $this->telegrambot->sendMessageToUser($user->tg_id, "Please enter your wallet address:");
@@ -422,8 +455,8 @@ class SwapNFTService implements ServiceInterface
         $selectedKeys = array_rand($randomSubset, 2);
 
         // Assign the values to properties
-        $this->exchange_one = $randomSubset[$selectedKeys[0]];
-        $this->exchange_two = $randomSubset[$selectedKeys[1]];
+        // $this->exchange_one = $randomSubset[$selectedKeys[0]];
+        // $this->exchange_two = $randomSubset[$selectedKeys[1]];
 
         return $randomSubset; // or you can return just the two selected exchanges
     }

@@ -144,6 +144,25 @@ trait ReplyMarkups {
         return json_encode(['inline_keyboard' => $inline]);
     }
 
+    public function nftswapConfirm()
+    {
+        $inline = [
+            [
+                [
+                    "text" => "Procced",
+                    "callback_data" => "accept_swap"
+                ],
+                [
+                    "text" => "Cancel",
+                    "callback_data" => "cancel_swap"
+                ]
+            ],
+         
+          
+        ];
+        return json_encode(['inline_keyboard' => $inline]);
+    }
+
     public function createNftInlineKeyboard($nftId) {
         return json_encode([
             'inline_keyboard' => [
