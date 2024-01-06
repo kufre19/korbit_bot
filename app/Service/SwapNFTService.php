@@ -262,7 +262,7 @@ class SwapNFTService implements ServiceInterface
 
             $text =   "Do you want to continue with the NFT Swap";
             $inline = $this->nftswapConfirm();
-            $msg_response = $this->telegrambot->sendMessageToUser($user->tg_id, $text, $inline);
+            $this->telegrambot->sendMessageToUser($user->tg_id, $text, $inline);
         }
 
         return;
