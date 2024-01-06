@@ -26,15 +26,11 @@ class NftsResource extends Resource
         return $form->schema([
             Forms\Components\TextInput::make('name')->required(),
             Forms\Components\FileUpload::make('image')
-                ->image()
-                ->disk('public') // Use public disk
-                ->directory('nfts') // Store in 'nfts' directory in the public disk
-                ->dehydrated(fn ($state) => $state instanceof \Illuminate\Http\UploadedFile) // Only process if it's an uploaded file
-                ->saveUploadedFileUsing(function (callable $set, \Illuminate\Http\UploadedFile $file) {
-                    // Save the uploaded file and set the path in the database
-                    $filePath = $file->store('nfts', 'public');
-                    $set(Storage::disk('public')->url($filePath));
-                }),
+            ->label('Image')
+            ->disk('public')
+            ->directory('temp') // Temporary directory
+            ->visibility('public'),
+          
             Forms\Components\Textarea::make('meta_data'),
             Forms\Components\Textarea::make('price'),
             Forms\Components\Textarea::make('marketplace'),
@@ -47,7 +43,7 @@ class NftsResource extends Resource
     {
         return $table->columns([
             Tables\Columns\TextColumn::make('name'),
-            Tables\Columns\ImageColumn::make('image'), 
+            Tables\Columns\ImageColumn::make('image'),
             Tables\Columns\TextColumn::make('meta_data'),
             Tables\Columns\TextColumn::make('price'),
             Tables\Columns\TextColumn::make('marketplace'),

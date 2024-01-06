@@ -55,6 +55,12 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
         ],
+        'nfts' => [
+            'driver' => 'local',
+            'root' => public_path('nfts'), // Pointing to the 'public/nfts' directory
+            'url' => env('APP_URL').'/nfts',
+            'visibility' => 'public',
+        ],
 
     ],
 

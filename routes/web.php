@@ -54,3 +54,9 @@ Route::get('/clear-cache', function() {
     return 'Cache cleared successfully!';
 });
 
+
+
+Route::get('/link-storage', function () {
+    Artisan::call('storage:link');
+    return Artisan::output();
+});

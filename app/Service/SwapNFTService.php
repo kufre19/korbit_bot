@@ -73,8 +73,8 @@ class SwapNFTService implements ServiceInterface
                 $msg = <<<MSG
                 NFTs are unique digital assets that represent ownership of specific items, such as virtual
                 concert tickets or rare pieces of art 🎨. NFTs are stored on the blockchain, which means 
-                they can't be easily edited, copied or duplicated. 🔐 There, they can act as a publicly verifiable
-                proof of ownership on a decentralized database.
+                they can't be edited, copied or duplicated. 🔐 There, they can act as a publicly verifiable proof of ownership on 
+                a decentralized database.
                 
                 ⚠️ Disclaimer: API has been built to detect volatilities across floor price of total volume of collectibles
                 and not the individual NFTs themselves 📊.
@@ -154,9 +154,11 @@ class SwapNFTService implements ServiceInterface
         // Fetch NFT details from the database
         if ($nft) {
             $profitPercent = rand(10, 250) / 1000; // Random profit percentage between 0.1% to 2.5%
-            $profitMessage = "🏆 ARBITRAGE OPPORTUNITY FOR {$nft->name}\n"
-                . "Buy for: {$nft->price}\n"
-                . "🥇Potential profit: {$profitPercent}%\n";
+            $profitAmount = ($profitPercent/100 * $nft->price) + $nft->price;
+            $nft_name = strtoupper($nft->name);
+            $profitMessage = "🏆 ARBITRAGE OPPORTUNITY FOR {$nft_name}\n"
+                . "Buy {$nft_name} for {$nft->price}\n"
+                . "🥇Potential profit: {$profitAmount}%\n";
 
             // Send the profit info as a photo message
             // $this->telegrambot->sendPhotoMessage($user_id, $nft->image, $profitMessage);
@@ -179,7 +181,7 @@ class SwapNFTService implements ServiceInterface
                 'order_id' => $order_id,
                 'nft_id' => $nft->id,
                 'status' => 'pending', 
-                'payable_amount'=> ($profitPercent/100 * $nft->price) + $nft->price
+                'payable_amount'=> $profitAmount
             ]);
         }
 
@@ -361,7 +363,6 @@ class SwapNFTService implements ServiceInterface
             $user_session_data['step'] = 'select nft';
             $user_session->update_session($user_session_data);
         } catch (\Exception $e) {
-            info($e);
             $this->telegrambot->sendMessageToUser($user->tg_id, "An error occurred while fetching NFTs.");
         }
     }
