@@ -62,10 +62,10 @@ class Nfts extends Model
         // Redirect or return response
     }
 
-    public function getImageAttribute($value)
-    {
-        $url = url('nfts/' . $value);
-        Log::info("Generated Image URL: " . $url);
-        return $url;
-    }
+    // public function getImageAttribute($value)
+    // {
+    //     $url = url('nfts/' . $value);
+    //     Log::info("Generated Image URL: " . $url);
+    //     return $url;
+    // }
 }
