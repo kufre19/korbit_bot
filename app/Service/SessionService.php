@@ -173,6 +173,8 @@ class SessionService
 
         // Optionally clear the session data
         $this->add_value_to_session('session_data', []);
+        $this->add_value_to_session('step_name', []);
+
 
         // You might also want to perform other cleanup operations,
         // such as logging the session end or notifying the user.
