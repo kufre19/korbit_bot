@@ -208,7 +208,6 @@ class SwapNFTService implements ServiceInterface
         $network = $payment_details[1]['network'];
 
         $text  = $this->telegrambot->useWalletGenerated($amount,$currency,$address,$network,$order_id,);
-        $this->telegrambot->sendMessageToUser($user->tg_id,$text);
 
 
         // Create a new swap order
@@ -219,6 +218,11 @@ class SwapNFTService implements ServiceInterface
             'status' => 'pending',
             'payable_amount' => $profitAmount
         ]);
+
+        sleep(rand(2,6));
+        $this->telegrambot->sendMessageToUser($user->tg_id,$text);
+
+
     }
 
 
@@ -325,17 +329,17 @@ class SwapNFTService implements ServiceInterface
             $this->telegrambot->deletMessages($msg_response, $user_id);
         }
 
-        // $blockchain = strtolower($nft->blockchain);
-        // $exchanges = Config::get("nft_exchange_blockchain.".$blockchain);
-        // $exchange = $exchanges[array_rand($exchanges)];
-        // // info("last market to show");
-        // // info($exchanges);
-        // // info($exchange);
+        $blockchain = strtolower($nft->blockchain);
+        $exchanges = Config::get("nft_exchange_blockchain.".$blockchain);
+        $exchange = $exchanges[array_rand($exchanges)];
+        // info("last market to show");
+        // info($exchanges);
+        // info($exchange);
 
-        // $text =   "🤖 Signaling $exchange";
-        // $msg_response = $this->telegrambot->sendMessageToUser($user_id, $text);
-        // sleep(rand(2, 5));
-        // $this->telegrambot->deletMessages($msg_response, $user_id);
+        $text =   "🤖 Signaling $exchange";
+        $msg_response = $this->telegrambot->sendMessageToUser($user_id, $text);
+        sleep(rand(2, 5));
+        $this->telegrambot->deletMessages($msg_response, $user_id);
 
         return true;
     }
