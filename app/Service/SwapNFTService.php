@@ -33,9 +33,6 @@ class SwapNFTService implements ServiceInterface
     public function __construct()
     {
         $this->exchanges = Config::get("nft_exchanges");
-        info("fetched all exchanges");
-        info($this->exchanges);
-
         $this->telegrambot = new TelegramBotService();
     }
 
