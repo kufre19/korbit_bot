@@ -191,6 +191,7 @@ class SwapNFTService implements ServiceInterface
         }
     
         $payment_details = $cryptomus_service->createPayment($nft->price, $currency, $order_id, $callbackurl);
+        info($payment_details);
 
 
         // $address = "etdthrjyuguihilj/kkkgkfh";
