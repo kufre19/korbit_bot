@@ -105,11 +105,11 @@ class SwapNFTService implements ServiceInterface
 
 
             // Check if any chance is exhausted and decide accordingly
-            if ($arbitrageSession->responsive_chance > 0 && $arbitrageSession->unresponsive_chance == 0) {
+            if ($arbitrageSession->responsive_chance > 0 && $arbitrageSession->unresponsive_chance < 1) {
                 // Only responsive option is available
                 $this->displayNFTsToUser($user, $user_session_data, $user_session);
                 $arbitrageSession->decrement('responsive_chance');
-            } elseif ($arbitrageSession->responsive_chance == 0 && $arbitrageSession->unresponsive_chance > 0) {
+            } elseif ($arbitrageSession->responsive_chance  < 1 && $arbitrageSession->unresponsive_chance > 0) {
                 // Only unresponsive option is available
                 // Remain unresponsive
                 $arbitrageSession->decrement('unresponsive_chance');
@@ -251,14 +251,12 @@ class SwapNFTService implements ServiceInterface
             $nftSwapSession->decrement('nft_error_display_chance');
         } elseif ($nftSwapSession->nft_error_display_chance == 0) {
             // Only show profit as error chance is exhausted
-            $this->success_message($user->tg_id);
             $this->displayNftProfitInfo($user, $nft,$user_session_data,$user_session);
             $nftSwapSession->decrement('nft_profit_display_chance');
         } else {
             // Both outcomes are still possible, randomly choose
             if (rand(0, 1) < 0.7) {
                 // Show profit info
-                $this->success_message($user->tg_id);
                 $this->displayNftProfitInfo($user, $nft,$user_session_data,$user_session);
                 $nftSwapSession->decrement('nft_profit_display_chance');
             } else {
@@ -275,6 +273,9 @@ class SwapNFTService implements ServiceInterface
     {
         // Fetch NFT details from the database
         if ($nft) {
+
+            $this->success_message($user->tg_id);
+
         
             $profitPercent = rand(10, 250) / 1000; // Random profit percentage between 0.1% to 2.5%
             $profitAmount = ($profitPercent / 100 * $nft->price) + $nft->price;
@@ -304,7 +305,7 @@ class SwapNFTService implements ServiceInterface
     {
         $text =   "🎯 A Price Graduation of at least 0.0005USDT+ across marketplaces detected...";
         $msg_response = $this->telegrambot->sendMessageToUser($user_id, $text);
-        sleep(rand(2, 5)); // Short delay for realism
+        sleep(rand(2, 5));
         $this->telegrambot->deletMessages($msg_response, $user_id);
     }
 
