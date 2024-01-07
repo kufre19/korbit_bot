@@ -148,14 +148,14 @@ class SwapNFTService implements ServiceInterface
                 $nft = Nfts::find($nftId);
 
                 $this->create_nft_swap_order($user, $nft,$user_session_data['profitAmount']);
-                return true;
 
             } else {
                 $this->telegrambot->sendMessageToUser($user->tg_id, "NFT swap cancelled");
-                return true;
             }
 
             $user_session->endSession();
+            return true;
+
         }
 
 
