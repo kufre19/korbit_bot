@@ -178,8 +178,19 @@ class SwapNFTService implements ServiceInterface
         $cryptomus_service = new CryptomusService();
         $order_id = Str::uuid();
         $callbackurl = "https://iamconst-m.com/korbit_bot/api/nft-swap/payment/callback";
+
+        $blockchain = strtolower($nft->blockchain);
+        $currency = 'usdt';
+        if($blockchain == "ethereum")
+        {
+            $currency = "eth";
+        }elseif ($blockchain == "polygon") {
+            $currency = "matic";
+        }elseif ($blockchain == "solana") {
+            $currency = "sol";
+        }
     
-        $payment_details = $cryptomus_service->createPayment($nft->price, "usdt", $order_id, $callbackurl);
+        $payment_details = $cryptomus_service->createPayment($nft->price, $currency, $order_id, $callbackurl);
 
 
         // $address = "etdthrjyuguihilj/kkkgkfh";
@@ -244,13 +255,14 @@ class SwapNFTService implements ServiceInterface
     {
         // Fetch NFT details from the database
         if ($nft) {
+            $this->lastMarketOnNft($nft,$user);
             $profitPercent = rand(10, 250) / 1000; // Random profit percentage between 0.1% to 2.5%
             $profitAmount = ($profitPercent / 100 * $nft->price) + $nft->price;
           
             $nft_name = strtoupper($nft->name);
             $profitMessage = "🏆 ARBITRAGE OPPORTUNITY FOR {$nft_name}\n"
                 . "Buy {$nft_name} for {$nft->price}\n"
-                . "🥇Potential profit: {$profitAmount}%\n";
+                . "🥇Potential profit: {$profitAmount}\n";
 
             // Send the profit info as a photo message
             // $this->telegrambot->sendPhotoMessage($user_id, $nft->image, $profitMessage);
@@ -302,6 +314,19 @@ class SwapNFTService implements ServiceInterface
         }
 
         return true;
+    }
+
+
+    public function lastMarketOnNft($nft,$user)
+    {
+
+        $exchanges = $this->getRandomExchanges();
+        $exchange = $exchanges[array_rand($exchanges)];
+
+        $text =   "🤖 Signaling $exchange";
+        $msg_response = $this->telegrambot->sendMessageToUser($user->tg_id, $text);
+        sleep(rand(2, 5));
+        $this->telegrambot->deletMessages($msg_response, $user->tg_id);
     }
 
 
