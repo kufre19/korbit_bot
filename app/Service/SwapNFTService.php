@@ -141,6 +141,19 @@ class SwapNFTService implements ServiceInterface
             $this->handleNftOutcome($user, $selectedNftId,$user_session_data,$user_session);
         }
 
+        if ($step == "should_call_api" && $user_response == "call_api_swap_nft") {
+
+            $nftId = $user_session_data['selected_nft_id'];
+            $nft = Nfts::find($nftId);
+
+            $user_session_data['step'] = "procced_with_swap";
+            $user_session->update_session($user_session_data);
+            $profitAmount = $user_session_data['profitAmount'];
+            $text =   $this->telegrambot->swapNftNotice($nft->price,$profitAmount,$nft->name);
+            $inline = $this->nftswapConfirm();
+            $this->telegrambot->sendMessageToUser($user->tg_id, $text, $inline);
+        }
+
         if ($step == "procced_with_swap") {
 
             $procced_response = $user_response;
@@ -286,12 +299,9 @@ class SwapNFTService implements ServiceInterface
             // $this->telegrambot->sendPhotoMessage($user_id, $nft->image, $profitMessage);
             $this->telegrambot->sendMessageToUser($user->tg_id, $profitMessage, null,  $nft['image']);
 
-            $text =   $this->telegrambot->swapNftNotice($nft->price,$profitAmount,$nft->name);
-            $inline = $this->nftswapConfirm();
-            $this->telegrambot->sendMessageToUser($user->tg_id, $text, $inline);
 
             $user_session_data['profitAmount'] = $profitAmount;
-            $user_session_data['step'] = "procced_with_swap";
+            $user_session_data['step'] = "should_call_api";
             $user_session->update_session($user_session_data);
         }
 

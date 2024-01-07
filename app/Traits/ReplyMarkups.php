@@ -163,6 +163,23 @@ trait ReplyMarkups {
         return json_encode(['inline_keyboard' => $inline]);
     }
 
+    public function callNftSwapAPI()
+    {
+        $inline = [
+            [
+                [
+                    "text" => "Make API Call ",
+                    "callback_data" => "call_api_swap_nft"
+                ]
+            ],
+             
+        ];
+
+        return json_encode(['inline_keyboard' => $inline]);
+        
+    }
+
+
     public function createNftInlineKeyboard($nftId) {
         return json_encode([
             'inline_keyboard' => [
