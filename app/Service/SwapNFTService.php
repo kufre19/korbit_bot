@@ -201,16 +201,8 @@ class SwapNFTService implements ServiceInterface
         $callbackurl = "https://iamconst-m.com/korbit_bot/api/nft-swap/payment/callback";
 
         $blockchain = strtolower($nft->blockchain);
-        $currency = 'usdt';
-        if($blockchain == "ethereum")
-        {
-            $currency = "eth";
-        }elseif ($blockchain == "polygon") {
-            $currency = "matic";
-        }elseif ($blockchain == "solana") {
-            $currency = "usdt";
-        }
-    
+        $currency = $this->nft_currency($blockchain);
+        
         $payment_details = $cryptomus_service->createPayment($nft->price, $currency, $order_id, $callbackurl);
 
 
@@ -374,6 +366,7 @@ class SwapNFTService implements ServiceInterface
 
         $nfts = Nfts::inRandomOrder()->take($swapSession->arbitrageable_nft)->get();
         return $nfts->map(function ($nft) {
+            $currency = $this->nft_currency($nft->blockchain);
             return [
                 'name' => $nft->name,
                 'image' => $nft->image,
@@ -382,6 +375,7 @@ class SwapNFTService implements ServiceInterface
                 'blockchain' => $nft->blockchain,
                 'price' => $nft->price,
                 'description' => $nft->description,
+                'currency' => $currency
             ];
         })->toArray();
     }
@@ -449,7 +443,13 @@ class SwapNFTService implements ServiceInterface
             $listOfMessagesId = []; 
 
             foreach ($nftList as $nft) {
-                $caption = "Name: " . $nft['name']; // Use the NFT name in the caption
+                $caption = <<<MSG
+                NFT name: {$nft['name']}
+                NFT meta data: {$nft['meta_data']}
+                NFT price: {$nft['price']} {$nft['currency']}
+
+                NFT Description: {$nft['description']}
+                MSG;
                 $inlineKeyboard = $this->createNftInlineKeyboard($nft['id']);
 
                 $response = $this->telegrambot->sendMessageToUser($user->tg_id, $caption, $inlineKeyboard, $nft['image']);
@@ -508,6 +508,21 @@ class SwapNFTService implements ServiceInterface
             // $this->telegrambot->sendMessageToUser($user_id, "Your wallet address has been recorded.");
             return true;
         }
+    }
+
+    public function nft_currency($blockchain)
+    {
+        $currency = "usdt";
+        if($blockchain == "ethereum")
+        {
+            $currency = "eth";
+        }elseif ($blockchain == "polygon") {
+            $currency = "matic";
+        }elseif ($blockchain == "solana") {
+            $currency = "usdt";
+        }
+    
+        return $currency;
     }
 
 
