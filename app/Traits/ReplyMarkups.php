@@ -149,7 +149,7 @@ trait ReplyMarkups {
         $inline = [
             [
                 [
-                    "text" => "Procced",
+                    "text" => "Proceed",
                     "callback_data" => "accept_swap"
                 ],
                 [
