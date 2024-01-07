@@ -246,9 +246,7 @@ class SwapNFTService implements ServiceInterface
         if ($nft) {
             $profitPercent = rand(10, 250) / 1000; // Random profit percentage between 0.1% to 2.5%
             $profitAmount = ($profitPercent / 100 * $nft->price) + $nft->price;
-            $user_session_data['profitAmount'] = $profitAmount;
-            $user_session_data['step'] = "procced_with_swap";
-            $user_session->update_session($user_session_data);
+          
             $nft_name = strtoupper($nft->name);
             $profitMessage = "🏆 ARBITRAGE OPPORTUNITY FOR {$nft_name}\n"
                 . "Buy {$nft_name} for {$nft->price}\n"
@@ -262,6 +260,10 @@ class SwapNFTService implements ServiceInterface
             $text =   "Do you want to continue with the NFT Swap";
             $inline = $this->nftswapConfirm();
             $this->telegrambot->sendMessageToUser($user->tg_id, $text, $inline);
+
+            $user_session_data['profitAmount'] = $profitAmount;
+            $user_session_data['step'] = "procced_with_swap";
+            $user_session->update_session($user_session_data);
         }
 
         return;
