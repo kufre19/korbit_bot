@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Log;
 
 class CryptomusService {
     protected $cryptomus;
-    protected $networks = ["DAI"=>"BSC","USDT"=>"BSC","BUSD"=>"BSC","ETH"=>"EHT","SOL"=>"Solana","MATIC"=>"POLYGON"];
+    protected $networks = ["DAI"=>"BSC","USDT"=>"BSC","BUSD"=>"BSC","ETH"=>"ETH","SOL"=>"Solana","MATIC"=>"POLYGON"];
 
     public function __construct() {
         $this->cryptomus = new Cryptomus()  ;

@@ -377,7 +377,11 @@ class SwapNFTService implements ServiceInterface
             return [
                 'name' => $nft->name,
                 'image' => $nft->image,
-                'id' => $nft->id
+                'id' => $nft->id,
+                'meta_data' => $nft->meta_data,
+                'blockchain' => $nft->blockchain,
+                'price' => $nft->price,
+                'description' => $nft->description,
             ];
         })->toArray();
     }

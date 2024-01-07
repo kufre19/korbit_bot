@@ -51,6 +51,12 @@ trait SendMessages
     }
 
 
+    public function addMessageForDeleting($response)
+    {
+        
+    }
+
+
     public function sendMessageToUserDetached($telegrambot, $chat_id, $message, $reply_markup = null, $image = null)
     {
         if ($image) {
