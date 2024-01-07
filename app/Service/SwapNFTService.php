@@ -150,9 +150,16 @@ class SwapNFTService implements ServiceInterface
 
                 $this->create_nft_swap_order($user, $nft,$user_session_data['profitAmount']);
 
-            } else {
+            } elseif($procced_response == "cancel_swap") {
                 $this->telegrambot->sendMessageToUser($user->tg_id, "NFT swap cancelled");
+            }else{
+
+                $text = "I do not understand the command sent, please select from the option given ";
+                $this->telegrambot->sendMessageToUser($user->tg_id,$text);
+                return true;
             }
+
+
 
             $user_session->endSession();
             return true;
