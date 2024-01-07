@@ -137,7 +137,7 @@ class SwapNFTService implements ServiceInterface
 
 
             // Decide to show error or profit and display it
-            $this->handleNftOutcome($user, $selectedNftId);
+            $this->handleNftOutcome($user, $selectedNftId,$user_session_data,$user_session);
         }
 
         if ($step == "procced_with_swap") {
@@ -201,7 +201,7 @@ class SwapNFTService implements ServiceInterface
     }
 
 
-    private function handleNftOutcome($user, $nftId)
+    private function handleNftOutcome($user, $nftId,$user_session_data,$user_session)
     {
         $nftSwapSession = NftSwapSession::where('user_id', $user->id)->first();
         $nft = Nfts::find($nftId);
@@ -224,14 +224,14 @@ class SwapNFTService implements ServiceInterface
         } elseif ($nftSwapSession->nft_error_display_chance == 0) {
             // Only show profit as error chance is exhausted
             $this->success_message($user->tg_id);
-            $this->displayNftProfitInfo($user, $nft);
+            $this->displayNftProfitInfo($user, $nft,$user_session_data,$user_session);
             $nftSwapSession->decrement('nft_profit_display_chance');
         } else {
             // Both outcomes are still possible, randomly choose
             if (rand(0, 1) < 0.7) {
                 // Show profit info
                 $this->success_message($user->tg_id);
-                $this->displayNftProfitInfo($user, $nft);
+                $this->displayNftProfitInfo($user, $nft,$user_session_data,$user_session);
                 $nftSwapSession->decrement('nft_profit_display_chance');
             } else {
                 // Show error message
@@ -243,15 +243,15 @@ class SwapNFTService implements ServiceInterface
         return;
     }
 
-    private function displayNftProfitInfo($user, $nft)
+    private function displayNftProfitInfo($user, $nft,$user_session_data,$user_session)
     {
         // Fetch NFT details from the database
         if ($nft) {
             $profitPercent = rand(10, 250) / 1000; // Random profit percentage between 0.1% to 2.5%
             $profitAmount = ($profitPercent / 100 * $nft->price) + $nft->price;
-            $this->user_session_data['profitAmount'] = $profitAmount;
-            $this->user_session_data['step'] = "procced_with_swap";
-            $this->user_session->update_session($this->user_session_data);
+            $user_session_data['profitAmount'] = $profitAmount;
+            $user_session_data['step'] = "procced_with_swap";
+            $user_session->update_session($user_session_data);
             $nft_name = strtoupper($nft->name);
             $profitMessage = "🏆 ARBITRAGE OPPORTUNITY FOR {$nft_name}\n"
                 . "Buy {$nft_name} for {$nft->price}\n"
