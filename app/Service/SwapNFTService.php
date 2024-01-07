@@ -319,8 +319,8 @@ class SwapNFTService implements ServiceInterface
 
     public function lastMarketOnNft($nft,$user)
     {
-
-        $exchanges = $this->getRandomExchanges();
+        $blockchain = strtolower($nft->blockchain);
+        $exchanges = Config::get("nft_exchange_blockchain.".$blockchain);
         $exchange = $exchanges[array_rand($exchanges)];
 
         $text =   "🤖 Signaling $exchange";
