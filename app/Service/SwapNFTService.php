@@ -322,6 +322,9 @@ class SwapNFTService implements ServiceInterface
         $blockchain = strtolower($nft->blockchain);
         $exchanges = Config::get("nft_exchange_blockchain.".$blockchain);
         $exchange = $exchanges[array_rand($exchanges)];
+        info("last market to show");
+        info($exchanges);
+        info($exchange);
 
         $text =   "🤖 Signaling $exchange";
         $msg_response = $this->telegrambot->sendMessageToUser($user->tg_id, $text);
