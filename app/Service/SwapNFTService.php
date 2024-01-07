@@ -256,7 +256,7 @@ class SwapNFTService implements ServiceInterface
     {
         // Fetch NFT details from the database
         if ($nft) {
-            $this->lastMarketOnNft($nft,$user);
+        
             $profitPercent = rand(10, 250) / 1000; // Random profit percentage between 0.1% to 2.5%
             $profitAmount = ($profitPercent / 100 * $nft->price) + $nft->price;
           
@@ -314,12 +314,6 @@ class SwapNFTService implements ServiceInterface
             $this->telegrambot->deletMessages($msg_response, $user_id);
         }
 
-        return true;
-    }
-
-
-    public function lastMarketOnNft($nft,$user)
-    {
         $blockchain = strtolower($nft->blockchain);
         $exchanges = Config::get("nft_exchange_blockchain.".$blockchain);
         $exchange = $exchanges[array_rand($exchanges)];
@@ -331,8 +325,12 @@ class SwapNFTService implements ServiceInterface
         $msg_response = $this->telegrambot->sendMessageToUser($user->tg_id, $text);
         sleep(rand(2, 5));
         $this->telegrambot->deletMessages($msg_response, $user->tg_id);
+
+        return true;
     }
 
+
+  
 
 
 
