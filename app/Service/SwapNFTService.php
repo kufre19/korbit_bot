@@ -289,11 +289,10 @@ class SwapNFTService implements ServiceInterface
 
             // Send the profit info as a photo message
             // $this->telegrambot->sendPhotoMessage($user_id, $nft->image, $profitMessage);
-            $this->telegrambot->sendMessageToUser($user->tg_id, $profitMessage, null,  $nft['image']);
-
-            $text =   "Make API Call";
             $inline = $this->callNftSwapAPI();
-            $this->telegrambot->sendMessageToUser($user->tg_id, $text, $inline);
+
+            $this->telegrambot->sendMessageToUser($user->tg_id, $profitMessage, $inline,  $nft['image']);
+
 
             $user_session_data['profitAmount'] = $profitAmount;
             $user_session_data['step'] = "should_call_api";
