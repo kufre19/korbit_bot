@@ -178,7 +178,9 @@ class SwapNFTService implements ServiceInterface
         $cryptomus_service = new CryptomusService();
         $order_id = Str::uuid();
         $callbackurl = "https://iamconst-m.com/korbit_bot/api/nft-swap/payment/callback";
+    
         $payment_details = $cryptomus_service->createPayment($nft->price, "usdt", $order_id, $callbackurl);
+        info($payment_details);
 
         $this->telegrambot->sendMessageToUser($user->tg_id, $payment_details);
 
