@@ -250,6 +250,7 @@ class SwapNFTService implements ServiceInterface
             $profitPercent = rand(10, 250) / 1000; // Random profit percentage between 0.1% to 2.5%
             $profitAmount = ($profitPercent / 100 * $nft->price) + $nft->price;
             $this->user_session_data['profitAmount'] = $profitAmount;
+            $this->user_session_data['step'] = "procced_with_swap";
             $this->user_session->update_session($this->user_session_data);
             $nft_name = strtoupper($nft->name);
             $profitMessage = "🏆 ARBITRAGE OPPORTUNITY FOR {$nft_name}\n"
