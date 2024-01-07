@@ -257,6 +257,7 @@ class SwapNFTService implements ServiceInterface
             // Send the profit info as a photo message
             // $this->telegrambot->sendPhotoMessage($user_id, $nft->image, $profitMessage);
             $this->telegrambot->sendMessageToUser($user->tg_id, $profitMessage, null,  $nft['image']);
+            $this->clearDisplayedNfts($user->tg_id,$user_session_data);
 
             $text =   "Do you want to continue with the NFT Swap";
             $inline = $this->nftswapConfirm();
@@ -383,19 +384,34 @@ class SwapNFTService implements ServiceInterface
             // foreach ($nftList as $nft) {
             //     $this->telegrambot->sendMessageToUser($user_id, $nft['text'], null, $nft['image']);
             // }
+            $listOfMessagesId = []; 
 
             foreach ($nftList as $nft) {
                 $caption = "Name: " . $nft['name']; // Use the NFT name in the caption
                 $inlineKeyboard = $this->createNftInlineKeyboard($nft['id']);
 
-                $this->telegrambot->sendMessageToUser($user->tg_id, $caption, $inlineKeyboard, $nft['image']);
+                $response = $this->telegrambot->sendMessageToUser($user->tg_id, $caption, $inlineKeyboard, $nft['image']);
+                array_push($listOfMessagesId,$response->getMessageId());
+
             }
 
             $user_session_data['step'] = 'select nft';
+            $user_session_data['nfts_displayed_for_swap'] = $listOfMessagesId;
+
             $user_session->update_session($user_session_data);
         } catch (\Exception $e) {
             $this->telegrambot->sendMessageToUser($user->tg_id, "An error occurred while fetching NFTs.");
         }
+    }
+
+
+    public function clearDisplayedNfts($tg_id,$user_session_data)
+    {
+        $message_ids = $user_session_data['nfts_displayed_for_swap'];
+        foreach ($message_ids as $key => $value) {
+            $this->telegrambot->deletMessages("", $tg_id,$value);
+        }
+        return true;
     }
 
 

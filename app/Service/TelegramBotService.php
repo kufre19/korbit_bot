@@ -85,9 +85,12 @@ class TelegramBotService
     }
 
 
-    public function deletMessages($response, $chat_id)
+    public function deletMessages($response, $chat_id,$messageId=null)
     {
-        $messageId = $response->getMessageId();
+        if($messageId == null)
+        {
+            $messageId = $response->getMessageId();
+        }
         return $this->telegrambot->deleteMessage([
             'chat_id' => $chat_id,
             'message_id' => $messageId
