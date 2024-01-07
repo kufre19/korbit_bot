@@ -141,8 +141,13 @@ class SwapNFTService implements ServiceInterface
             $this->handleNftOutcome($user, $selectedNftId,$user_session_data,$user_session);
         }
 
-        if ($step == "should_call_api" && $user_response == "call_api_swap_nft") {
+        if ($step == "should_call_api" ) {
 
+            if ($user_response != "call_api_swap_nft") {
+                $text = "I do not understand the command";
+                $this->telegrambot->sendMessageToUser($user->tg_id, $text);
+                return true;
+            }
             $nftId = $user_session_data['selected_nft_id'];
             $nft = Nfts::find($nftId);
 
