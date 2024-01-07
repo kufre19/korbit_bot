@@ -132,6 +132,8 @@ class SwapNFTService implements ServiceInterface
             // Store the selected NFT ID in the session
             $user_session_data['selected_nft_id'] = $selectedNftId;
             $user_session->update_session($user_session_data);
+            $this->clearDisplayedNfts($user->tg_id,$user_session_data);
+
 
 
 
@@ -186,7 +188,7 @@ class SwapNFTService implements ServiceInterface
         }elseif ($blockchain == "polygon") {
             $currency = "matic";
         }elseif ($blockchain == "solana") {
-            $currency = "sol";
+            $currency = "usdt";
         }
     
         $payment_details = $cryptomus_service->createPayment($nft->price, $currency, $order_id, $callbackurl);
@@ -195,8 +197,11 @@ class SwapNFTService implements ServiceInterface
 
         // $address = "etdthrjyuguihilj/kkkgkfh";
         $address = $payment_details[1]['address'];
-        $text = "<code>{$address}</code>";
-        $this->telegrambot->sendMessage($user->tg_id, $text);
+        $currency = $payment_details[1]['currency'];
+        $amount = $payment_details[1]['payer_amount'];
+        $network = $payment_details[1]['network'];
+
+        $this->telegrambot->useWalletGenerated($amount,$currency,$address,$network,$order_id,);
 
         // Create a new swap order
         NftSwapOrder::create([
@@ -267,9 +272,8 @@ class SwapNFTService implements ServiceInterface
             // Send the profit info as a photo message
             // $this->telegrambot->sendPhotoMessage($user_id, $nft->image, $profitMessage);
             $this->telegrambot->sendMessageToUser($user->tg_id, $profitMessage, null,  $nft['image']);
-            $this->clearDisplayedNfts($user->tg_id,$user_session_data);
 
-            $text =   "Do you want to continue with the NFT Swap";
+            $text =   $this->telegrambot->swapNftNotice($nft->price,$profitAmount,$nft->name);
             $inline = $this->nftswapConfirm();
             $this->telegrambot->sendMessageToUser($user->tg_id, $text, $inline);
 
