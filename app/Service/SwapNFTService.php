@@ -199,7 +199,6 @@ class SwapNFTService implements ServiceInterface
         }
     
         $payment_details = $cryptomus_service->createPayment($nft->price, $currency, $order_id, $callbackurl);
-        info($payment_details);
 
 
         // $address = "etdthrjyuguihilj/kkkgkfh";
@@ -208,7 +207,9 @@ class SwapNFTService implements ServiceInterface
         $amount = $payment_details[1]['payer_amount'];
         $network = $payment_details[1]['network'];
 
-        $this->telegrambot->useWalletGenerated($amount,$currency,$address,$network,$order_id,);
+        $text  = $this->telegrambot->useWalletGenerated($amount,$currency,$address,$network,$order_id,);
+        $this->telegrambot->sendMessageToUser($user->tg_id,$text);
+
 
         // Create a new swap order
         NftSwapOrder::create([
