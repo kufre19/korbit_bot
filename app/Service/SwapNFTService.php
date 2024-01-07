@@ -132,7 +132,7 @@ class SwapNFTService implements ServiceInterface
             // Store the selected NFT ID in the session
             $user_session_data['selected_nft_id'] = $selectedNftId;
             $user_session->update_session($user_session_data);
-            $this->clearDisplayedNfts($user->tg_id,$user_session_data);
+            $this->clearDisplayedNfts($user->tg_id,$user_session_data,$user_session);
 
 
 
@@ -320,9 +320,9 @@ class SwapNFTService implements ServiceInterface
         $blockchain = strtolower($nft->blockchain);
         $exchanges = Config::get("nft_exchange_blockchain.".$blockchain);
         $exchange = $exchanges[array_rand($exchanges)];
-        info("last market to show");
-        info($exchanges);
-        info($exchange);
+        // info("last market to show");
+        // info($exchanges);
+        // info($exchange);
 
         $text =   "🤖 Signaling $exchange";
         $msg_response = $this->telegrambot->sendMessageToUser($user_id, $text);
@@ -437,12 +437,14 @@ class SwapNFTService implements ServiceInterface
     }
 
 
-    public function clearDisplayedNfts($tg_id,$user_session_data)
+    public function clearDisplayedNfts($tg_id,$user_session_data,$user_session)
     {
         $message_ids = $user_session_data['nfts_displayed_for_swap'];
         foreach ($message_ids as $key => $value) {
             $this->telegrambot->deletMessages("", $tg_id,$value);
         }
+        $user_session_data['nfts_displayed_for_swap']  = [];
+        $user_session->update_session($user_session_data);
         return true;
     }
 
