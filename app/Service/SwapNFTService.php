@@ -322,9 +322,9 @@ class SwapNFTService implements ServiceInterface
         info($exchange);
 
         $text =   "🤖 Signaling $exchange";
-        $msg_response = $this->telegrambot->sendMessageToUser($user->tg_id, $text);
+        $msg_response = $this->telegrambot->sendMessageToUser($user_id, $text);
         sleep(rand(2, 5));
-        $this->telegrambot->deletMessages($msg_response, $user->tg_id);
+        $this->telegrambot->deletMessages($msg_response, $user_id);
 
         return true;
     }
