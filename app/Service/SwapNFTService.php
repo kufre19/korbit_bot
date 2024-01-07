@@ -147,7 +147,7 @@ class SwapNFTService implements ServiceInterface
                 $nftId = $user_session_data['selected_nft_id'];
                 $nft = Nfts::find($nftId);
 
-                $this->create_nft_swap_order($user, $nft);
+                $this->create_nft_swap_order($user, $nft,$user_session_data['profitAmount']);
                 return true;
 
             } else {
@@ -173,7 +173,7 @@ class SwapNFTService implements ServiceInterface
 
 
 
-    private function create_nft_swap_order($user, $nft)
+    private function create_nft_swap_order($user, $nft,$profitAmount)
     {
         $cryptomus_service = new CryptomusService();
         $order_id = Str::uuid();
@@ -188,7 +188,6 @@ class SwapNFTService implements ServiceInterface
         $address = $payment_details[1]['address'];
         $text = "<code>{$address}</code>";
         $this->telegrambot->sendMessage($user->tg_id, $text);
-        $profitAmount = $this->user_session_data['profitAmount'];
 
         // Create a new swap order
         NftSwapOrder::create([
