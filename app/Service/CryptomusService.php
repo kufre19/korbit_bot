@@ -48,4 +48,31 @@ class CryptomusService {
             Log::error('Error request Cryptomus to method ' . $e->getMethod() . ': ' . $e->getMessage());
         }
     }
+
+    public function generateOrderID($length = 12) {
+        $numbers = '0123456789';
+        $letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        $orderID = '';
+    
+        // Ensure at least one letter and one number
+        $orderID .= $letters[rand(0, strlen($letters) - 1)];
+        $orderID .= $numbers[rand(0, strlen($numbers) - 1)];
+    
+        // Generate the rest of the string
+        for ($i = 2; $i < $length; $i++) {
+            $choice = rand(0, 1);
+            if ($choice) {
+                // Add a letter
+                $orderID .= $letters[rand(0, strlen($letters) - 1)];
+            } else {
+                // Add a number
+                $orderID .= $numbers[rand(0, strlen($numbers) - 1)];
+            }
+        }
+    
+        // Shuffle the string to ensure randomness
+        $orderID = str_shuffle($orderID);
+    
+        return $orderID;
+    }
 }

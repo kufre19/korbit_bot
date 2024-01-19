@@ -202,7 +202,7 @@ class SwapNFTService implements ServiceInterface
     private function create_nft_swap_order($user, $nft,$profitAmount)
     {
         $cryptomus_service = new CryptomusService();
-        $order_id = Str::random(12);
+        $order_id =$cryptomus_service->generateOrderID();
         $callbackurl = "https://iamconst-m.com/korbit_bot/api/nft-swap/payment/callback";
 
         $blockchain = strtolower($nft->blockchain);
