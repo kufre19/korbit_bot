@@ -72,23 +72,29 @@ class ExchangeRateService
     public function getAssetPricesRate() {
         $assets = CurrencyRate::get();
         $priceRate = "LIVE SCAN RESULTS FROM SWAP:" . "\n";
+
+        $lastmessage = <<<MSG
+
+        Please enter an amount in USD to get the live readings report.
+        NB: Prices change every instant based on price volatility across spot markets⚠️📊. 
+        MSG;
     
         foreach ($assets as $asset) {
             // Calculate percentage change
             if ($asset->old_price && $asset->old_price != 0) {
                 $change = (($asset->price - $asset->old_price) / $asset->old_price) * 100;
                 $formattedChange = number_format($change, 2, '.', ''); // 2 decimal places
-                $sign = ($change >= 0) ? '⬆️' : '⬇️'; // Add + sign for positive change
+                $sign = ($change >= 0) ? '⬆️ ' : '⬇️ '; // Add + sign for positive change
     
                 // Format the string
-                $priceRate .= '<b>"' . $asset->currency . ': $' . number_format($asset->price, 4) . ' (' . $sign . abs($formattedChange) . '%)"</b>' . "\n";
+                $priceRate .= '<b>"' . $asset->currency . ': $' . number_format($asset->price, 4) . ' (' . $sign . abs($formattedChange) . '%)"</b>' . "\n \n";
             } else {
                 // If there's no old price, just show the current price
                 $priceRate .= '<b>' . $asset->currency . ': $' . number_format($asset->price, 4) . '</b>' . "\n";
             }
         }
     
-        return $priceRate;
+        return $priceRate . $lastmessage;
     }
     
 }
