@@ -47,7 +47,7 @@ trait ButtonCommands
 
         if ($command == "📜About Korbit") {
             $message = Config::get("messages.about_us");
-            sleep(3,5);
+            sleep(rand(3,5));
             $this->sendMessageToUser($this->from_chat_id, $message);
             return true;
         }
