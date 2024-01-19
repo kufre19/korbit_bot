@@ -25,7 +25,7 @@ class AcademyService implements ServiceInterface
     public function orderAcademyAccess($user_id)
     {
         $user = UserService::fetchUserByTgID($user_id);
-        $order_id = Str::uuid();
+        $order_id =  Str::random(12);
 
         $cryptomus_service = new CryptomusService();
 

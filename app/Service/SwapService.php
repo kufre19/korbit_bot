@@ -246,7 +246,7 @@ class SwapService implements ServiceServiceInterface
 
                     // Create a swap order record in the database
                     $user = UserService::fetchUserByTgID($user_id);
-                    $order_id = Str::uuid();
+                    $order_id =  Str::random(12);
 
                     $cryptomus_service = new CryptomusService();
                     $callbackurl = "https://iamconst-m.com/korbit_bot/api/swap/payment/callback";

@@ -55,7 +55,7 @@ class LicenseService implements ServiceServiceInterface
             // initialize the TG bot sdk
             // Send message to user
             $cryptomus_service = new CryptomusService();
-            $order_id = Str::uuid();
+            $order_id =  Str::random(12);
             $callbackurl = "https://iamconst-m.com/korbit_bot/api/license/payment/callback";
             $payment_details = $cryptomus_service->createPayment("21","usdt",$order_id,$callbackurl);
            
