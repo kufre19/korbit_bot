@@ -69,7 +69,7 @@ trait ButtonCommands
             if (!$licenseService->checkUserLicense($this->from_chat_id)) {
                 // set a session action for licensing before sending question for email
                 $this->user_session->set_session_route("LicenseService", "store email");
-                $message = "Please enter your valid email address for license purchase confirmation and endless access to first-hand informations from korbit Team.";
+                $message = "Please enter your valid email address for license purchase confirmation and endless access to first-hand information from korbit Team.";
                 $this->sendMessageToUser($this->from_chat_id, $message);
             }
 

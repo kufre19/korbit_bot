@@ -43,6 +43,8 @@ class Exchange2ExchangeService implements ServiceInterface
             $arbitrage_session->number_of_response_left = $responses; // Reset the response count
             $arbitrage_session->total_responses = $responses; // Reset the response count
             $arbitrage_session->save();
+            $arbitrage_session = $this->initializeDailySession($user->id,$responses);
+
         }
 
         if ($arbitrage_session->number_of_response_left <= 0) {
@@ -111,7 +113,9 @@ class Exchange2ExchangeService implements ServiceInterface
                 $user_session->endSession();
 
             }else {
-                $msg_response = $this->telegrambot->sendMessageToUser($user_id, $responseMessage);
+                // $msg_response = $this->telegrambot->sendMessageToUser($user_id, $responseMessage);
+                $user_session->endSession();
+                return true;
             }
            
 
@@ -148,7 +152,7 @@ class Exchange2ExchangeService implements ServiceInterface
         $session = ArbitrageSession::where('user_id', $user_id)->first();
     
         if (!$session || $session->number_of_response_left <= 0) {
-            return "Daily limit reached. Try again tomorrow.";
+            return "";
         }
     
         $probabilities = [
@@ -164,7 +168,7 @@ class Exchange2ExchangeService implements ServiceInterface
         });
     
         if (empty($availableProbabilities)) {
-            return "Daily limit reached. Try again tomorrow....";
+            return "";
         }
     
         // Randomly pick a response type

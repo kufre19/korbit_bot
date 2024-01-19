@@ -266,7 +266,9 @@ class SwapService implements ServiceServiceInterface
                         ]);
 
 
-                        $notify_confirm = $this->useWalletGenerated($payment_details['amount'], $fromAsset, $payment_details['address'], $payment_details['network'], $order_id, "swap");
+                        $amount = number_format($payment_details['amount'],4) ;
+
+                        $notify_confirm = $this->useWalletGenerated($amount, $fromAsset, $payment_details['address'], $payment_details['network'], $order_id, "swap");
                         $this->telegram_bot->sendMessageToUser($user_id, $notify_confirm);
                         $user_session->endSession();
                     } else {

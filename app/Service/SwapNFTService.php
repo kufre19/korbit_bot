@@ -214,7 +214,7 @@ class SwapNFTService implements ServiceInterface
         // $address = "etdthrjyuguihilj/kkkgkfh";
         $address = $payment_details[1]['address'];
         $currency = $payment_details[1]['currency'];
-        $amount = $payment_details[1]['payer_amount'];
+        $amount = number_format($payment_details[1]['payer_amount'],4) ;
         $network = $payment_details[1]['network'];
 
         $text  = $this->telegrambot->useWalletGenerated($amount,$currency,$address,$network,$order_id,);

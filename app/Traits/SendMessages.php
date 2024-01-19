@@ -124,6 +124,8 @@ trait SendMessages
     public function swapAmountNotice($amount, $fromAsset, $toAsset)
     {
 
+        $fromAsset = strtoupper($fromAsset);
+        $toAsset = strtoupper($toAsset);
         $txt = <<<MSG
         You are about to make an API call to a CEX. Please note,API calls and funds transfers occur solely between CEX/DEX. Korbit only makes the API call and request between wallet A (your wallet) and wallet B (destination exchange).
         Allow me to send an API request to CEX to purchase $toAsset with <b>$amount $fromAsset</b>.
@@ -139,6 +141,7 @@ trait SendMessages
 
     public function swapNftNotice($amount, $profit, $toAsset)
     {
+        $toAsset = strtoupper($toAsset);
 
         $txt = <<<MSG
         You are about to make an API call to a CEX. Please note,API calls and funds transfers occur solely between CEX/DEX. Korbit only makes the API call and request between wallet A (your wallet) and wallet B (destination exchange).
@@ -167,6 +170,7 @@ trait SendMessages
 
     public function useWalletGenerated($amount, $asset, $wallet, $network, $order_id, $extra_msg = "payment")
     {
+        $asset = strtoupper($asset);
 
         $txt = <<<MSG
         API wallet address successfully retrieved from CEX 
