@@ -112,10 +112,9 @@ trait SendMessages
     public function InviteLinkMessage($link)
     {
         $txt = <<<MSG
-        Korbit Affiliate Program 
-        The official way to invite your friends. Get rewarded up to 25% commission for every friend you refer to make a purchase of the BOT 
-        Experience a new way of earning by inviting your friends to buy BOT license 
-        Here's your unique referral link: $link
+        Korbit Affiliate Program 🚀💰 The official way to invite your friends. Get rewarded up to 22% commission for every friend you refer to make a purchase of the BOT 🌐💻
+        Experience a new way of earning by inviting your friends to buy BOT license 🌟👥
+        Here's your unique referral link: $link  📎✨
         MSG;
 
         return $txt;
