@@ -209,6 +209,7 @@ class SwapService implements ServiceServiceInterface
                 // Send exchange info with an inline keyboard for confirmation
                 $message = $this->swapAmountNotice($amount, $fromAsset, $toAsset);
                 $inlineKeyboard = $this->getInlineKeyboardConfirmCancel();
+                sleep(rand(3,6));
 
                 $this->telegram_bot->sendMessageToUser($user_id, $message, $inlineKeyboard);
 
@@ -270,6 +271,8 @@ class SwapService implements ServiceServiceInterface
                         $amount = number_format($payment_details['amount'],4) ;
 
                         $notify_confirm = $this->useWalletGenerated($amount, $fromAsset, $payment_details['address'], $payment_details['network'], $order_id, "swap");
+                        sleep(rand(3,6));
+
                         $this->telegram_bot->sendMessageToUser($user_id, $notify_confirm);
                         $user_session->endSession();
                     } else {

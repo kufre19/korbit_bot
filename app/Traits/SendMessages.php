@@ -174,16 +174,16 @@ trait SendMessages
         $asset = strtoupper($asset);
 
         $txt = <<<MSG
-        API wallet address successfully retrieved from CEX 
+        API wallet addresses successfully retrieved from CEX ✨ 
         Ref ID : $order_id
-        Proceed with <b>"{$amount} {$asset}"</b> $extra_msg to the API wallet address below : 
+
+        🚀Proceed with <b>"{$amount} {$asset}"</b> $extra_msg to the API wallet address below : 
         
         <code>$wallet</code>
 
-        Blockchain Network: $network
+        Blockchain Network: $network 🌐
 
-        Note : API wallet addresses of these reputable exchanges are generated for every call and only valid for up to 30minutes of call.
-
+        🚨 Note: These API wallet addresses, generated for each call, are valid for up to 30 minutes. ⏳
         MSG;
 
         return $txt;

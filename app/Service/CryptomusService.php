@@ -49,7 +49,7 @@ class CryptomusService {
         }
     }
 
-    public function generateOrderID($length = 12) {
+    public function generateOrderID($length = 16) {
         $numbers = '0123456789';
         $letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
         $orderID = '';

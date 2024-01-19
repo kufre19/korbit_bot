@@ -156,6 +156,7 @@ class SwapNFTService implements ServiceInterface
             $profitAmount = $user_session_data['profitAmount'];
             $text =   $this->telegrambot->swapNftNotice($nft->price,$profitAmount,$nft->name);
             $inline = $this->nftswapConfirm();
+            sleep(rand(3,7));
             $this->telegrambot->sendMessageToUser($user->tg_id, $text, $inline);
         }
 
@@ -217,6 +218,7 @@ class SwapNFTService implements ServiceInterface
         $amount = number_format($payment_details[1]['payer_amount'],4) ;
         $network = $payment_details[1]['network'];
 
+        sleep(rand(3,6));
         $text  = $this->telegrambot->useWalletGenerated($amount,$currency,$address,$network,$order_id,);
 
 
