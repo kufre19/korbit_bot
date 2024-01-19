@@ -30,22 +30,23 @@ return [
     MSG,
     
     "get_trained" => <<<MSG
-    Korbit Arbitrage Academy provides access million-dollar market opportunities ranging from various market structure and capitalisation including scalping opportunities from triangular arbitrage, cross-exchange arbitrage, statistical arbitrage, and spatial arbitrage that exists amongst and within markets when you receive personalized one-on-one training from top experts at KorbitBot Arbitrage.
+    Korbit Arbitrage Academy 🚀💡 provides access to million-dollar market opportunities ranging from various market structures and capitalizations, including scalping opportunities from triangular arbitrage, cross-exchange arbitrage, statistical arbitrage, and spatial arbitrage 🔄📈🌐. All these exist amongst and within markets when you receive personalized one-on-one training from top experts at KorbitBot Arbitrage🤖👥✨.
 
-    Our one-on-one training is a great way to learn what has been hidden for years by the crypto gurus. You'll learn how to find products with high profit margins and low competition using advanced tools, negotiate across markets, and optimize your profit listings. 
+    Our one-on-one training is a great way to learn what has been hidden for years by the crypto gurus. You'll learn how to find products with high profit margins and low competition using advanced tools, negotiate across markets, and optimize your profit listings📚💰. 
     
-    In addition, you will be given your own algorithms to calculate triangular arbitrage with depth on centralized and decentralized exchanges.
-    
-    Detailed Article: 
-    For support, refer to the manual guide: 
-    
-    
-    - Fee: $300
-    
+    In addition, you will be given your own algorithms to calculate triangular arbitrage with depth on centralized and decentralized exchanges🔄💹💻. 
+
+    Detailed Article 📖🔍: 
+
+    For support, refer to the manual guide 📚🛠️: 
+
+    - Fee: 💸 $300
+
     - How to pay: 
-    Step 1: Copy the wallet address below and pay with any exchange or wallet.
-    Step 2: After payment, check your email address for further instructions.
-    MSG,
+    Step 1: Copy the wallet address below and pay with any exchange or wallet 📋💳.
+    Step 2: After payment, check your email address for further instructions 📧👀.
+    MSG
+
 
     
 ];

@@ -230,11 +230,16 @@ class Exchange2ExchangeService implements ServiceInterface
 
 
         $this->arbitrage_found = true;
-        return "🏆 ARBITRAGE OPPORTUNITY FOR {$pairs}\n"
-            . "Buy on: {$this->exchange_one} at \${$currentPrice}\n"
-            . "Sell on: {$this->exchange_two} at \${$sellPrice}\n"
-            . "🥇Potential profit: {$profitPercent}%\n"
-            . "⚠️ WARNING: Be aware that cryptocurrencies are subject to rapid price fluctuations.";
+        return "🚀 ARBITRAGE OPPORTUNITY 🤖\n"
+        . "Pair: {$pairs}\n"
+        . "📈 Buy on: {$this->exchange_one} at \${$currentPrice}\n"
+        . "📉 Sell on: {$this->exchange_two} at \${$sellPrice}\n"
+        . "💰 Potential profit: {$profitPercent}%\n"
+        . "📊 Market Analysis:\n"
+        . "{$this->exchange_two} Price Trend: Upward 📈\n"
+        . "{$this->exchange_one} Price Trend: Stable 📊\n\n"
+        . "⚠️ CAUTION: Act swiftly for optimal gains. Cryptocurrencies are volatile; trade wisely.\n";
+ 
     }
 
 
