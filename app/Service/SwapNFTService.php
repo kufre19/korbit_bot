@@ -76,11 +76,11 @@ class SwapNFTService implements ServiceInterface
                 $msg = <<<MSG
                 NFTs are unique digital assets that represent ownership of specific items, such as virtual
                 concert tickets or rare pieces of art 🎨. NFTs are stored on the blockchain, which means 
-                they can't be edited, copied or duplicated. 🔐 There, they can act as a publicly verifiable proof of ownership on a decentralized database.
+                they can't be edited, copied or duplicated🔐. Therefore, they can act as a publicly verifiable proof of ownership on a decentralized database.
                 
-                ⚠️ Disclaimer: API has been built to detect volatilities across floor price of total volume of collectibles
-                and not the individual NFTs themselves 📊.
+                ⚠️ Disclaimer: API has been built to detect volatilities across floor price of total volume of collectibles and not the individual NFTs themselves 📊.
                 MSG;
+
                 $inline = $this->nftTracker();
                 $this->telegrambot->sendMessageToUser($user_id, $msg, $inline);
                 $user_session_data['step'] = 'run nft tracker';
