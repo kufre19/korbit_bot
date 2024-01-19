@@ -3,19 +3,15 @@
 
 return [
     "about_us" => <<<MSG
-    Korbit Arbitrage scanner is an advanced machine learning tool trained
-    with 100+ algorithms to detect simple graduation of Price differences 
-    of up to $0.0005 accuracy and price differences across 60+ CEXs and 40+ DEXs. 
-    It provides crypto traders with an opportunity to capitalize on price differences 
-    across multiple trading platforms. By aggregating market data from numerous crypto 
-    exchanges, this app offers valuable insights on optimal buying and selling points.
+    Korbit Arbitrage scanner is an advanced machine learning tool trained with 100+ algorithms to detect simple graduation of Price differences of up to $0.0005 accuracy and price differences across 60+ CEXs and 40+ DEXs. 
+    It provides crypto traders with an opportunity to capitalize on price differences across multiple trading platforms. By aggregating market data from numerous crypto exchanges, this app offers valuable insights on optimal buying and selling points.
     
     Traders can leverage on this information to identify opportunities to buy at low prices and 
     sell at high prices, maximizing their potential profits💰. 
     Our innovative bot 💡 enables users to profit from price differences between exchanges without the need 
-    to hold tokens in advance. It allows users to make API call requests across 100+ CEXs in an instant. Through 
-    the use of sophisticated algorithms, it performs complex mathematical calculations and detects micro fluctuations 
-    among them. By leveraging real-time market data, our bot identifies favorable trading opportunities, allowing users 
+    to hold tokens in advance. It allows users to make API call requests across 100+ CEXs in an instant. 
+    Through the use of sophisticated algorithms, it performs complex mathematical calculations and detects micro fluctuations among them. 
+    By leveraging real-time market data, our bot identifies favorable trading opportunities, allowing users 
     to execute trades and capitalize on price differences for maximum profitability. This approach eliminates the need for upfront token 
     investments, providing a flexible and efficient arbitrage solution for traders🔄💰. 
     The principle is very simple: you purchase a coin on one exchange and transfer it to another where the price is higher. 
