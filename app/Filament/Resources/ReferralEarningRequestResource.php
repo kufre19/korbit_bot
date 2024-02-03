@@ -42,7 +42,7 @@ class ReferralEarningRequestResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.user_id')->label('User TG ID'),
+                Tables\Columns\TextColumn::make('user.tg_id')->label('User TG ID'),
                 Tables\Columns\TextColumn::make('usdt_address')->label('USDT Address'),
                 Tables\Columns\TextColumn::make('user.wallet.referral_balance')->label('Referral Balance'),
                 Tables\Columns\TextColumn::make('created_at')->dateTime()->label('Created At'),
