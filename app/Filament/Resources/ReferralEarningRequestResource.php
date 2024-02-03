@@ -27,7 +27,7 @@ class ReferralEarningRequestResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('user.wallet.referral_balance')
                     ->label('Referral Balance')
-                    ->disabled()
+                    ->disabled(),
                     // ->default(function ($record) {
                     //     info($record);
                     //     return $record ? $record->referral_balance : '0';
