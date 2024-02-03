@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Models\ReferralEarningRequest;
 use App\Models\User;
 use App\Models\Wallet;
 use App\Service\TelegramBotService;
@@ -58,8 +59,26 @@ class ReferralService
 
           switch ($step) {
             case 'make_withdraw_request':
+                // Assuming $user_response contains the USDT wallet address
+                $usdt_address = $user_response;
+                $user_service = new UserService();
+                $user = $user_service->fetchUserByTgID($user_id);
+    
+                // Create a record in referral_earnings_requests table
+                ReferralEarningRequest::create([
+                    'user_id' => $user->id,
+                    'usdt_address' => $usdt_address
+                ]);
+    
+                // Send a confirmation message or take further action
+                $this->telegramBot->sendMessageToUser($user_id, "Your withdrawal request has been received.");
+    
+                // End or update the session as needed
+                $user_session->endSession(); // Replace with your actual method to end the session
                 break;
-          }
+    
+        }
+          
 
     }
 

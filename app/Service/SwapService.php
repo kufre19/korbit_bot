@@ -33,71 +33,7 @@ class SwapService implements ServiceServiceInterface
      * @param float $amount
      * @return array
      */
-    // public function swapCrypto($userId, $fromAsset, $toAsset, $amount)
-    // {
-    //     $user = UserService::fetchUserByTgID($userId);
-    //     // Validate input...
-    //     if (!$this->validateInput($fromAsset, $toAsset, $amount)) {
-    //         return [
-    //             'success' => false,
-    //             'message' => 'Invalid input.'
-    //         ];
-    //     }
-
-    //     // Check if user has enough balance...
-    //     $wallet = Wallet::where('user_id', $user->id)->first();
-    //     $balanceFieldFrom = 'balance_' . strtolower($fromAsset);
-    //     if ($wallet->$balanceFieldFrom < $amount) {
-    //         return [
-    //             'success' => false,
-    //             'message' => 'Insufficient funds.'
-    //         ];
-    //     }
-
-    //     // Fetch exchange rate
-    //     $daiRate = CurrencyRate::where('currency', 'DAI')->value('price');
-    //     $busdRate = CurrencyRate::where('currency', 'BUSD')->value('price');
-
-    //     // Calculate the exchange rate
-    //     $exchangeRate = $fromAsset === 'DAI' ? ($daiRate / $busdRate) : ($busdRate / $daiRate);
-
-    //     // // Get the current exchange rate...
-    //     // $exchangeRate = $this->getExchangeRate($fromAsset, $toAsset); // You need to implement this method
-
-    //     // Calculate the amount to receive...
-    //     $receivedAmount = $amount * $exchangeRate;
-
-    //     DB::beginTransaction();
-    //     try {
-    //         // Fetch user's wallet
-    //         $wallet = $wallet->lockForUpdate()->first();
-
-    //         // Deduct fromAsset
-    //         $wallet->$balanceFieldFrom -= $amount;
-
-    //         // Add toAsset
-    //         $balanceFieldTo = 'balance_' . strtolower($toAsset);
-    //         $wallet->$balanceFieldTo += $receivedAmount;
-
-    //         $wallet->save();
-
-    //         // Log the transaction...
-    //         $this->logTransaction($user->id, $fromAsset, $toAsset, $amount, $receivedAmount);
-
-    //         DB::commit();
-
-    //         return [
-    //             'success' => true,
-    //             'message' => 'Swap successful!'
-    //         ];
-    //     } catch (\Exception $e) {
-    //         DB::rollBack();
-    //         return [
-    //             'success' => false,
-    //             'message' => $e->getMessage()
-    //         ];
-    //     }
-    // }
+   
 
 
     private function validateInput($fromAsset, $toAsset, $amount)
