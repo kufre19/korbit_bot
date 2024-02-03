@@ -28,10 +28,10 @@ class ReferralEarningRequestResource extends Resource
                 Forms\Components\TextInput::make('user.wallet.referral_balance')
                     ->label('Referral Balance')
                     ->disabled()
-                    ->default(function ($record) {
-                        info($record);
-                        return $record ? $record->referral_balance : '0';
-                    }),
+                    // ->default(function ($record) {
+                    //     info($record);
+                    //     return $record ? $record->referral_balance : '0';
+                    // }),
                 Forms\Components\TextInput::make('user.wallet.referral_balance')
                     ->label('Update Referral Balance')
                     ->numeric()
