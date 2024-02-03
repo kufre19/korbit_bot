@@ -78,7 +78,7 @@ class ReferralEarningRequestResource extends Resource
     {
         return [
             'index' => Pages\ListReferralEarningRequests::route('/'),
-            'create' => Pages\CreateReferralEarningRequest::route('/create'),
+            // 'create' => Pages\CreateReferralEarningRequest::route('/create'),
             'edit' => Pages\EditReferralEarningRequest::route('/{record}/edit'),
         ];
     }    
