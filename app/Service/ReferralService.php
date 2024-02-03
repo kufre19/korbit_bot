@@ -33,7 +33,6 @@ class ReferralService
         // Send a notification to the referrer about the new referral
         $notificationText = "You have a new referral: User ID {$newUserId}.";
         $this->telegramBot->sendMessage($referrer->tg_id, $notificationText);
-        $this->rewardPoint($referrer->tg_id);
 
 
 
@@ -50,21 +49,6 @@ class ReferralService
         $this->telegramBot->sendMessage($userId, $message,$inline_btn);
     }
 
-    public function rewardPoint($referrer)
-    {
-        $balance_model = new Wallet();
-        $user_service = new UserService();
-
-        $user = $user_service->fetchUserByTgID($referrer);
-        $user_wallet  = $balance_model->where('user_id',$user->id)->first();
-
-        $old = $user_wallet->referral_balance;
-        $new = $old + 5;
-
-        $balance_model->referral_balance = $new;
-        $balance_model->save();
-
-    }
 
 
 }

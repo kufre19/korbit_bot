@@ -54,7 +54,6 @@ trait CallbackCommands
 
         if ($command == "withdraw_referal_earning") {
             $referral_service = new ReferralService();
-            
             return true;
         }
 
