@@ -51,7 +51,7 @@ class ReferralEarningRequestResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('user.tg_id')->label('User TG ID'),
                 Tables\Columns\TextColumn::make('usdt_address')->label('USDT Address'),
-                Tables\Columns\TextColumn::make('user.wallet.referral_balance')->label('Referral Balance'),
+                // Tables\Columns\TextColumn::make('user.wallet.referral_balance')->label('Referral Balance'),
                 Tables\Columns\TextColumn::make('status')->label('Request Status'),
                 Tables\Columns\TextColumn::make('created_at')->dateTime()->label('Created At'),
                 Tables\Columns\TextColumn::make('updated_at')->dateTime()->label('Updated At'),
