@@ -121,21 +121,7 @@ class WebController extends Controller
         return response()->json(['message' => 'Callback processed successfully']);
     }
 
-    public function rewardReferralPoint($referrer)
-    {
-        $balance_model = new Wallet();
-        $user_service = new UserService();
-
-        $user = $user_service->fetchUserByTgID($referrer);
-        $user_wallet  = $balance_model->where('user_id',$user->id)->first();
-
-        $old = $user_wallet->referral_balance;
-        $new = $old + 5;
-
-        $user_wallet->referral_balance = $new;
-        $user_wallet->save();
-
-    }
+   
 
     public function handleLicenseCallback(Request $request)
     {
@@ -165,7 +151,6 @@ class WebController extends Controller
                 "license" => "active"
             ]);
 
-            $this->rewardReferralPoint($user->tg_id);
             $update_bot = new TelegramBotService($this->telegrambot);
             $update_bot->updateNewRegisteredUser($user->tg_id);
 

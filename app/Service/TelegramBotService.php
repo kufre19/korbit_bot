@@ -25,10 +25,28 @@ class TelegramBotService
         $this->telegrambot =  new TelegramApi();
     }
 
+    public function rewardReferralPoint($referrer)
+    {
+        $balance_model = new Wallet();
+        $user_service = new UserService();
+
+        $user = $user_service->fetchUserByTgID($referrer);
+        $user_wallet  = $balance_model->where('user_id',$user->id)->first();
+
+        $old = $user_wallet->referral_balance;
+        $new = $old + 5;
+
+        $user_wallet->referral_balance = $new;
+        $user_wallet->save();
+
+    }
+
 
     public function updateNewRegisteredUser($tg_id)
     {
+        
         // creat and send the updated keyboard to user
+        $this->rewardReferralPoint($tg_id);
         $new_keyboard = $this->updatedMainReplyKeyboard();
         $msg = "Congratulation your license has been activated";
         $this->sendMessage($tg_id, $msg, $new_keyboard);
