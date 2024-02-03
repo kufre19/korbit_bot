@@ -10,7 +10,7 @@ class ReferralEarningRequest extends Model
 {
     use HasFactory;
     protected $table = "referral_earnings_requests";
-    protected $fillable = ['user_id', 'usdt_address'];
+    protected $fillable = ['user_id', 'usdt_address','status'];
 
     public function user(): BelongsTo
     {
