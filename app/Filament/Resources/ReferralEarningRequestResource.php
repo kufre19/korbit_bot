@@ -21,10 +21,7 @@ class ReferralEarningRequestResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('user_id')
-                    ->label('User')
-                    ->options(User::all()->pluck('name', 'id'))
-                    ->searchable()
+                Forms\Components\TextInput::make('user_id')
                     ->required(),
                 Forms\Components\TextInput::make('usdt_address')
                     ->required()
