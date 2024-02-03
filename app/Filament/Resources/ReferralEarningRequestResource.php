@@ -30,8 +30,10 @@ class ReferralEarningRequestResource extends Resource
                     ->label('Referral Balance')
                     ->disabled()
                     ->default(function ($livewire) {
-                        // Access the referral_balance attribute which should be loaded by the eager loading above
-                        return optional(optional($livewire->record->user)->wallet)->referral_balance ?? '0';
+                        // Assuming $livewire->record contains the ReferralEarningRequest instance
+                        $balance = optional(optional($livewire->record->user)->wallet)->referral_balance ?? '0';
+                        \Log::debug("Referral balance: " . $balance);
+                        return $balance;
                     }),
                 Forms\Components\TextInput::make('user.wallet.referral_balance')
                     ->label('Update Referral Balance')
