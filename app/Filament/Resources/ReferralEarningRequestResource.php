@@ -24,7 +24,17 @@ class ReferralEarningRequestResource extends Resource
                 Forms\Components\TextInput::make('user_id')
                     ->required(),
                 Forms\Components\TextInput::make('usdt_address')
-                    ->required()
+                    ->required(),
+                Forms\Components\TextInput::make('user.wallet.referral_balance')
+                    ->label('Referral Balance')
+                    ->numeric()
+                    ->dehydrated(false) // Prevents the field from being directly saved
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, $set, $record) {
+                        if ($record && $record->user && $record->user->wallet) {
+                            $record->user->wallet->update(['referral_balance' => $state]);
+                        }
+                    }),
             ]);
     }
 
@@ -32,8 +42,9 @@ class ReferralEarningRequestResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')->label('User Name'),
+                Tables\Columns\TextColumn::make('user.user_id')->label('User TG ID'),
                 Tables\Columns\TextColumn::make('usdt_address')->label('USDT Address'),
+                Tables\Columns\TextColumn::make('user.wallet.referral_balance')->label('Referral Balance'),
                 Tables\Columns\TextColumn::make('created_at')->dateTime()->label('Created At'),
                 Tables\Columns\TextColumn::make('updated_at')->dateTime()->label('Updated At'),
             ])

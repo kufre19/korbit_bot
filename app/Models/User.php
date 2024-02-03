@@ -55,9 +55,9 @@ class User extends Authenticatable implements FilamentUser
         'password' => 'hashed',
     ];
 
-    public function wallet():HasOne
+    public function wallet(): HasOne
     {
-        return $this->hasOne(Wallet::class,"user_id");
+        return $this->hasOne(Wallet::class, "user_id");
     }
 
     public function canAccessFilament(): bool
@@ -69,6 +69,11 @@ class User extends Authenticatable implements FilamentUser
     public function getFilamentName(): string
     {
         return "{$this->name}";
+    }
+
+    public function getReferralBalanceAttribute()
+    {
+        return $this->wallet->referral_balance ?? '0';
     }
 
     protected static function boot()
@@ -87,5 +92,4 @@ class User extends Authenticatable implements FilamentUser
             }
         });
     }
-
 }

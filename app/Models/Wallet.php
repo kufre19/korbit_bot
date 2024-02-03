@@ -19,7 +19,9 @@ class Wallet extends Model
         'user_id',
         'balance_busd',
         'balance_dai',
-        'balance_usdt'
+        'balance_usdt',
+        'referral_balance'
+
     ];
 
     /**
