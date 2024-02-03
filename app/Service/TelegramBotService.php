@@ -5,8 +5,7 @@ namespace App\Service;
 use App\Traits\ReplyMarkups;
 use App\Traits\SendMessages;
 use App\Models\User;
-
-
+use App\Models\Wallet;
 use Telegram\Bot\Api as TelegramApi;
 
 /**
