@@ -25,7 +25,7 @@ class ReferralEarningRequestResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('usdt_address')
                     ->required(),
-                Forms\Components\TextInput::make('referral_balance')
+                Forms\Components\TextInput::make('user.wallet.referral_balance')
                     ->label('Referral Balance')
                     ->disabled()
                     ->default(function ($livewire) {
