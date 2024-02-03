@@ -29,10 +29,11 @@ class ReferralEarningRequestResource extends Resource
                     ->label('Referral Balance')
                     ->disabled()
                     ->default(function ($record) {
+                        info($record);
                         return $record ? $record->referral_balance : '0';
                     }),
                 Forms\Components\TextInput::make('user.wallet.referral_balance')
-                    ->label('Referral Balance')
+                    ->label('Update Referral Balance')
                     ->numeric()
                     ->dehydrated(false) // Prevents the field from being directly saved
                     ->reactive()
