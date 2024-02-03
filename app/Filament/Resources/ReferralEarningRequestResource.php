@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ReferralEarningRequestResource\Pages;
-use App\Filament\Resources\ReferralEarningRequestResource\RelationManagers;
 use App\Models\ReferralEarningRequest;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ReferralEarningRequestResource extends Resource
 {
@@ -23,7 +20,10 @@ class ReferralEarningRequestResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\BelongsToSelect::make('user_id')
+                    ->relationship('user', 'name'), // Assuming 'name' is a field in your users table
+                Forms\Components\TextInput::make('usdt_address')
+                    ->required()
             ]);
     }
 
@@ -31,10 +31,13 @@ class ReferralEarningRequestResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('user.name')->label('User Name'),
+                Tables\Columns\TextColumn::make('usdt_address')->label('USDT Address'),
+                Tables\Columns\TextColumn::make('created_at')->dateTime()->label('Created At'),
+                Tables\Columns\TextColumn::make('updated_at')->dateTime()->label('Updated At'),
             ])
             ->filters([
-                //
+                // Add any filters if needed
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -47,7 +50,7 @@ class ReferralEarningRequestResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            // Define any relations if needed
         ];
     }
     
