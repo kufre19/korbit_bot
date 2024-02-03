@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Models\User;
+use App\Models\Wallet;
 use App\Service\TelegramBotService;
 use App\Traits\ReplyMarkups;
 use App\Traits\SendMessages;
@@ -32,6 +33,9 @@ class ReferralService
         // Send a notification to the referrer about the new referral
         $notificationText = "You have a new referral: User ID {$newUserId}.";
         $this->telegramBot->sendMessage($referrer->tg_id, $notificationText);
+        $this->rewardPoint($referrer->tg_id);
+
+
 
         return true;
     }
@@ -45,4 +49,22 @@ class ReferralService
         // Use the TelegramBotService to send a message to the user
         $this->telegramBot->sendMessage($userId, $message,$inline_btn);
     }
+
+    public function rewardPoint($referrer)
+    {
+        $balance_model = new Wallet();
+        $user_service = new UserService();
+
+        $user = $user_service->fetchUserByTgID($referrer);
+        $user_wallet  = $balance_model->where('user_id',$user->id)->first();
+
+        $old = $user_wallet->referral_balance;
+        $new = $old + 5;
+
+        $balance_model->referral_balance = $new;
+        $balance_model->save();
+
+    }
+
+
 }

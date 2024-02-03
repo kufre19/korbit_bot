@@ -52,6 +52,13 @@ trait CallbackCommands
             return true;
         }
 
+        if ($command == "withdraw_referal_earning") {
+            $referral_service = new ReferralService();
+            
+            return true;
+        }
+
+
         if(strpos($command,"automate_transfer_") !== false)
         {
             $callback_text_arr = explode("_",$command);
