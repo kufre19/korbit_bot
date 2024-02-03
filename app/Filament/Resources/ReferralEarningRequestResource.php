@@ -31,7 +31,7 @@ class ReferralEarningRequestResource extends Resource
                     ->disabled()
                     ->default(function ($livewire) {
                         $record = self::loadUserWallet($livewire->record);
-                        return optional(optional($record->user)->wallet)->referral_balance ?? '0';
+                        return 0;
                     }),
                 Forms\Components\TextInput::make('user.wallet.referral_balance')
                     ->label('Update Referral Balance')
