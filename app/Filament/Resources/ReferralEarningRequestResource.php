@@ -10,6 +10,7 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Illuminate\Support\Facades\Log;
 
 class ReferralEarningRequestResource extends Resource
 {
@@ -87,6 +88,9 @@ class ReferralEarningRequestResource extends Resource
         if (!$referralEarningRequest->relationLoaded('user')) {
             $referralEarningRequest->load('user.wallet');
         }
+
+        Log::debug("user wallet: " .$referralEarningRequest->toArray() );
+
         return $referralEarningRequest;
     }
 
