@@ -53,6 +53,7 @@ trait CallbackCommands
         }
 
         if ($command == "withdraw_referal_earning") {
+            info("came for referal ernings ");
             $wallet_service = new WalletService();
             $referral_balance = $wallet_service->getReferralBalance($this->from_chat_id);
             if($referral_balance > 0)
