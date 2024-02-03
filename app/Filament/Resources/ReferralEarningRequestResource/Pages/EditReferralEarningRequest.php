@@ -35,7 +35,7 @@ class EditReferralEarningRequest extends EditRecord
     
 
         // Debugging here
-        Log::debug("Edit form mounted for record: " . print_r($this->record->toArray(), true));
+        // Log::debug("Edit form mounted for record: " . print_r($this->record->toArray(), true));
 
     }
 }

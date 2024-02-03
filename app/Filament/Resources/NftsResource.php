@@ -28,7 +28,7 @@ class NftsResource extends Resource
             Forms\Components\FileUpload::make('image')
             ->label('Image')
             ->disk('public')
-            ->directory('temp') // Temporary directory
+            ->directory('nfts') // Change this to the directory you want to store images in
             ->visibility('public'),
           
             Forms\Components\Textarea::make('meta_data'),
