@@ -28,12 +28,14 @@ class NftsResource extends Resource
             Forms\Components\FileUpload::make('image')
             ->label('Image')
             ->disk('public')
-            ->directory('nfts') // Change this to the directory you want to store images in
+            ->directory('nfts') 
             ->visibility('public'),
-          
-            Forms\Components\Textarea::make('meta_data'),
-            Forms\Components\Textarea::make('price'),
-            Forms\Components\Textarea::make('marketplace'),
+            Forms\Components\TextInput::make('meta_data'),
+            Forms\Components\TextInput::make('price')
+            ->numeric(),
+            Forms\Components\TextInput::make('blockchain'),
+            Forms\Components\Textarea::make('description'),
+
 
 
         ]);
@@ -46,7 +48,7 @@ class NftsResource extends Resource
             Tables\Columns\ImageColumn::make('image'),
             Tables\Columns\TextColumn::make('meta_data'),
             Tables\Columns\TextColumn::make('price'),
-            Tables\Columns\TextColumn::make('marketplace'),
+            Tables\Columns\TextColumn::make('blockchain'),
             Tables\Columns\TextColumn::make('created_at')->dateTime(),
             Tables\Columns\TextColumn::make('updated_at')->dateTime()
         ]);
