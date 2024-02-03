@@ -50,5 +50,20 @@ class ReferralService
     }
 
 
+    public function continueBotSession($user_id, $user_session, $user_response = "")
+    {
+          // Fetch the current session data for the user
+          $user_session_data = $user_session->getUserSessionData();
+          $step = $user_session_data['step'] ?? null;
+
+          switch ($step) {
+            case 'make_withdraw_request':
+                break;
+          }
+
+    }
+
+
+
 
 }

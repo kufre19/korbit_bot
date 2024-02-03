@@ -154,4 +154,14 @@ class WalletService
             'received_amount' => $receivedAmount
         ]);
     }
+
+    public function getReferralBalance($tg_id)
+    {
+
+        $wallet_model = new Wallet();
+        $user_service = new UserService();
+        $user = $user_service->fetchUserByTgID($tg_id);
+        $wallet = $wallet_model->Where('user_id',$user->id)->first();
+        return $wallet->referral_balance;
+    }
 }

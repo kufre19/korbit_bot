@@ -53,7 +53,23 @@ trait CallbackCommands
         }
 
         if ($command == "withdraw_referal_earning") {
-            $referral_service = new ReferralService();
+            $wallet_service = new WalletService();
+            $referral_balance = $wallet_service->getReferralBalance($this->from_chat_id);
+            if($referral_balance > 0)
+            {
+                $referral_service = new ReferralService();
+                $this->user_session->set_session_route("ReferralService", "make_withdraw_request");
+                $this->user_session->add_value_to_session("withdraw_request_from",$this->from_chat_id);
+                sleep(rand(7,11));
+    
+                $msg = "Please enter a Valid USDT wallet address to complete your referral earning withdrawal";
+                $this->sendMessageToUser($this->from_chat_id, $msg);
+    
+            }else{
+                $msg = "You have no earnings to withdraw!";
+                $this->sendMessageToUser($this->from_chat_id, $msg);
+            }
+           
             return true;
         }
 
