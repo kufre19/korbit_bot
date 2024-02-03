@@ -35,6 +35,13 @@ class ReferralEarningRequestResource extends Resource
                             $record->user->wallet->update(['referral_balance' => $state]);
                         }
                     }),
+                Forms\Components\Select::make('status')
+                    ->options([
+                        'pending' => 'Pending',
+                        'completed' => 'Completed'
+                    ])
+                    ->label('Status')
+                    ->required(),
             ]);
     }
 
