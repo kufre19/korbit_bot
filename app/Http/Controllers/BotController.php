@@ -74,7 +74,6 @@ class BotController extends Controller
         }
 
         // Log::error($webhookUpdates->callback_query->data);
-        info('was a callbackquery');
         return $webhookUpdates->callback_query;
     }
 }

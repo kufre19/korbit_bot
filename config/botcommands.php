@@ -21,6 +21,7 @@ return [
         "☎️Customer Support"
     ],
     "callbackQueryButtons"=>[
-        "pay_academy_access"
+        "pay_academy_access",
+        'withdraw_referal_earning'
     ]
 ];
