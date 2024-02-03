@@ -25,13 +25,14 @@ class ReferralEarningRequestResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('usdt_address')
                     ->required(),
-                Forms\Components\TextInput::make('user.wallet.referral_balance')
+                Forms\Components\TextInput::make('referral_balance')
                     ->label('Referral Balance')
-                    ->disabled(),
-                    // ->default(function ($record) {
-                    //     info($record);
-                    //     return $record ? $record->referral_balance : '0';
-                    // }),
+                    ->disabled()
+                    ->default(function ($livewire) {
+                        // Access the underlying model from the Livewire component
+                        $user = $livewire->record->user; // Ensure that the user relationship is loaded
+                        return optional($user->wallet)->referral_balance ?? '0';
+                    }),
                 Forms\Components\TextInput::make('user.wallet.referral_balance')
                     ->label('Update Referral Balance')
                     ->numeric()
