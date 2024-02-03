@@ -192,5 +192,18 @@ trait ReplyMarkups {
             ]
         ]);
     }
+
+    public function ReferalInlineKeyboard() {
+        return json_encode([
+            'inline_keyboard' => [
+                [
+                    [
+                        'text' => 'Withdraw Earnings', 
+                        'callback_data' => 'withdraw_referal_earning'  
+                    ]
+                ]
+            ]
+        ]);
+    }
     
 }
