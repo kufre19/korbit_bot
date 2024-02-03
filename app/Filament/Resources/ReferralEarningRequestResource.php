@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ReferralEarningRequestResource\Pages;
 use App\Models\ReferralEarningRequest;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -20,8 +21,11 @@ class ReferralEarningRequestResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\BelongsToSelect::make('user_id')
-                    ->relationship('user', 'name'), // Assuming 'name' is a field in your users table
+                Forms\Components\Select::make('user_id')
+                    ->label('User')
+                    ->options(User::all()->pluck('name', 'id'))
+                    ->searchable()
+                    ->required(),
                 Forms\Components\TextInput::make('usdt_address')
                     ->required()
             ]);
