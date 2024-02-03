@@ -26,8 +26,25 @@ class ReferralEarningRequestResource extends Resource
                 Forms\Components\TextInput::make('usdt_address')
                     ->disabled()
                     ->required(),
-                Forms\Components\TextInput::make('user.wallet.referral_balance'),
-
+                Forms\Components\TextInput::make('user.wallet.referral_balance')
+                    ->label('Referral Balance')
+                    ->disabled()
+                    ->default(function ($livewire) {
+                        \Log::debug($livewire->record->toArray());
+                        // Access the underlying model from the Livewire component
+                        $user = $livewire->record->user; // Ensure that the user relationship is loaded
+                        return optional($user->wallet)->referral_balance ?? '0';
+                    }),
+                Forms\Components\TextInput::make('user.wallet.referral_balance')
+                    ->label('Update Referral Balance')
+                    ->numeric()
+                    ->dehydrated(false) // Prevents the field from being directly saved
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, $set, $record) {
+                        if ($record && $record->user && $record->user->wallet) {
+                            $record->user->wallet->update(['referral_balance' => $state]);
+                        }
+                    }),
                 Forms\Components\Select::make('status')
                     ->options([
                         'pending' => 'Pending',
@@ -74,5 +91,7 @@ class ReferralEarningRequestResource extends Resource
             // 'create' => Pages\CreateReferralEarningRequest::route('/create'),
             'edit' => Pages\EditReferralEarningRequest::route('/{record}/edit'),
         ];
-    }    
+    }
+    
+    
 }
