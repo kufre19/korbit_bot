@@ -373,9 +373,10 @@ class SwapNFTService implements ServiceInterface
         $nfts = Nfts::inRandomOrder()->take($swapSession->arbitrageable_nft)->get();
         return $nfts->map(function ($nft) {
             $currency = $this->nft_currency($nft->blockchain);
+            $image_url = env('APP_URL')."/storage/app/public/".$nft->image;
             return [
                 'name' => $nft->name,
-                'image' => $nft->image,
+                'image' => $image_url,
                 'id' => $nft->id,
                 'meta_data' => $nft->meta_data,
                 'blockchain' => $nft->blockchain,
@@ -385,6 +386,9 @@ class SwapNFTService implements ServiceInterface
             ];
         })->toArray();
     }
+
+
+
 
 
 
