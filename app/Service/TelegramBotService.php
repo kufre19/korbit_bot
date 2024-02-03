@@ -30,7 +30,7 @@ class TelegramBotService
         $user_service = new UserService();
 
         $user = $user_service->fetchUserByTgID($referrer);
-        $user_wallet  = $balance_model->where('user_id',$user->id)->first();
+        $user_wallet  = $balance_model->where('user_id',$user->referrer_id)->first();
 
         $old = $user_wallet->referral_balance;
         $new = $old + 5;
