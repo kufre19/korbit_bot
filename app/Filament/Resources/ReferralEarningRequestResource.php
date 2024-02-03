@@ -30,10 +30,8 @@ class ReferralEarningRequestResource extends Resource
                     ->label('Referral Balance')
                     ->disabled()
                     ->default(function ($livewire) {
-                        // Assuming $livewire->record contains the ReferralEarningRequest instance
-                        $balance = optional(optional($livewire->record->user)->wallet)->referral_balance ?? '0';
-                        \Log::debug("Referral balance: " . $balance);
-                        return $balance;
+                        $record = self::loadUserWallet($livewire->record);
+                        return optional(optional($record->user)->wallet)->referral_balance ?? '0';
                     }),
                 Forms\Components\TextInput::make('user.wallet.referral_balance')
                     ->label('Update Referral Balance')
@@ -84,6 +82,14 @@ class ReferralEarningRequestResource extends Resource
         ];
     }
 
+    public static function loadUserWallet($referralEarningRequest)
+    {
+        if (!$referralEarningRequest->relationLoaded('user')) {
+            $referralEarningRequest->load('user.wallet');
+        }
+        return $referralEarningRequest;
+    }
+
     public static function getPages(): array
     {
         return [
@@ -91,13 +97,5 @@ class ReferralEarningRequestResource extends Resource
             // 'create' => Pages\CreateReferralEarningRequest::route('/create'),
             'edit' => Pages\EditReferralEarningRequest::route('/{record}/edit'),
         ];
-    }
-
-    // In the Filament Page class for editing ReferralEarningRequest
-    public function mount($record): void
-    {
-        // You should retrieve the ReferralEarningRequest with the user and wallet relationship loaded.
-        $this->record = ReferralEarningRequest::with('user.wallet')->findOrFail($record);
-        // ... rest of the mount method ...
     }
 }
