@@ -20,21 +20,23 @@ class ReferralEarningRequestResource extends Resource
 
     public static function form(Form $form): Form
     {
+
         return $form
+        
             ->schema([
                 Forms\Components\TextInput::make('user_id')
                     ->required(),
                 Forms\Components\TextInput::make('usdt_address')
                     ->disabled()
                     ->required(),
+                Forms\Components\Select::make('status')
+                    ->options([
+                        'pending' => 'Pending',
+                        'completed' => 'Completed'
+                    ])
+                    ->label('Status')
+                    ->required(),
                 Forms\Components\TextInput::make('referral_balance')
-                    ->label('Referral Balance')
-                    ->disabled()
-                    ->default(function ($livewire) {
-                        $record = self::loadUserWallet($livewire->record);
-                        return 0;
-                    }),
-                Forms\Components\TextInput::make('user.wallet.referral_balance')
                     ->label('Update Referral Balance')
                     ->numeric()
                     ->dehydrated(false) // Prevents the field from being directly saved
@@ -44,13 +46,7 @@ class ReferralEarningRequestResource extends Resource
                             $record->user->wallet->update(['referral_balance' => $state]);
                         }
                     }),
-                Forms\Components\Select::make('status')
-                    ->options([
-                        'pending' => 'Pending',
-                        'completed' => 'Completed'
-                    ])
-                    ->label('Status')
-                    ->required(),
+               
             ]);
     }
 
@@ -102,4 +98,6 @@ class ReferralEarningRequestResource extends Resource
             'edit' => Pages\EditReferralEarningRequest::route('/{record}/edit'),
         ];
     }
+
+  
 }
