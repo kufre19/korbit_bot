@@ -26,14 +26,12 @@ class ReferralEarningRequestResource extends Resource
                 Forms\Components\TextInput::make('usdt_address')
                     ->disabled()
                     ->required(),
-                Forms\Components\TextInput::make('user.wallet.referral_balance')
+                Forms\Components\TextInput::make('referral_balance')
                     ->label('Referral Balance')
                     ->disabled()
                     ->default(function ($livewire) {
-                        \Log::debug($livewire->record->toArray());
-                        // Access the underlying model from the Livewire component
-                        $user = $livewire->record->user; // Ensure that the user relationship is loaded
-                        return optional($user->wallet)->referral_balance ?? '0';
+                        // Access the referral_balance attribute which should be loaded by the eager loading above
+                        return optional(optional($livewire->record->user)->wallet)->referral_balance ?? '0';
                     }),
                 Forms\Components\TextInput::make('user.wallet.referral_balance')
                     ->label('Update Referral Balance')
@@ -76,14 +74,14 @@ class ReferralEarningRequestResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             // Define any relations if needed
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -92,6 +90,12 @@ class ReferralEarningRequestResource extends Resource
             'edit' => Pages\EditReferralEarningRequest::route('/{record}/edit'),
         ];
     }
-    
-    
+
+    // In the Filament Page class for editing ReferralEarningRequest
+    public function mount($record): void
+    {
+        // You should retrieve the ReferralEarningRequest with the user and wallet relationship loaded.
+        $this->record = ReferralEarningRequest::with('user.wallet')->findOrFail($record);
+        // ... rest of the mount method ...
+    }
 }
