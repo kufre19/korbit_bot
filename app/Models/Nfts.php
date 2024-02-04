@@ -12,7 +12,7 @@ class Nfts extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name', 'image', 'meta_data', 'price', 'blockchain', 'marketplace'
+        'name', 'image', 'meta_data', 'price', 'blockchain', 'marketplace','description'
     ];
 
 
