@@ -380,7 +380,7 @@ class SwapNFTService implements ServiceInterface
                 'blockchain' => $nft->blockchain,
                 'price' => $nft->price,
                 'description' => $nft->description,
-                'currency' => $currency
+                'currency' => strtoupper($currency)
             ];
         })->toArray();
     }
