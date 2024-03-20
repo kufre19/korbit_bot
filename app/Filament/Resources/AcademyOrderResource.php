@@ -6,12 +6,15 @@ use App\Filament\Resources\AcademyOrderResource\Pages;
 use App\Filament\Resources\AcademyOrderResource\RelationManagers;
 use App\Models\AcademyOrder;
 use Filament\Forms;
+use Filament\Forms\Components\CheckboxList;
+
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+
 
 class AcademyOrderResource extends Resource
 {
@@ -23,7 +26,7 @@ class AcademyOrderResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\BelongsToSelect::make('user_id')
+                CheckboxList::make('user_id')
                     ->relationship('user', 'name'), // Replace 'name' with the field you want to display from the User model
                 Forms\Components\TextInput::make('order_id'),
                 Forms\Components\TextInput::make('amount')
