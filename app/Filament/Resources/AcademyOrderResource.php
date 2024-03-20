@@ -23,8 +23,7 @@ class AcademyOrderResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\CheckboxList::make('user_id')
-                    ->relationship('user', 'name'), // Replace 'name' with the field you want to display from the User model
+               
                 Forms\Components\TextInput::make('order_id'),
                 Forms\Components\TextInput::make('amount')
                     ->numeric(),
