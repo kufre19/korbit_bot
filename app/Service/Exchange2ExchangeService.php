@@ -67,12 +67,12 @@ class Exchange2ExchangeService implements ServiceInterface
             // PROMPTING USER THAT API SEARCHIN IS GOING ON
             $msg = "🔎 Searching... ";
             $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
-            sleep(rand(3,10));
+            sleep(rand(3,6));
             $this->telegrambot->deletMessages($msg_response,$user_id);
 
             $msg = "🔊 Scanning price volatility difference for $user_response... ";
             $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
-            sleep(rand(3,12));
+            sleep(rand(3,6));
             $this->telegrambot->deletMessages($msg_response,$user_id);
 
           
@@ -81,7 +81,7 @@ class Exchange2ExchangeService implements ServiceInterface
             foreach ($exchanges as $key => $value) {
                 $msg = "🤖 Signaling {$value}";
                 $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
-                sleep(rand(4,8));
+                sleep(rand(4,6));
                 $this->telegrambot->deletMessages($msg_response,$user_id);
 
             }
