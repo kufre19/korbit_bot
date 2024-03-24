@@ -29,7 +29,8 @@ class TelegramBotService
         $balance_model = new Wallet();
         $user_service = new UserService();
 
-        $user = $user_service->fetchUserByTgID($referrer->referrer_id);
+        $reffered_user = $user_service->fetchUserByTgID($referrer);
+        $user = $reffered_user->referrer_id;
         if(!$user)
         {
             return true;
