@@ -26,17 +26,18 @@ class TelegramBotService
 
     public function rewardReferralPoint($referrer)
     {
+        // this will load the reffered user first then next user the reffered user to load the wallet then check if the wallet
+        // was fetched
         $balance_model = new Wallet();
         $user_service = new UserService();
 
-        $reffered_user = $user_service->fetchUserByTgID($referrer);
-        $user = $reffered_user->referrer_id;
-        if(!$user)
+        $user = $user_service->fetchUserByTgID($referrer);
+        $user_wallet  = $balance_model->where('user_id',$user->referrer_id)->first();
+        
+        if(!$user_wallet)
         {
             return true;
         }
-      
-        $user_wallet  = $balance_model->where('user_id',$user->referrer_id)->first();
 
         $old = $user_wallet->referral_balance;
         $new = $old + 5;
