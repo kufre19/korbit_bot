@@ -26,11 +26,12 @@ class TelegramBotService
 
     public function rewardReferralPoint($referrer)
     {
-        info($referrer);
         $balance_model = new Wallet();
         $user_service = new UserService();
 
         $user = $user_service->fetchUserByTgID($referrer);
+        info($user);
+        die;
         $user_wallet  = $balance_model->where('user_id',$user->referrer_id)->first();
 
         $old = $user_wallet->referral_balance;
