@@ -26,6 +26,7 @@ class TelegramBotService
 
     public function rewardReferralPoint($referrer)
     {
+        info($referrer);
         $balance_model = new Wallet();
         $user_service = new UserService();
 
