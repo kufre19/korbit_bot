@@ -96,7 +96,7 @@ class SwapNFTService implements ServiceInterface
 
             if (!$arbitrageSession || $arbitrageSession->number_of_response_left <= 0) {
                 // $this->telegrambot->sendMessageToUser($user_id, "You have reached your daily limit for NFT tracking.");
-                return;
+                return true;
             }
 
 

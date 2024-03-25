@@ -114,6 +114,11 @@ class Exchange2ExchangeService implements ServiceInterface
                 $user_session->endSession();
 
             }else {
+                if($responseMessage == "" || $responseMessage == null)
+                {
+                    $user_session->endSession();
+                    return true;
+                }
                 $msg_response = $this->telegrambot->sendMessageToUser($user_id, $responseMessage);
                 $user_session->endSession();
                 return true;
