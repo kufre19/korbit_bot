@@ -80,6 +80,10 @@ class ExchangeRateService
         MSG;
     
         foreach ($assets as $asset) {
+            if($asset->currency == "DAI")
+            {
+                $asset->currency = "Dai";
+            }
             // Calculate percentage change
             if ($asset->old_price && $asset->old_price != 0) {
                 $change = (($asset->price - $asset->old_price) / $asset->old_price) * 100;
