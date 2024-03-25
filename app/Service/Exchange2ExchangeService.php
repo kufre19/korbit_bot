@@ -67,23 +67,23 @@ class Exchange2ExchangeService implements ServiceInterface
             // PROMPTING USER THAT API SEARCHIN IS GOING ON
             $msg = "🔎 Searching... ";
             $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
-            sleep(rand(3,6));
+            // sleep(rand(3,6));
             $this->telegrambot->deletMessages($msg_response,$user_id);
 
             $msg = "🔊 Scanning price volatility difference for $user_response... ";
             $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
-            sleep(rand(3,6));
+            // sleep(rand(3,6));
             $this->telegrambot->deletMessages($msg_response,$user_id);
 
           
             $exchanges = $this->getRandomExchanges();
 
             foreach ($exchanges as $key => $value) {
-                sleep(1);
+                // sleep(1);
                 $msg = "🤖 Signaling {$value}";
                 $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
                 // sleep(rand(4,6));
-                sleep(rand(3,5));
+                // sleep(rand(3,5));
                 $this->telegrambot->deletMessages($msg_response,$user_id);
             }
 
@@ -99,7 +99,7 @@ class Exchange2ExchangeService implements ServiceInterface
             {
                 $msg = "🎯 Arbitrage Opportunity found...";
                 $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
-                sleep(rand(1,4));
+                // sleep(rand(1,4));
                 $this->telegrambot->deletMessages($msg_response,$user_id);
 
                 $msg_response = $this->telegrambot->sendMessageToUser($user_id, $responseMessage);
