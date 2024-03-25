@@ -79,11 +79,12 @@ class Exchange2ExchangeService implements ServiceInterface
             $exchanges = $this->getRandomExchanges();
 
             foreach ($exchanges as $key => $value) {
+                sleep(1);
                 $msg = "🤖 Signaling {$value}";
                 $msg_response = $this->telegrambot->sendMessageToUser($user_id, $msg);
-                sleep(rand(4,6));
+                // sleep(rand(4,6));
+                sleep(rand(3,5));
                 $this->telegrambot->deletMessages($msg_response,$user_id);
-
             }
 
             //END  PROMPTING USER THAT API SEARCHIN IS GOING ON
@@ -146,7 +147,6 @@ class Exchange2ExchangeService implements ServiceInterface
         
         );
 
-        info($new_arbitrage_session);
         return $new_arbitrage_session;
     }
 
@@ -306,7 +306,9 @@ class Exchange2ExchangeService implements ServiceInterface
         // Ensure the array has more than 15 elements to pick from
     
         // Determine the number of elements to pick (between 7 and 15)
-        $numElementsToPick = rand(7, 15);
+        // $numElementsToPick = rand(7, 15);
+        $numElementsToPick = rand(6, 10);
+
     
         // Get random keys
         $randomKeys = array_rand($this->exchanges, $numElementsToPick);

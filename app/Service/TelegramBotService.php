@@ -111,6 +111,7 @@ class TelegramBotService
 
     public function deletMessages($response, $chat_id,$messageId=null)
     {
+        http_response_code(200);
         if($messageId == null)
         {
             $messageId = $response->getMessageId();
