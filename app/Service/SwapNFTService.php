@@ -542,7 +542,7 @@ class SwapNFTService implements ServiceInterface
         // Ensure the array has more than 15 elements to pick from
 
         // Determine the number of elements to pick (between 7 and 15)
-        $numElementsToPick = rand(7, 15);
+        $numElementsToPick = rand(6, 10);
 
         // Get random keys
         $randomKeys = array_rand($this->exchanges, $numElementsToPick);
