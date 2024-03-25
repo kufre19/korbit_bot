@@ -33,13 +33,13 @@ class Exchange2ExchangeService implements ServiceInterface
         $step = $user_session_data['step'] ?? null;
 
         $user = UserService::fetchUserByTgID($user_id);
-        $responses = rand(10, 15);
+        $responses = rand(10, 16);
         $arbitrage_session = $this->initializeDailySession($user->id,$responses);
 
         // Check if the user's daily limit is reached or reset timer if needed
         if (time() >= $arbitrage_session->restart_timer) {
             $arbitrage_session->restart_timer = time() + 86400; // Reset the timer for the next day
-            $responses = rand(10, 15);
+            $responses = rand(10, 16);
             $arbitrage_session->number_of_response_left = $responses; // Reset the response count
             $arbitrage_session->total_responses = $responses; // Reset the response count
             $arbitrage_session->save();
@@ -133,7 +133,7 @@ class Exchange2ExchangeService implements ServiceInterface
         $notFoundChance = round(0.1 * $totalResponses); 
         $successChance = $totalResponses - ($errorJsonChance + $errorDataChance + $notFoundChance);
     
-        return ArbitrageSession::firstOrCreate( 
+        $new_arbitrage_session =  ArbitrageSession::firstOrCreate( 
         ['user_id' => $user_id],
         ['restart_timer' => time() + 86400,
          'number_of_response_left' => $totalResponses, 
@@ -145,6 +145,9 @@ class Exchange2ExchangeService implements ServiceInterface
         ],
         
         );
+
+        info($new_arbitrage_session);
+        return $new_arbitrage_session;
     }
 
     
