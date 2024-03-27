@@ -40,6 +40,13 @@ class ArbitrageCalculatorService implements ServiceInterface
                 $assets = $exchangeService->rates;
                 $amount = $user_response;
 
+                if(!is_numeric($amount))
+                {
+                    $this->telegram_bot->sendMessageToUser($user_id,"Please enter a numeric value");
+                    break;
+
+                }
+
                 $msg = "📡 Scanning live.....";
                 $response = $this->telegram_bot->sendMessageToUser($user_id,$msg);
                 sleep(15);

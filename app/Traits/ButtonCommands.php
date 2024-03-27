@@ -141,7 +141,7 @@ trait ButtonCommands
             $exchangeService = new ExchangeRateService();
 
             $rates = $exchangeService->getAssetPricesRate();
-            sleep(20);
+            sleep(15);
             $this->deletMessages($response, $this->from_chat_id);
 
             $inline = $this->getRateAmount();
