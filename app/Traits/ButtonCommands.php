@@ -78,8 +78,9 @@ trait ButtonCommands
         }
         if ($command == "☎️Customer Support") {
             $message = <<<MSG
-            For any enquiries we are here to support you, contact us at korbitbotai@gmail.com.  
-            If you're already a customer and require technical assistance, contact support through our website
+            For any enquiries we are here to support you, contact us at contact@korbitbotai.com.
+            
+            If you're already a customer and require technical assistance, contact support through our website.
             MSG;
             $this->sendMessageToUser($this->from_chat_id, $message);
 

@@ -75,7 +75,7 @@ class LicenseService implements ServiceServiceInterface
                 ]);
                 $payment_details = $payment_details[1];
                 $msg = <<<MSG
-                Obtain the bot license by making a one time payment fee of <b>{$payment_details["amount"]} USDT {$payment_details["network"]}</b> to the wallet address below: 
+                Obtain the bot license by making a one time payment fee of <b>{$payment_details["amount"]} USDT (BEP 20)</b> to the wallet address below: 
                 
                 <code>{$payment_details["address"]}</code>
     
