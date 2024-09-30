@@ -22,7 +22,7 @@ return [
     
 
     MSG,
-    
+
     "get_trained" => <<<MSG
     Korbit Arbitrage Academy 🚀💡 provides access to million-dollar market opportunities ranging from various market structures and capitalizations, including scalping opportunities from triangular arbitrage, cross-exchange arbitrage, statistical arbitrage, and spatial arbitrage 🔄📈🌐. All these exist amongst and within markets when you receive personalized one-on-one training from top experts at KorbitBot Arbitrage🤖👥✨.
 
@@ -32,15 +32,15 @@ return [
 
     <b>Detailed Article</b> 📖🔍: 
 
-    For support, refer to the manual guide 📚🛠️: 
+     <b>For support, refer to the manual guide </b> 📚🛠️: 
 
-    - Fee: 💸 $300
+    -  <b>Fee </b>: 💸 $300
 
-    - How to pay: 
-    Step 1: Copy the wallet address below and pay with any exchange or wallet 📋💳.
-    Step 2: After payment, check your email address for further instructions 📧👀.
+    -  <b>How to pay </b>: 
+     <b>Step 1 </b>: Copy the wallet address below and pay with any exchange or wallet 📋💳.
+     <b>Step 2 </b>: After payment, check your email address for further instructions 📧👀.
     MSG
 
 
-    
+
 ];
