@@ -367,12 +367,15 @@ class SwapService implements ServiceServiceInterface
             return "You have no swap history.";
         }
 
-        $formattedHistory = "🔄 *Your Recent Swap History:*\n" .
+        $formattedHistory = "🔄 Your Recent Swap History:\n" .
             "---------------------------------\n";
 
         foreach ($swapHistories as $history) {
+            $from_asset = ($history->from_asset == "dai") ? ucfirst($history->from_asset) : strtoupper($history->from_asset);
+            $to_asset = ($history->to_asset == "dai") ? ucfirst($history->to_asset) : strtoupper($history->to_asset);
+
             $formattedHistory .= "📅 " . $history->created_at->format('Y-m-d H:i:s') . ":\n" .
-                "💱 " . strtoupper($history->from_asset) . " to " . strtoupper($history->to_asset) . "\n" .
+                "💱 " . $from_asset . " to " . $to_asset . "\n" .
                 "🪙 Amount: " . number_format($history->amount, 4) . "\n\n" .
                 "🪙 Amount Received: " . number_format($history->received_amount, 4) . "\n\n";
         }
