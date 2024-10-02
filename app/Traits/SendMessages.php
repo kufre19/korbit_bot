@@ -83,10 +83,12 @@ trait SendMessages
     public function HelloMessage($username)
     {
         $txt = <<<MSG
-        Hello Welcome $username! 👋
-        I am Korbit Arbitrage Bot, A software designed in helping you navigate the world of crypto trading arbitrage.🌐💸 Trained on Kalman filter and least square regression algorithms, I specialize in detecting volatility on both CEXs and DEXs. My capabilities extend to making API calls between crypto exchanges, leveraging sophisticated algorithms to pinpoint extremely minute fluctuations and errors, even up to 4 digits in decimals. 📊💡I excel in identifying these nuances with the lowest graduation reaching as fine as $0.0049. 🤖💹
-    
-        Supporting 60+ CEXs and DEXs some of which are:
+        Hello, Welcome $username!
+        I am Korbit Arbitrage Bot, a software designed in helping you navigate the world of crypto trading arbitrage 🌐💸. 
+        
+        Trained on Kalman filter and least square regression algorithms, I specialize in detecting volatility on both CEXs and DEXs. My capabilities extend to making API calls between crypto exchanges, leveraging sophisticated algorithms to pinpoint extremely minute fluctuations and errors, even up to 4 digits in decimals 📊💡 . I excel in identifying these nuances with the lowest graduation reaching as fine as $0.0005 🤖💹.
+        
+        <b>Supporting 60+ CEXs and DEXs some of which are </b>:
             🔰 www.binance.com
             🔰 www.huobi.com
             🔰 www.CEX.io 
@@ -100,14 +102,15 @@ trait SendMessages
             🔰 www.kucoin.com
             🔰 www.upbit.com
             And many others...
-    
-        🚨 Disclaimer: While I aim to provide accurate and helpful information and assists, I have been trained to not accept DEPOSITS, but only to assist you in making API calls through backlog testing between various exchanges. 🚫💰
-        It is important to NOTE that I have been directly deployed on the Blockchain with smart contract technology and therefore have 100% autonomy with no central control. All API calls and transactions between exchanges are recorded on the blockchain and are therefore immutable with 100% transparency and security. So, at all times, all funds are within your control. 🌐🔒💸
-    
-        🔰 Detailed article: [Link] 🔰 
-    
+        
+        🚨 <b> Disclaimer </b>: While I aim to provide accurate and helpful information and assists, I have been trained to not accept DEPOSITS, but only to assist you in making API calls through backlog testing between various exchanges🚫💰. 
+        
+        It is important to NOTE that I have been directly deployed on the Blockchain with smart contract technology and therefore have 100% autonomy with no central control. All API calls and transactions between exchanges are recorded on the blockchain and are therefore immutable with 100% transparency and security. So, at all times, all funds are within your control 🌐🔒💸.
+        
+        🔰 <b> Detailed article </b>: [Link] 🔰 
+        
         For support, refer to the Manual guide: [Link]
-    
+        
         You can proceed to select any command from the menu provided below: 📲👇
         MSG;
     
@@ -127,17 +130,18 @@ trait SendMessages
         return $txt;
     }
 
-    public function swapAmountNotice($amount, $fromAsset, $toAsset)
+    public function swapAmountNotice($amount, $fromAsset, $toAsset, $profit)
     {
 
         $fromAsset = strtoupper($fromAsset);
         $toAsset = strtoupper($toAsset);
         $txt = <<<MSG
-        You are about to make an API call to a CEX. Please note, API calls and funds transfers occur solely between CEX/DEX. Korbit only facilitates the API call and request between wallet A (your wallet) and wallet B (destination exchange).
-    
-        Allow me to send an API request to CEX to purchase $toAsset with <b>$amount $fromAsset</b>💸.
-    
+        You are about to make an API call to a CEX. Please note, API calls and funds transfers occur solely between CEX/DEX. Korbit bot only makes the API call and request between wallet A (your wallet) and wallet B (destination exchange).
+        
+        Allow me to send an API request to CEX to purchase $toAsset with $amount $fromAsset for profit of $profit.
+        
         DISCLAIMER 🚨: In addition to the core functionalities, there's an extra API feature with backlog functionality🔄. It allows you to terminate transactions halfway and return to the previous page if you decide not to complete the transaction.
+        
         Explore more about exciting arbitrage opportunities at Korbit Arbitrage Academy📚💹.
         MSG;
     
@@ -187,9 +191,9 @@ trait SendMessages
         
         <code>$wallet</code>
 
-        Blockchain Network: $network 🌐
+        Blockchain Network 🌐: $network 
 
-        🚨 Note: These API wallet addresses, generated for each call, are valid for up to 30 minutes. ⏳
+        🚨 Note: These API wallet addresses, generated for each call, are valid for up to 30 minutes ⏳. 
         MSG;
 
         return $txt;

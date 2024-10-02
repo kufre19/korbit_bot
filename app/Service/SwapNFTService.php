@@ -74,11 +74,10 @@ class SwapNFTService implements ServiceInterface
                 return true;
             } else {
                 $msg = <<<MSG
-                NFTs are unique digital assets that represent ownership of specific items, such as virtual
-                concert tickets or rare pieces of art 🎨. NFTs are stored on the blockchain, which means 
+                NFTs are unique digital assets that represent ownership of specific items, such as virtual concert tickets or rare pieces of art 🎨. NFTs are stored on the blockchain, which means 
                 they can't be edited, copied or duplicated🔐. Therefore, they can act as a publicly verifiable proof of ownership on a decentralized database.
                 
-                ⚠️ Disclaimer: API has been built to detect volatilities across floor price of total volume of collectibles and not the individual NFTs themselves 📊.
+                ⚠️ <b> Disclaimer </b>: API has been built to detect volatilities across floor price of total volume of collectibles and not the individual NFTs themselves 📊.
                 MSG;
 
                 $inline = $this->nftTracker();

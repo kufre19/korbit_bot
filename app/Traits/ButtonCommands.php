@@ -158,7 +158,7 @@ trait ButtonCommands
 
             $nftSwapService = new SwapNFTService();
             $this->user_session->set_session_route("SwapNFTService", "check toc selection");
-            $message = "👉 Please read and accept the Terms and Conditions from [Korbit_website_termsofservice] link before proceeding. 📜🔒";
+            $message = "👉 Please read and accept the Terms and Conditions from korbitbot.com/terms-and-conditions before proceeding📜🔐.";
             $inline = $this->nftSwapToc();
             $this->sendMessageToUser($this->from_chat_id,$message,$inline);
             return true;
