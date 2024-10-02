@@ -122,8 +122,12 @@ trait SendMessages
     public function InviteLinkMessage($link)
     {
         $txt = <<<MSG
-        Korbit Affiliate Program 🚀💰 The official way to invite your friends. Get rewarded up to 22% commission for every friend you refer to make a purchase of the BOT 🌐💻
-        Experience a new way of earning by inviting your friends to buy BOT license 🌟👥
+        Korbit Affiliate Program 🚀 💰 
+        
+        The official way to invite your friends. Get rewarded up to 22% commission for every friend you refer to make a purchase of the BOT 🌐💻.
+        
+        Experience a new way of earning by inviting your friends to buy BOT license 🌟👥.
+        
         Here's your unique referral link: $link  📎✨
         MSG;
 
@@ -184,16 +188,17 @@ trait SendMessages
         $asset = strtoupper($asset);
 
         $txt = <<<MSG
-        API wallet addresses successfully retrieved from CEX ✨ 
-        Ref ID : $order_id
+        API wallet addresses successfully retrieved from CEX ✨.
 
-        🚀Proceed with <b>"{$amount} {$asset}"</b> $extra_msg to the API wallet address below : 
+        Ref ID: $order_id
+
+        🚀Proceed with <b>"{$amount} {$asset}"</b> $extra_msg to the API wallet address below: 
         
         <code>$wallet</code>
 
-        Blockchain Network 🌐: $network 
+        <b> Blockchain Network </b>: $network 🌐
 
-        🚨 Note: These API wallet addresses, generated for each call, are valid for up to 30 minutes ⏳. 
+        🚨 Note: These API wallet addresses, generated for each call, are valid for up to 30 minutes. ⏳
         MSG;
 
         return $txt;

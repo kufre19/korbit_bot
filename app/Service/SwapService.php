@@ -239,7 +239,7 @@ class SwapService implements ServiceServiceInterface
                 ]);
 
 
-                $msg = "<b>May take anywhere between 10mins - 1hr. Keep refreshing wallet</b>";
+                $msg = "Korbit is triggering CEX swap of {$user_session_data['amount']} {$user_session_data['from_asset']} to the specified wallet. Please note that transfer time may vary depending on the blockchain network's current processing speed.";
                 $this->telegram_bot->sendMessageToUser($user_id,$msg );
                 $user_session->endSession(); 
                 break;

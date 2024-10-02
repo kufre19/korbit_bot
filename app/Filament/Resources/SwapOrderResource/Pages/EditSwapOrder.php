@@ -17,3 +17,4 @@ class EditSwapOrder extends EditRecord
         ];
     }
 }
+

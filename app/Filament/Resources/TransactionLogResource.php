@@ -23,8 +23,8 @@ class TransactionLogResource extends Resource
     {
         return $form
         ->schema([
-            Forms\Components\BelongsToSelect::make('user_id')
-                ->relationship('user', 'name'), // Replace 'name' with the field you want to display from the User model
+            // Forms\Components\BelongsToSelect::make('user_id')
+            //     ->relationship('user', 'name'), 
             Forms\Components\TextInput::make('from_asset')->required(),
             Forms\Components\TextInput::make('to_asset')->required(),
             Forms\Components\TextInput::make('amount')

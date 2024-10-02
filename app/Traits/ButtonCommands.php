@@ -78,7 +78,7 @@ trait ButtonCommands
         }
         if ($command == "☎️Customer Support") {
             $message = <<<MSG
-            For any enquiries we are here to support you, contact us at contact@korbitbotai.com.
+            For any enquiries we are here to support you, contact us at contact@korbitbot.com.
             
             If you're already a customer and require technical assistance, contact support through our website.
             MSG;
