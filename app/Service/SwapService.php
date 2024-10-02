@@ -237,9 +237,10 @@ class SwapService implements ServiceServiceInterface
                     "wallet"=>$wallet,
                     "currency"=>$order->to_asset
                 ]);
+                $asset_to = ($order->to_asset == "dai") ? ucfirst($order->to_asset) : strtoupper($order->to_asset);
 
 
-                $msg = "Korbit is triggering CEX swap of {$order->amount_to_receive} {$order->to_asset} to the specified wallet. Please note that transfer time may vary depending on the blockchain network's current processing speed.";
+                $msg = "Korbit is triggering CEX swap of {$order->amount_to_receive} {$asset_to} to the specified wallet. Please note that transfer time may vary depending on the blockchain network's current processing speed.";
                 $this->telegram_bot->sendMessageToUser($user_id,$msg );
                 $user_session->endSession(); 
                 break;
