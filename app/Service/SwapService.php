@@ -321,12 +321,15 @@ class SwapService implements ServiceServiceInterface
     private function prepareSwapSuccessMessage(SwapOrder $swapOrder)
     {
         // Format the swap details into a user-friendly message
+        $asset_to = ($swapOrder->to_asset == "dai") ? ucfirst($swapOrder->to_asset) : strtoupper($swapOrder->to_asset);
+        $asset_from = ($swapOrder->from_asset == "dai") ? ucfirst($swapOrder->from_asset) : strtoupper($swapOrder->from_asset);
+
         $message = "Coin Successfully swapped on CEXs\n"
             . "--------------------------------\n"
-            . "From: " . strtoupper($swapOrder->from_asset) . "\n"
-            . "To: " . strtoupper($swapOrder->to_asset) . "\n"
-            . "Amount: " . number_format($swapOrder->amount, 4) . " " . strtoupper($swapOrder->from_asset) . "\n"
-            . "Received: " . number_format($swapOrder->amount_to_receive, 4) . " " . strtoupper($swapOrder->to_asset) . "\n"
+            . "From: " . $asset_from . "\n"
+            . "To: " . $asset_to . "\n"
+            . "Amount: " . number_format($swapOrder->amount, 4) . " " . $asset_from  . "\n"
+            . "Received: " . number_format($swapOrder->amount_to_receive, 4) . " " . $asset_to . "\n"
             . "Order ID: " . $swapOrder->order_id . "\n"
             . "--------------------------------\n";
             

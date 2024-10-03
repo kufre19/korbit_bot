@@ -45,7 +45,7 @@ class AcademyService implements ServiceInterface
             ]);
 
             $msg = <<<MSG
-            Get access to the KORBIT ARBITRAGE ACADEMY, pay <b>{$payment_details["amount"]} USDT {$payment_details["network"]}</b> to the wallet address below: 
+            Get access to the KORBIT ARBITRAGE ACADEMY, pay <b>{$payment_details["amount"]} USDT (BEP 20)</b> to the wallet address below: 
             
             <code>{$payment_details["address"]}</code>
             MSG;

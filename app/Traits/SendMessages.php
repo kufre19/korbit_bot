@@ -186,6 +186,7 @@ trait SendMessages
     public function useWalletGenerated($amount, $asset, $wallet, $network, $order_id, $extra_msg = "payment")
     {
         $asset = strtoupper($asset);
+        $network = strtoupper($network);
 
         $txt = <<<MSG
         API wallet addresses successfully retrieved from CEX ✨.
@@ -196,7 +197,7 @@ trait SendMessages
         
         <code>$wallet</code>
 
-        <b> Blockchain Network </b>: $network 🌐
+        <b> Blockchain Network</b>: $network 🌐
 
         🚨 Note: These API wallet addresses, generated for each call, are valid for up to 30 minutes. ⏳
         MSG;

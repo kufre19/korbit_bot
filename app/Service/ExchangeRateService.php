@@ -76,6 +76,7 @@ class ExchangeRateService
         $lastmessage = <<<MSG
 
         Please enter an amount in USD to get the live readings report.
+        
         NB: Prices change every instant based on price volatility across spot markets⚠️📊. 
         MSG;
     
