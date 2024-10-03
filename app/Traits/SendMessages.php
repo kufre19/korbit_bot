@@ -83,34 +83,35 @@ trait SendMessages
     public function HelloMessage($username)
     {
         $txt = <<<MSG
-        Hello, Welcome $username!
+        Hello, Welcome $username! 👋
+
         I am Korbit Arbitrage Bot, a software designed in helping you navigate the world of crypto trading arbitrage 🌐💸. 
-        
+
         Trained on Kalman filter and least square regression algorithms, I specialize in detecting volatility on both CEXs and DEXs. My capabilities extend to making API calls between crypto exchanges, leveraging sophisticated algorithms to pinpoint extremely minute fluctuations and errors, even up to 4 digits in decimals 📊💡 . I excel in identifying these nuances with the lowest graduation reaching as fine as $0.0005 🤖💹.
-        
-        <b>Supporting 60+ CEXs and DEXs some of which are </b>:
-            🔰 www.binance.com
-            🔰 www.huobi.com
-            🔰 www.CEX.io 
-            🔰 www.gate.io
-            🔰 www.bibox.com
-            🔰 www.okex.com
-            🔰 www.coinbase.com
-            🔰 www.bybit.com
-            🔰 www.lbank.com
-            🔰 www.bitget.com
-            🔰 www.kucoin.com
-            🔰 www.upbit.com
-            And many others...
-        
-        🚨 <b> Disclaimer </b>: While I aim to provide accurate and helpful information and assists, I have been trained to not accept DEPOSITS, but only to assist you in making API calls through backlog testing between various exchanges🚫💰. 
-        
+
+        Supporting 60+ CEXs and DEXs some of which are:
+        🔰 www.binance.com
+        🔰 www.huobi.com
+        🔰 www.CEX.io 
+        🔰 www.gate.io
+        🔰 www.bibox.com
+        🔰 www.okex.com
+        🔰 www.coinbase.com
+        🔰 www.bybit.com
+        🔰 www.lbank.com
+        🔰 www.bitget.com
+        🔰 www.kucoin.com
+        🔰 www.upbit.com
+        And many others...
+
+        🚨 Disclaimer: While I aim to provide accurate and helpful information and assists, I have been trained to not accept DEPOSITS, but only to assist you in making API calls through backlog testing between various exchanges🚫💰. 
+
         It is important to NOTE that I have been directly deployed on the Blockchain with smart contract technology and therefore have 100% autonomy with no central control. All API calls and transactions between exchanges are recorded on the blockchain and are therefore immutable with 100% transparency and security. So, at all times, all funds are within your control 🌐🔒💸.
-        
-        🔰 <b> Detailed article </b>: [Link] 🔰 
-        
+
+        🔰 Detailed article: [Link] 🔰 
+
         For support, refer to the Manual guide: [Link]
-        
+
         You can proceed to select any command from the menu provided below: 📲👇
         MSG;
     

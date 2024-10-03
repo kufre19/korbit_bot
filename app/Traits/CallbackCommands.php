@@ -85,7 +85,7 @@ trait CallbackCommands
 
 
 
-            $msg = "Please enter the DAI (BEP 20) wallet address to automate tranfer";
+            $msg = "Please enter the DAI (BEP 20) wallet address to automate Transfer.";
             $this->sendMessageToUser($this->from_chat_id, $msg);
 
             return true;

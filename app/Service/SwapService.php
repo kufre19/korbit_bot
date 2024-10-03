@@ -124,6 +124,9 @@ class SwapService implements ServiceServiceInterface
                 $fromAsset = $user_session_data['from_asset'];
                 $toAsset = $user_session_data['to_asset'];
 
+                $fromAsset = ($fromAsset== "dai") ? ucfirst($fromAsset) : strtoupper($fromAsset);
+
+
                 if ($amount < 50) {
                     $this->telegram_bot->sendMessageToUser($user_id, "The minimum amount for a swap is 50 {$fromAsset}");
                     break;
