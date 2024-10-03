@@ -220,7 +220,7 @@ class SwapService implements ServiceServiceInterface
                     $this->telegram_bot->sendMessageToUser($user_id, "Swap cancelled.");
 
                     // End the session
-                    $user_session->endSession(); // Replace with the actual method that ends the session
+                    $user_session->endSession(); 
                 }
                 break;
 
