@@ -66,7 +66,7 @@ class SendMessageWidget extends Widget implements HasForms
 
         $this->form->fill();
 
-        $this->notify('success', 'Message sent successfully');
+        // $this->notify('success', 'Message sent successfully');
     }
 
     protected function getFormStatePath(): string
