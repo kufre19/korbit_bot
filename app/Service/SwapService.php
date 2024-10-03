@@ -110,6 +110,9 @@ class SwapService implements ServiceServiceInterface
                 $user_session->update_session($user_session_data);
 
                 // Prompt the user for the amount to swap
+                $fromAsset = ($fromAsset== "dai") ? ucfirst($fromAsset) : strtoupper($fromAsset);
+                $toAsset = ($toAsset== "dai") ? ucfirst($toAsset) : strtoupper($toAsset);
+
                 $this->telegram_bot->sendMessageToUser($user_id, "How much {$fromAsset} do you want to swap to {$toAsset}?");
 
 
