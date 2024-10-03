@@ -12,7 +12,7 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Livewire\Component;
 use App\Service\TelegramBotService;
-
+use Filament\Notifications\Notification;
 use Telegram\Bot\Api as TelegramApi;
 
 
@@ -25,7 +25,7 @@ class SendMessageWidget extends Widget implements HasForms
 
     public $message;
     public $selected_user;
-    public $telegrambot;
+    protected $telegrambot;
 
 
     public function mount(): void
@@ -57,8 +57,7 @@ class SendMessageWidget extends Widget implements HasForms
         $data = $this->form->getState();
 
         $bot = new TelegramBotService($this->telegrambot);
-        // info($data['selected_user']);
-        // info($data['message']);
+
         $bot->sendMessage($data['selected_user'], $data['message']);
 
 
@@ -66,8 +65,10 @@ class SendMessageWidget extends Widget implements HasForms
 
         $this->form->fill();
 
-        // $this->notify('success', 'Message sent successfully');
-    }
+        Notification::make()
+        ->title('Message sent successfully')
+        ->success()
+        ->send();    }
 
     protected function getFormStatePath(): string
     {
