@@ -28,7 +28,8 @@ class ArbitrageCalculatorService implements ServiceInterface
                     break;
                 }
                 $msg = <<<MSG
-                Pleas enter an amount in USD to get the live readings report:
+                Please enter an amount in USD to get the live readings report:
+
                 NB: price change every instant based on price violatility across spot markets.
                 MSG;
                 $response = $this->telegram_bot->sendMessageToUser($user_id,$msg);
