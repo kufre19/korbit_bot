@@ -45,7 +45,7 @@ class Exchange2ExchangeService implements ServiceInterface
             $arbitrage_session->number_of_response_left = $responses; // Reset the response count
             $arbitrage_session->total_responses = $responses; // Reset the response count
             $arbitrage_session->save();
-            $arbitrage_session = $this->initializeDailySession($user->id,$responses);
+            $arbitrage_session = $this->initializeDailySession($user->id,$responses,true);
 
         }
 
@@ -135,25 +135,44 @@ class Exchange2ExchangeService implements ServiceInterface
     }
 
     
-    public function initializeDailySession($user_id, $totalResponses) {
+
+    public function initializeDailySession($user_id, $totalResponses, $update=false) {
         $errorJsonChance = round(0.2 * $totalResponses); 
         $errorDataChance = round(0.2 * $totalResponses); 
         $notFoundChance = round(0.1 * $totalResponses); 
         $successChance = $totalResponses - ($errorJsonChance + $errorDataChance + $notFoundChance);
+
+        if($update)
+        {
+            $new_arbitrage_session = ArbitrageSession::where("user_id",$user_id)->update(
+                ['restart_timer' => time() + 1200,
+                // ['restart_timer' => time() + 86400,
+                 'number_of_response_left' => $totalResponses, 
+                 "total_responses" => $totalResponses,
+                 'error_json_chance' => $errorJsonChance,
+                 'error_data_chance' => $errorDataChance,
+                 'not_found_chance' => $notFoundChance,
+                 'success_chance' => $successChance
+                ]
+            );
+
+        }else{
+            $new_arbitrage_session =  ArbitrageSession::firstOrCreate( 
+                ['user_id' => $user_id],
+                ['restart_timer' => time() + 1200,
+                // ['restart_timer' => time() + 86400,
+                 'number_of_response_left' => $totalResponses, 
+                 "total_responses" => $totalResponses,
+                 'error_json_chance' => $errorJsonChance,
+                 'error_data_chance' => $errorDataChance,
+                 'not_found_chance' => $notFoundChance,
+                 'success_chance' => $successChance
+                ],
+                
+                );
+        }
     
-        $new_arbitrage_session =  ArbitrageSession::firstOrCreate( 
-        ['user_id' => $user_id],
-        ['restart_timer' => time() + 1200,
-        // ['restart_timer' => time() + 86400,
-         'number_of_response_left' => $totalResponses, 
-         "total_responses" => $totalResponses,
-         'error_json_chance' => $errorJsonChance,
-         'error_data_chance' => $errorDataChance,
-         'not_found_chance' => $notFoundChance,
-         'success_chance' => $successChance
-        ],
-        
-        );
+     
 
         return $new_arbitrage_session;
     }
