@@ -38,9 +38,9 @@ class Exchange2ExchangeService implements ServiceInterface
 
         // Check if the user's daily limit is reached or reset timer if needed
         if (time() >= $arbitrage_session->restart_timer) {
-            info("time exired and it's to renew");
+            // info("time exired and it's to renew");
             // $arbitrage_session->restart_timer = time() + 86400; // Reset the timer for the next day
-            $arbitrage_session->restart_timer = time() + 1200; // Reset the timer for the next day
+            $arbitrage_session->restart_timer = time() + 86400; // Reset the timer for the next day
             $responses = rand(10, 16);
             $arbitrage_session->number_of_response_left = $responses; // Reset the response count
             $arbitrage_session->total_responses = $responses; // Reset the response count
@@ -145,7 +145,7 @@ class Exchange2ExchangeService implements ServiceInterface
         if($update)
         {
            ArbitrageSession::where("user_id",$user_id)->update(
-                ['restart_timer' => time() + 1200,
+                ['restart_timer' => time() + 86400,
                 // ['restart_timer' => time() + 86400,
                  'number_of_response_left' => $totalResponses, 
                  "total_responses" => $totalResponses,
@@ -160,7 +160,7 @@ class Exchange2ExchangeService implements ServiceInterface
         
         $new_arbitrage_session =  ArbitrageSession::firstOrCreate( 
             ['user_id' => $user_id],
-            ['restart_timer' => time() + 1200,
+            ['restart_timer' => time() + 86400,
             // ['restart_timer' => time() + 86400,
              'number_of_response_left' => $totalResponses, 
              "total_responses" => $totalResponses,
