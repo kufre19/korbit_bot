@@ -144,7 +144,7 @@ class Exchange2ExchangeService implements ServiceInterface
 
         if($update)
         {
-            $new_arbitrage_session = ArbitrageSession::where("user_id",$user_id)->update(
+           ArbitrageSession::where("user_id",$user_id)->update(
                 ['restart_timer' => time() + 1200,
                 // ['restart_timer' => time() + 86400,
                  'number_of_response_left' => $totalResponses, 
@@ -156,22 +156,21 @@ class Exchange2ExchangeService implements ServiceInterface
                 ]
             );
 
-        }else{
-            $new_arbitrage_session =  ArbitrageSession::firstOrCreate( 
-                ['user_id' => $user_id],
-                ['restart_timer' => time() + 1200,
-                // ['restart_timer' => time() + 86400,
-                 'number_of_response_left' => $totalResponses, 
-                 "total_responses" => $totalResponses,
-                 'error_json_chance' => $errorJsonChance,
-                 'error_data_chance' => $errorDataChance,
-                 'not_found_chance' => $notFoundChance,
-                 'success_chance' => $successChance
-                ],
-                
-                );
         }
-    
+        
+        $new_arbitrage_session =  ArbitrageSession::firstOrCreate( 
+            ['user_id' => $user_id],
+            ['restart_timer' => time() + 1200,
+            // ['restart_timer' => time() + 86400,
+             'number_of_response_left' => $totalResponses, 
+             "total_responses" => $totalResponses,
+             'error_json_chance' => $errorJsonChance,
+             'error_data_chance' => $errorDataChance,
+             'not_found_chance' => $notFoundChance,
+             'success_chance' => $successChance
+            ],
+            
+        );
      
 
         return $new_arbitrage_session;
