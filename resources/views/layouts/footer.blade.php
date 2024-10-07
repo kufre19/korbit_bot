@@ -25,7 +25,7 @@
 
         <div class="gb-container gb-container-589f6540">
 
-            <p class="gb-headline gb-headline-5ad40171 gb-headline-text">2024 Kprbit bot - All Rights Reserved</p>
+            <p class="gb-headline gb-headline-5ad40171 gb-headline-text">2024 Korbit bot - All Rights Reserved</p>
 
 
             <div class="gb-container gb-container-36412dcb">
