@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class,"home"]);
 Route::get('/privacy-policy', [HomeController::class,"privacyPolicy"]);
+Route::get('/terms-of-use', [HomeController::class,"termsOfUse"]);
 
 
 // Route::get("set-webhook",function(){
