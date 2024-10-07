@@ -1631,9 +1631,10 @@
                                     <h2 class="wp-block-heading"><strong>Contact Us</strong></h2>
 
 
-
-                                    <p>If you have any questions or suggestions about our Terms and Conditions, please
-                                        contact us at arbihunt.app@gmail.com.</p>
+                                    <p>
+                                        If you would like us to permanently delete your account/data or if you have any questions or suggestions
+                                        about our Privacy Policy, do not hesitate to contact us at contact@korbitbot.com
+                                   </p>
                                 </div>
 
                             </div>
