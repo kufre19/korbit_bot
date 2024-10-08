@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class,"home"]);
 Route::get('/privacy-policy', [HomeController::class,"privacyPolicy"]);
 Route::get('/terms-of-use', [HomeController::class,"termsOfUse"]);
+Route::get('/korbitbot-article', [HomeController::class,"korbitArticle"]);
+Route::get('/korbit-arbitrage-manual-guide', [HomeController::class,"korbitManual"]);
 
 
 // Route::get("set-webhook",function(){

@@ -20,4 +20,14 @@ class HomeController extends Controller
     {
         return view("terms-of-use");
     }
+
+    public function korbitArticle()
+    {
+        return view("article");
+    }
+
+    public function korbitManual()
+    {
+        return view("manual");
+    }
 }
