@@ -1667,7 +1667,7 @@
                                     <h2 class="wp-block-heading"><strong>Risk Disclaimer</strong></h2>
 
                                     <p>
-                                        Crypto arbitrage carries risks, including market volatility, 
+                                        Crypto arbitrage carries risks, including market volatility,
                                         exchange fees, and potential losses. Use this bot at your own risk.
 
                                     </p>
@@ -1680,8 +1680,8 @@
 
 
                                     <p>
-                                        This manual has guided you through using Korbit bot for crypto arbitrage. 
-                                        Leverage the bot's features to identify profitable opportunities, 
+                                        This manual has guided you through using Korbit bot for crypto arbitrage.
+                                        Leverage the bot's features to identify profitable opportunities,
                                         manage your portfolio, and navigate the world of cryptocurrency trading.
                                     </p>
 
@@ -1691,9 +1691,44 @@
                                         <li>Crypto arbitrage strategies and best practices</li>
                                         <li>Exchange API documentation</li>
                                         <li>NFT marketplace guides</li>
-                                        <li>Arbitrage academy: where users are given a one-on-one tutorial on how to harness endless arbitrage opportunities on the Internet</li>
+                                        <li>Arbitrage academy: where users are given a one-on-one tutorial on how to harness
+                                            endless arbitrage opportunities on the Internet</li>
                                     </ul>
 
+                                    <h2 class="wp-block-heading"><strong>BOT COMMANDS</strong></h2>
+
+                                    <ul class="wp-block-list">
+                                        <li>/start - Initialize the bot</li>
+                                        <li>/help - Display bot commands and FAQs</li>
+                                        <li>/Exchange2Exchange API - Configure and read prices from different exchanges and
+                                            display the most profitable arbitrage opportunities</li>
+                                        <li>/Korbit Arbitrage Academy - View available arbitrage opportunities harnessed by
+                                            one-on-one coaching</li>
+                                        <li>/Arbitrage-calculator - Monitor your profits ratio per capital</li>
+                                        <li>/swap NFT - Explore and trade NFTs</li>
+                                    </ul>
+
+
+                                    <p>
+                                        Note: This manual is a general guide and may require modifications to fit your
+                                        specific bot's features and functionality.
+
+                                    </p>
+
+
+
+                                    <p>
+                                        By interacting with the bot, you acknowledge
+                                    </p>
+                                    <ol class="wp-block-list">
+                                        <li>You have read and understood this disclaimer.</li>
+                                        <li>You assume and understand the bot's features to the specificity.</li>
+                                    </ol>
+
+
+                                    <p>
+                                        Proceed with caution and trade responsibly.
+                                    </p>
 
                                 </div>
 
