@@ -1227,34 +1227,24 @@
 
 
                                                 <a class="gb-button gb-button-0743fed5" href="https://t.me/signalKorbit_bot"
-                                                    target="_blank" rel="noopener noreferrer"><span class="gb-icon"><svg
-                                                            aria-hidden="true" role="img" height="1em" width="1em"
-                                                            viewBox="0 0 496 512" xmlns="http://www.w3.org/2000/svg">
-                                                            <path fill="currentColor"
-                                                                d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 96c48.6 0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88 39.4-88 88-88zm0 344c-58.7 0-111.3-26.6-146.5-68.2 18.8-35.4 55.6-59.8 98.5-59.8 2.4 0 4.8.4 7.1 1.1 13 4.2 26.6 6.9 40.9 6.9 14.3 0 28-2.7 40.9-6.9 2.3-.7 4.7-1.1 7.1-1.1 42.9 0 79.7 24.4 98.5 59.8C359.3 421.4 306.7 448 248 448z">
-                                                            </path>
-                                                        </svg></span><span class="gb-button-text">TRY KORBIT BOT</span></a>
+                                                    target="_blank" rel="noopener noreferrer">
+                                                    <span class="gb-button-text">TRY KORBIT BOT</span>
+                                                </a>
 
 
 
                                                 <a class="gb-button gb-button-fd6804a5"
                                                     href="{{ url('korbitbot-article') }}" target="_blank"
-                                                    rel="noopener noreferrer"><span class="gb-icon">
-                                                    </span><span class="gb-button-text">LEARN MORE ABOUT
-                                                        KORBIT</span></a>
+                                                    rel="noopener noreferrer">
+                                                    <span class="gb-button-text">LEARN MORE ABOUT
+                                                        KORBIT</span>
+                                                </a>
 
 
 
                                                 <a class="gb-button gb-button-ee6fd49b"
                                                     href="{{ url('korbit-arbitrage-manual-guide') }}" target="_blank"
-                                                    rel="noopener noreferrer"><span class="gb-icon"><svg viewBox="0 0 18 21"
-                                                            fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                                                            aria-hidden="true"
-                                                            class="w-6 h-6 text-gray-800 dark:text-white">
-                                                            <path
-                                                                d="M14.537 10.625a4.421 4.421 0 0 0 2.684 4.047 10.96 10.96 0 0 1-1.384 2.845c-.834 1.218-1.7 2.432-3.062 2.457-1.339.025-1.769-.794-3.3-.794s-2.009.769-3.275.82c-1.316.049-2.317-1.318-3.158-2.532C1.323 14.984.01 10.451 1.772 7.391a4.9 4.9 0 0 1 4.139-2.507c1.292-.025 2.511.869 3.3.869.789 0 2.271-1.075 3.828-.917A4.67 4.67 0 0 1 16.7 6.82a4.524 4.524 0 0 0-2.161 3.805M12.02 3.193A4.4 4.4 0 0 0 13.06 0a4.482 4.482 0 0 0-2.946 1.516 4.185 4.185 0 0 0-1.061 3.093 3.708 3.708 0 0 0 2.967-1.416Z">
-                                                            </path>
-                                                        </svg></span><span class="gb-button-text">USER MANUAL</span></a>
+                                                    rel="noopener noreferrer"><span class="gb-button-text">USER MANUAL</span></a>
 
                                             </div>
                                         </div>
