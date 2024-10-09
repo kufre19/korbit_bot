@@ -1549,29 +1549,29 @@
                             <div class="inside-article">
 
                                 <header class="entry-header" aria-label="Content">
-                                    <h1 class="entry-title" itemprop="headline">EXCHANGE-TO-EXCHANGE API INTEGRATION</h1>
+                                    <h1 class="entry-title" itemprop="headline">Korbit Arbitrage Manual Guide</h1>
                                 </header>
 
 
                                 <div class="entry-content" itemprop="text">
 
                                     <p>
-                                        All users are advised to read this manual guide in it's entirety and understand the 
-                                        bot's features, sophistication, how to set up and configure the bot according 
-                                        to this guide and set up a test trade to ensure understanding for 100% optimal 
-                                        performance on trades. 
+                                        All users are advised to read this manual guide in it's entirety and understand the
+                                        bot's features, sophistication, how to set up and configure the bot according
+                                        to this guide and set up a test trade to ensure understanding for 100% optimal
+                                        performance on trades.
                                     </p>
 
 
 
 
-                                    
+
 
                                     <h2 class="wp-block-heading"><strong>INTRODUCTION</strong></h2>
 
                                     <p>
-                                        This manual guides users on utilizing a Telegram bot designed for crypto 
-                                        arbitrage, leveraging exchange-to-exchange API, price fluctuations algorithms, 
+                                        This manual guides users on utilizing a Telegram bot designed for crypto
+                                        arbitrage, leveraging exchange-to-exchange API, price fluctuations algorithms,
                                         and NFT API.
                                     </p>
 
@@ -1593,19 +1593,24 @@
                                         <li>NFT API: Integrates non-fungible token trading (optional)</li>
                                         <li>Portfolio Management: Track and manage your crypto assets</li>
                                         <li>Alert System: Receive notifications on profitable arbitrage opportunities</li>
-                                        <li>Arbitrage calculator: built to detect and calculate accurate profit on the go before Users gets to interact with it</li>
+                                        <li>Arbitrage calculator: built to detect and calculate accurate profit on the go
+                                            before Users gets to interact with it</li>
                                     </ol>
 
-                                    
+
 
                                     <h2 class="wp-block-heading"><strong>SETUP AND CONFIGURATION</strong></h2>
 
-                    
+
                                     <ol class="wp-block-list">
-                                        <li>Install the Telegram bot: Search for the bot's username and start a conversation.</li>
-                                        <li>Fund your exchange accounts: Follow the bot's instructions to connect your exchange APIs.</li>
-                                        <li>Set up notification preferences: Choose your desired notification frequency and types.</li>
-                                        <li>Configure arbitrage settings: Define your risk tolerance, profit margins, and trade size using arbitrage calculator</li>
+                                        <li>Install the Telegram bot: Search for the bot's username and start a
+                                            conversation.</li>
+                                        <li>Fund your exchange accounts: Follow the bot's instructions to connect your
+                                            exchange APIs.</li>
+                                        <li>Set up notification preferences: Choose your desired notification frequency and
+                                            types.</li>
+                                        <li>Configure arbitrage settings: Define your risk tolerance, profit margins, and
+                                            trade size using arbitrage calculator</li>
                                     </ol>
 
 
@@ -1615,7 +1620,8 @@
 
                                     <ol class="wp-block-list">
                                         <li>Receive alerts on profitable arbitrage opportunities before hand</li>
-                                        <li>Review opportunity details: price difference, exchange rates, and potential profit</li>
+                                        <li>Review opportunity details: price difference, exchange rates, and potential
+                                            profit</li>
                                         <li>Execute trades manually or automate using the bot</li>
                                     </ol>
 
@@ -1629,6 +1635,44 @@
                                         <li>Rebalance your portfolio as needed</li>
                                     </ol>
 
+                                    <p>
+                                        NFT Trading (Optional)
+                                    </p>
+
+                                    <ol class="wp-block-list">
+                                        <li>Explore available NFTs and their prices</li>
+                                        <li>Buy/Sell NFTs using the bot's integrated marketplace</li>
+                                        <li>Track NFT portfolio performance</li>
+                                    </ol>
+
+                                    <p>
+                                        Price Fluctuations Algorithm
+                                    </p>
+
+                                    <ol class="wp-block-list">
+                                        <li>Understand the algorithm's parameters: price thresholds, market volatility, and
+                                            timeframes</li>
+                                        <li>Adjust algorithm settings to suit your trading strategy</li>
+                                        <li>Monitor algorithm performance and adjust as needed</li>
+                                    </ol>
+
+                                    <p>
+                                        Troubleshooting and Support
+                                    </p>
+                                    <ol class="wp-block-list">
+                                        <li>Bot FAQs and documentation</li>
+                                        <li>Developer support (contact@korbitbot.com)</li>
+                                    </ol>
+
+                                    <h2 class="wp-block-heading"><strong>Risk Disclaimer</strong></h2>
+
+                                    <p>
+                                        Crypto arbitrage carries risks, including market volatility, 
+                                        exchange fees, and potential losses. Use this bot at your own risk.
+
+                                    </p>
+
+
 
 
                                     <h2 class="wp-block-heading"><strong>CONCLUSION</strong></h2>
@@ -1636,9 +1680,20 @@
 
 
                                     <p>
-                                        Korbit Arbitrage Bot is a game-changing tool for anyone interested in crypto arbitrage. Whether you're new to the world of trading or an experienced investor, the combination of automation, low risk, and high rewards can significantly boost your financial success. The Korbit Arbitrage Academy further supports this by offering one-to-one training to set up your arbitrage software and master the craft. For those willing to learn and execute, becoming a crypto millionaire is within reach!
+                                        This manual has guided you through using Korbit bot for crypto arbitrage. 
+                                        Leverage the bot's features to identify profitable opportunities, 
+                                        manage your portfolio, and navigate the world of cryptocurrency trading.
                                     </p>
-                                  
+
+                                    <h2 class="wp-block-heading"><strong>ADDITIONAL RESOURCES</strong></h2>
+
+                                    <ul class="wp-block-list">
+                                        <li>Crypto arbitrage strategies and best practices</li>
+                                        <li>Exchange API documentation</li>
+                                        <li>NFT marketplace guides</li>
+                                        <li>Arbitrage academy: where users are given a one-on-one tutorial on how to harness endless arbitrage opportunities on the Internet</li>
+                                    </ul>
+
 
                                 </div>
 
