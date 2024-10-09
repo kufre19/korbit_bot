@@ -3,8 +3,7 @@ itemtype="https://schema.org/WPHeader" itemscope="">
 <div class="inside-header grid-container">
     <div class="site-logo">
         <a href="{{url('/')}}" rel="home">
-            <img class="header-image is-logo-image" alt="Korbit – Crypto Arbitrage Scanner"
-                src="images/cropped-arbihuntlogo-black.png" width="417" height="88">
+           <b>KORBITBOT</b>
         </a>
     </div>
     <nav class="main-navigation mobile-menu-control-wrapper" id="mobile-menu-control-wrapper"
@@ -33,8 +32,7 @@ itemtype="https://schema.org/WPHeader" itemscope="">
                 <div class="sticky-navigation-logo">
                     <a href="{{url('/')}}" title="Korbit – Crypto Arbitrage Scanner"
                         rel="home">
-                        <img src="images/cropped-arbihuntlogo-black.png" class="is-logo-image"
-                            alt="ArbiHunt – Crypto Arbitrage Scanner" width="417" height="88">
+                        <b>KORBITBOT</b>
                     </a>
                 </div>
             </div> <button class="menu-toggle" aria-controls="generate-slideout-menu" aria-expanded="false">
