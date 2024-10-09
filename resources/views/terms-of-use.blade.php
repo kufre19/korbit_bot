@@ -1650,31 +1650,32 @@
       
         {{-- footer --}}
         @include('layouts.footer')
-
         <nav id="generate-slideout-menu" class="main-navigation slideout-navigation"
-            itemtype="https://schema.org/SiteNavigationElement" itemscope="">
-            <div class="inside-navigation grid-container grid-parent">
-                <button class="slideout-exit has-svg-icon"><span class="gp-icon pro-close">
-                        <svg viewBox="0 0 512 512" aria-hidden="true" role="img" version="1.1"
-                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1em"
-                            height="1em">
-                            <path
-                                d="M71.029 71.029c9.373-9.372 24.569-9.372 33.942 0L256 222.059l151.029-151.03c9.373-9.372 24.569-9.372 33.942 0 9.372 9.373 9.372 24.569 0 33.942L289.941 256l151.03 151.029c9.372 9.373 9.372 24.569 0 33.942-9.373 9.372-24.569 9.372-33.942 0L256 289.941l-151.029 151.03c-9.373 9.372-24.569 9.372-33.942 0-9.372-9.373-9.372-24.569 0-33.942L222.059 256 71.029 104.971c-9.372-9.373-9.372-24.569 0-33.942z">
-                            </path>
-                        </svg>
-                    </span> <span class="screen-reader-text">Close</span></button>
-                <div class="main-nav">
-                    <ul id="menu-main-1" class=" slideout-menu">
-                        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-383">
-                            <a href="https://www.arbihunt.com/">Home</a></li>
-                        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-385"><a
-                                href="https://www.arbihunt.com/contact/">Got Questions?</a></li>
-                    </ul>
-                </div>
-                <a class="gb-button gb-button-3e53fdf1 gb-button-text" href="https://app.arbihunt.com/" target="_blank"
-                    rel="noopener noreferrer">LOGIN/SIGNUP</a>
-            </div><!-- .inside-navigation -->
-        </nav><!-- #site-navigation -->
+        itemtype="https://schema.org/SiteNavigationElement" itemscope="">
+        <div class="inside-navigation grid-container grid-parent">
+            <button class="slideout-exit has-svg-icon"><span class="gp-icon pro-close">
+                    <svg viewBox="0 0 512 512" aria-hidden="true" role="img" version="1.1"
+                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1em"
+                        height="1em">
+                        <path
+                            d="M71.029 71.029c9.373-9.372 24.569-9.372 33.942 0L256 222.059l151.029-151.03c9.373-9.372 24.569-9.372 33.942 0 9.372 9.373 9.372 24.569 0 33.942L289.941 256l151.03 151.029c9.372 9.373 9.372 24.569 0 33.942-9.373 9.372-24.569 9.372-33.942 0L256 289.941l-151.029 151.03c-9.373 9.372-24.569 9.372-33.942 0-9.372-9.373-9.372-24.569 0-33.942L222.059 256 71.029 104.971c-9.372-9.373-9.372-24.569 0-33.942z">
+                        </path>
+                    </svg>
+                </span> <span class="screen-reader-text">Close</span></button>
+            <div class="main-nav">
+                <ul id="menu-main-1" class=" slideout-menu">
+                    <li
+                        class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-1175 current_page_item menu-item-383">
+                        <a href="{{ url('/') }}" aria-current="page">Home</a>
+                    </li>
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-385"><a
+                            href="{{ url('contact') }}">NON-AI SUPPORT</a></li>
+                </ul>
+            </div>
+            <a class="gb-button gb-button-3e53fdf1 gb-button-text" href="https://t.me/signalKorbit_bot"
+                target="_blank" rel="noopener noreferrer">ACCESS KORBIT</a>
+        </div><!-- .inside-navigation -->
+    </nav><!-- #site-navigation -->
 
         <div class="slideout-overlay">
         </div>
