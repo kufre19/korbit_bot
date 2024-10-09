@@ -1214,7 +1214,7 @@
 
 
                                                 <h2 class="gb-headline gb-headline-36f75209 gb-headline-text">
-                                                    The future of crypto is smart!</h2>
+                                                    The future of crypto is smart</h2>
 
 
 
