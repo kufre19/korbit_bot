@@ -1609,6 +1609,27 @@
                                     </ol>
 
 
+                                    <h2 class="wp-block-heading"><strong>USING THE BOT</strong></h2>
+
+                                    <p>Arbitrage Opportunities</p>
+
+                                    <ol class="wp-block-list">
+                                        <li>Receive alerts on profitable arbitrage opportunities before hand</li>
+                                        <li>Review opportunity details: price difference, exchange rates, and potential profit</li>
+                                        <li>Execute trades manually or automate using the bot</li>
+                                    </ol>
+
+                                    <p>
+                                        Portfolio Management
+                                    </p>
+
+                                    <ol class="wp-block-list">
+                                        <li>Monitor your crypto holdings across connected exchanges</li>
+                                        <li>Track profit/loss and asset performance</li>
+                                        <li>Rebalance your portfolio as needed</li>
+                                    </ol>
+
+
 
                                     <h2 class="wp-block-heading"><strong>CONCLUSION</strong></h2>
 
