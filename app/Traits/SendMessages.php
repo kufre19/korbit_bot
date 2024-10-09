@@ -108,9 +108,9 @@ trait SendMessages
 
         It is important to NOTE that I have been directly deployed on the Blockchain with smart contract technology and therefore have 100% autonomy with no central control. All API calls and transactions between exchanges are recorded on the blockchain and are therefore immutable with 100% transparency and security. So, at all times, all funds are within your control 🌐🔒💸.
 
-        🔰 Detailed article: [Link] 🔰 
+        🔰 Detailed article: https://korbitbot.com/korbitbot-article 🔰 
 
-        For support, refer to the Manual guide: [Link]
+        For support, refer to the Manual guide: https://korbitbot.com/korbit-arbitrage-manual-guide
 
         You can proceed to select any command from the menu provided below: 📲👇
         MSG;

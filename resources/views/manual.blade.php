@@ -1556,10 +1556,10 @@
                                 <div class="entry-content" itemprop="text">
 
                                     <p>
-                                        The Exchange-to-Exchange API is one of the most powerful features of the Korbit Arbitrage Bot. 
-                                        It allows receive signals and manually use them by buying from prescribed exchanges and selling 
-                                        on the other exchanges shown on the bot. To profit from this section, ensure that trades are 
-                                        executed with the highest speed and efficiency, maximizing profitability.
+                                        All users are advised to read this manual guide in it's entirety and understand the 
+                                        bot's features, sophistication, how to set up and configure the bot according 
+                                        to this guide and set up a test trade to ensure understanding for 100% optimal 
+                                        performance on trades. 
                                     </p>
 
 
@@ -1567,21 +1567,47 @@
 
                                     
 
-                                    <h2 class="wp-block-heading"><strong>HOW YOU CAN BECOME A MILLIONAIRE WITH KORBIT ARBITRAGE BOT</strong></h2>
+                                    <h2 class="wp-block-heading"><strong>INTRODUCTION</strong></h2>
 
                                     <p>
-                                        While it’s important to be realistic, those who are committed, educated, and utilize the right tools
-                                         can generate significant profits. By consistently capturing small price differences between exchanges, 
-                                         especially with larger capital, profits can add up quickly.
+                                        This manual guides users on utilizing a Telegram bot designed for crypto 
+                                        arbitrage, leveraging exchange-to-exchange API, price fluctuations algorithms, 
+                                        and NFT API.
                                     </p>
 
-                                    <ol>
-                                        <li>Start Small, Scale Gradually: Begin by using a small amount of capital to familiarize yourself with the bot and the process. As you gain confidence, increase your capital to scale your profits.</li>
-                                        <li>Leverage Academy Knowledge: Use the insights and strategies from the Korbit Arbitrage Academy to refine your approach.</li>
-                                        <li>Utilize Automation: The power of automation through Korbit's API allows you to exploit opportunities 24/7, maximizing the compounding effect of each profitable trade.</li>
+                                    <h2 class="wp-block-heading"><strong>PREREQUISITES</strong></h2>
+
+                                    <ol class="wp-block-list">
+                                        <li>Telegram account</li>
+                                        <li>Crypto exchange/cold wallet accounts (supported exchanges by the bot)</li>
+                                        <li>Assets on the required token the bot that operates on.</li>
                                     </ol>
 
-                                  
+
+                                    <h2 class="wp-block-heading"><strong>BOT FEATURES</strong></h2>
+
+
+                                    <ol class="wp-block-list">
+                                        <li>Exchange-to-Exchange API: Real-time price data from multiple exchanges</li>
+                                        <li>Price Fluctuations Algorithm: Identifies profitable arbitrage opportunities</li>
+                                        <li>NFT API: Integrates non-fungible token trading (optional)</li>
+                                        <li>Portfolio Management: Track and manage your crypto assets</li>
+                                        <li>Alert System: Receive notifications on profitable arbitrage opportunities</li>
+                                        <li>Arbitrage calculator: built to detect and calculate accurate profit on the go before Users gets to interact with it</li>
+                                    </ol>
+
+                                    
+
+                                    <h2 class="wp-block-heading"><strong>SETUP AND CONFIGURATION</strong></h2>
+
+                    
+                                    <ol class="wp-block-list">
+                                        <li>Install the Telegram bot: Search for the bot's username and start a conversation.</li>
+                                        <li>Fund your exchange accounts: Follow the bot's instructions to connect your exchange APIs.</li>
+                                        <li>Set up notification preferences: Choose your desired notification frequency and types.</li>
+                                        <li>Configure arbitrage settings: Define your risk tolerance, profit margins, and trade size using arbitrage calculator</li>
+                                    </ol>
+
 
 
                                     <h2 class="wp-block-heading"><strong>CONCLUSION</strong></h2>
