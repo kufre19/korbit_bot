@@ -22,6 +22,7 @@ Route::get('/privacy-policy', [HomeController::class,"privacyPolicy"]);
 Route::get('/terms-of-use', [HomeController::class,"termsOfUse"]);
 Route::get('/korbitbot-article', [HomeController::class,"korbitArticle"]);
 Route::get('/korbit-arbitrage-manual-guide', [HomeController::class,"korbitManual"]);
+Route::get('/contact', [HomeController::class,"contact"]);
 
 
 // Route::get("set-webhook",function(){
