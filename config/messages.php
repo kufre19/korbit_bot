@@ -12,9 +12,9 @@ return [
     The principle is very simple; you purchase a coin on one exchange and transfer it to another where the price is higher. Once the coin arrives at the second exchange, you can sell it and generate a profit from the price differential. By leveraging 
     this straightforward strategy, our bot enables users to take advantage of market inefficiencies and maximize their potential earnings through arbitrage trading 📈💸. 
     
-    For a more in-depth understanding, check out our detailed article📚 . 
+    For a more in-depth understanding, check out our detailed article📚: https://korbitbot.com/korbitbot-article
     
-    For support, refer to the manual guide 📖. 
+    For support, refer to the manual guide 📖: https://korbitbot.com/korbit-arbitrage-manual-guide 
     
     EXCHANGES SUPPORTED BY THE BOT: BINANCE | HUOBI | BYBIT | Gate.io | MXC | KUCOIN | LBANK | Bitget | Upbit | + 60 others 
     
@@ -30,9 +30,9 @@ return [
     
     In addition, you will be given your own algorithms to calculate triangular arbitrage with depth on centralized and decentralized exchanges🔄💹💻. 
 
-    <b>Detailed Article</b> 📖🔍: 
+    <b>Detailed Article</b> 📖🔍: https://korbitbot.com/korbitbot-article
 
-     <b>For support, refer to the manual guide </b> 📚🛠️: 
+     <b>For support, refer to the manual guide </b> 📚🛠️: https://korbitbot.com/korbit-arbitrage-manual-guide
 
     -  <b>Fee </b>: 💸 $300
 
