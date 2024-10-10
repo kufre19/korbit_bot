@@ -1308,7 +1308,7 @@
                         <div class="inside-article">
 
                             <header class="entry-header" aria-label="Content">
-                                <h1 class="entry-title" itemprop="headline">Got Questions?</h1>
+                                <h1 class="entry-title" itemprop="headline">Contact our Non-AI support</h1>
                             </header>
 
 
@@ -1321,11 +1321,10 @@
 
 
 
-                                        <p>If you have questions, feel free to drop us a message, and we will get back
-                                            to you within 2 to 3 business days.</p>
+                                        <p>If you have questions, feel free to drop us a message via contact@korbitbot.com and we will get back to you.</p>
 
 
-                                        <div class="gb-container gb-container-5b4ac1a6">
+                                        {{-- <div class="gb-container gb-container-5b4ac1a6">
                                             <div class="forminator-ui forminator-custom-form forminator-custom-form-1250 forminator-design--default  forminator_ajax"
                                                 data-forminator-render="0" data-form="forminator-module-1250"
                                                 data-uid="67002e4d1be44"><br></div>
@@ -1415,10 +1414,10 @@
                                                         name="input_4" value="" autocomplete="off"></label>
                                             </form>
 
-                                        </div>
+                                        </div> --}}
                                     </div>
 
-                                    <div class="gb-container gb-container-3ad0dd62">
+                                    {{-- <div class="gb-container gb-container-3ad0dd62">
                                         <div class="gb-container gb-container-98d407db">
 
                                             <h3 class="gb-headline gb-headline-641c0722 gb-headline-text"><strong>We
@@ -1434,7 +1433,7 @@
                                                     href="mailto:hello@arborist.com">contact@korbitbot.com</a></p>
 
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </section>
 
                                 <section class="gb-container gb-container-9424b461"></section>
