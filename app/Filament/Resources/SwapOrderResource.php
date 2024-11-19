@@ -44,6 +44,7 @@ class SwapOrderResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('order_id'),
                 Tables\Columns\TextColumn::make('user.tg_id')->label('TG ID'),
+                Tables\Columns\TextColumn::make('user.email')->label('Email'),
                 Tables\Columns\TextColumn::make('from_asset'),
                 Tables\Columns\TextColumn::make('to_asset'),
                 Tables\Columns\TextColumn::make('amount'),
