@@ -38,6 +38,8 @@ class NftSwapOrderResource extends Resource
     {
         return $table->columns([
             Tables\Columns\TextColumn::make('user.tg_id'), // Adjust field as needed
+            Tables\Columns\TextColumn::make('user.email')->label('Email'),
+
             Tables\Columns\TextColumn::make('order_id'),
             Tables\Columns\TextColumn::make('payable_amount'), // Adjust field as needed
             Tables\Columns\TextColumn::make('status'),

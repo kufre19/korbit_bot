@@ -41,6 +41,7 @@ class TransactionLogResource extends Resource
         return $table
         ->columns([
             Tables\Columns\TextColumn::make('user.name')->label('User'),
+            Tables\Columns\TextColumn::make('user.email')->label('Email'),
             Tables\Columns\TextColumn::make('from_asset'),
             Tables\Columns\TextColumn::make('to_asset'),
             Tables\Columns\TextColumn::make('amount'),

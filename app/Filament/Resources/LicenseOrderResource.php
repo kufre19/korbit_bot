@@ -43,6 +43,8 @@ class LicenseOrderResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')->label('User'),
+                Tables\Columns\TextColumn::make('user.email')->label('Email'),
+
                 Tables\Columns\TextColumn::make('order_id'),
                 Tables\Columns\TextColumn::make('amount'),
                 Tables\Columns\TextColumn::make('status'),
