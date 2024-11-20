@@ -62,7 +62,8 @@ trait IndexTrait
                             // Handle referral code if present in the /start command
                             $this->handleReferralCode($this->user_sent_text);
 
-                            $mainKeyboard = $this->startMainReplyKeyboard();
+                            // $mainKeyboard = $this->startMainReplyKeyboard();
+                            $mainKeyboard = $this->updatedMainReplyKeyboard();
                             $startMessage = $this->HelloMessage($this->username);
                             $this->sendMessageToUser($this->from_chat_id, $startMessage, $mainKeyboard);
                             return true;

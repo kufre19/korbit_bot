@@ -26,7 +26,8 @@ trait CallbackCommands
             UserService::registeredNewUser($this->from_chat_id);
 
             // Prepare the main keyboard layout
-            $mainKeyboard = $this->startMainReplyKeyboard();
+            // $mainKeyboard = $this->startMainReplyKeyboard();
+            $mainKeyboard = $this->updatedMainReplyKeyboard();
 
             // Generate a welcome message
             $startMessage = $this->HelloMessage($this->username);

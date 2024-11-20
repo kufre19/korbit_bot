@@ -254,7 +254,7 @@ class Exchange2ExchangeService implements ServiceInterface
         // Calculate the sell price with a simulated profit margin
         // fetch the values for random profit from db
         $swapPtofitControl = SwapProfitControl::first();
-        $profitPercent = rand($swapPtofitControl->minimum, $swapPtofitControl->maximun) / $swapPtofitControl->divide_by; // 0.1% to 1.9%
+        $profitPercent = rand($swapPtofitControl->minimum, $swapPtofitControl->maximun) / $swapPtofitControl->divide_by; // default should be 0.1% to 1.9%
         $sellPrice = $currentPrice * (1 + $profitPercent / 100);
 
         $currentPrice = number_format($currentPrice, 2);
